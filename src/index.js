@@ -14,13 +14,27 @@
  * - A modding sdk is also planned soon™.
  * 
  **/
-
+import "es6-promise/auto.js"
+//import { Promise } from "es6-promise";
+//window.Promise = Promise;
 //import ticker from "./util/ticker";-depreceated
 //import backgroundImage from "#assets/background.png";
 //import backgroundFillImage from "#assets/background_fill.png";
 //import cursorImage from "#assets/cursor.png";
 //import playerImage from "#assets/player.png";
 import assets from "./util/assets";
+import {enemySpawningInterval, mainMenu, mainMenuMain, setEnemySpawningInterval} from "./modules/mainMenu.js";
+import {addPlayerStat, playerStats, setPlayerStat, subPlayerStat} from "./modules/playerStats.js";
+//enemySpawningInterval
+//import {pause, togglePause} from "./modules/pause.js";
+//let pause;
+import { gameStats, setGameStat } from "./modules/gameStats.js";
+import { enemies } from "./modules/enemies.js";
+import { movementMain, player } from "./modules/player.js";
+import { projectiles } from "./modules/projectiles.js";
+import enemySpawning from "./modules/enemySpawning.js";
+//let {pause, togglePause} = _pause
+//let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
 =================================================
 rapidRogue Next v0.0.6d
@@ -88,130 +102,6 @@ var fflag = {
 
 const camera=window.camera;
 
-// spaghetti code express
-(function() {
-var mainMenu = true;
-var page = 0;
-var mmInternals = {
-  p0SelectedOption: 0,
-};
-
-var mmBackgrounds = [createSprite(0,0), createSprite(0,0), createSprite(0,0)];
-mmBackgrounds.forEach(function (backgroundSprite, indx) {
-  backgroundSprite.addAnimation("background", loadImage(assets.backgroundImage));
-  //console.log(indx);
-  backgroundSprite.setAnimation("background");
-  backgroundSprite.y=camera.y;
-  backgroundSprite.x=(camera.x)+(indx*400)+-400;
-});
-
-//soun
-var ct = 0;
-
-function mainMenuMain() {
-  
-  //background on allpages
-  
-  
-  
-  
-  
-  switch (page) {
-    case 0:
-      
-      mmBackgrounds.forEach(function (backgroundSprite, indx) {
-    //backgroundSprite.setAnimation("santa_1");
-    backgroundSprite.y=camera.y;
-    backgroundSprite.x+=backgroundSprite.x>=(camera.x+indx*400+-400)?-400:1.25;
-    //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
-  });
-      
-      if (keyWentDown("up")) {
-        //console.log(mmInternals.p0SelectedOption)
-        mmInternals.p0SelectedOption++;
-      }
-      if (keyWentDown("down")) {
-      //console.log(mmInternals.p0SelectedOption);
-        mmInternals.p0SelectedOption--;
-      }
-      if (keyWentDown("enter") || keyWentDown("space")) {
-        switch (mmInternals.p0SelectedOption) {
-          case 0:
-            //mainMenu=false;
-            //console.log("startgame");
-            page++;
-            break;
-          case 1:
-            prompt("The instructions for the game is available here:\n(redirecting is not support in this envionment.)","https://docs.google.com/document/d/1ULw6R41dtjLaKUHFH8EgQN_tzzRKVbDrEkIHZU93tAk/view")
-            break;
-          default:break;
-        }
-        //console.log("startgame");
-      }
-  
-  mmInternals.p0SelectedOption=Math.abs(mmInternals.p0SelectedOption%2);
-      
-      textAlign(CENTER);
-      textSize(48);
-      textFont("monospace");
-      fill("purple");
-      text("rapidRogue",camera.x,camera.y-150);
-      //fill("yellow");
-      textSize(24+(Math.sin(World.frameCount/2)*3));
-      //fill("gray");
-      fill("gold");
-      text("nEXT Gen",camera.x+135,camera.y-140);
-      fill("white");
-      textSize(36);
-      text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play",camera.x,camera.y-25);
-      text(mmInternals.p0SelectedOption == 1 ? "> Instructions <" : "Instructions",camera.x,camera.y+25);
-      textSize(24);
-      fill("black");
-      textAlign(LEFT);
-      text("dev mode is on!",camera.x-182.5,camera.y+175);
-      break;
-      
-    case 1:
-      //var ct=0;
-      mmBackgrounds.forEach(function (backgroundSprite) {
-        //backgroundSprite.setAnimation("santa_1");
-        if (backgroundSprite.centered) {return;}
-        backgroundSprite.x+=((camera.x-backgroundSprite.x)/2);//backgroundSprite.x>=(camera.x+indx*400+-400)?-400:1.25;
-        if (-1<=(camera.x-backgroundSprite.x)&&(camera.x-backgroundSprite.x)<=1){
-          backgroundSprite.x=camera.x;
-          //console.log("ct"+ct);
-          ct++;
-          backgroundSprite.centered=true;
-        }
-        //console.log(camera.x-backgroundSprite.x)
-        /*if (backgroundSprite.x == camera.x) {
-          console.log("ct");
-          ct++;
-          backgroundSprite.centered=true;
-        }*/
-        if (ct==3) {
-          mmBackgrounds.forEach(function (_backgroundSprite) {
-            _backgroundSprite.destroy();//=false;
-          });
-          enemies.forEach(function (__enemy) {
-            __enemy.cleanUp();
-          });
-          window.mainMenu=false;
-          enemySpawningInterval = setInterval(enemySpawning, 5000);
-          playerHealingInterval = setInterval(playerHealing, 1000);
-          //console.log("startgame");
-        }
-        //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
-      });
-      break;
-    default:
-      break;
-  }
-}
-window.mainMenu=mainMenu;
-window.mainMenuMain=mainMenuMain;
-})();//iife express!!
-
 //array polyfill?
 
 // This is the main code for the upgrades
@@ -271,7 +161,8 @@ cells: 1,
             icon: assets.upgradeCells,
             description: "More white blood\ncells combine and\nyou get more\ndamage.",
             onUpgrade: function() {
-                playerStats.cells++;
+              addPlayerStat("cells",1);
+                //playerStats.cells++;
             },
         },
         {
@@ -279,7 +170,8 @@ cells: 1,
             icon: assets.upgradeImmune,
             description: "Better immune\nsystem which\nresults in more\nprojectiles.",
             onUpgrade: function() {
-                playerStats.immune++;
+              addPlayerStat("immune",1);
+                //playerStats.immune++;
             },
         },
         {
@@ -287,8 +179,10 @@ cells: 1,
             icon: assets.upgradeSize,
             description: "Bigger cell\ngiving more\nmore health.",
             onUpgrade: function() {
-                playerStats.size++;
-                playerStats.maxHP=50+(playerStats.size*50);
+              addPlayerStat("size",1);
+              addPlayerStat("maxHP",50+(playerStats.size*50));
+                //playerStats.size++;
+                //playerStats.maxHP=50+(playerStats.size*50);
             },
         },
         {
@@ -296,7 +190,8 @@ cells: 1,
             icon: assets.upgradeCooler,
             description: "Cooling the\ncell allowing\nfor faster\ncooldown.",
             onUpgrade: function() {
-                playerStats.cooler++;
+              addPlayerStat("cooler", 1)
+                //playerStats.cooler++;
             },
         },
         {
@@ -304,7 +199,8 @@ cells: 1,
             icon: assets.upgradeFriction,
             description: "Less friction\nallowing for\nmore speed.",
             onUpgrade: function() {
-                playerStats.friction++;//?????????????
+              addPlayerStat("friction", 1)
+                //playerStats.friction++;//?????????????
             },
         },
         {
@@ -312,7 +208,8 @@ cells: 1,
             icon: assets.upgradeMedkit,
             description: "More stable\ngiving more\nregeneration.",
             onUpgrade: function() {
-                playerStats.regen++;//?????????????
+              addPlayerStat("regen", 1);  
+              //playerStats.regen++;//?????????????
             },
         },
     ];
@@ -764,63 +661,6 @@ cursor.setAnimation("cursor");
 //thing.setAnimation("thing");
 //thing.scale = 0.175;
 
-var player = createSprite(0,0);
-player.addAnimation("player", loadImage(assets.playerImage));
-player.setAnimation("player");
-player.scale=1;
-var playerX = 0;
-var playerY = 0;
-function movementMain() {
-  player.velocityX=0;
-  player.velocityY=0;
-  if (keyDown("w") || keyDown("up")) {
-    //player.velocityY-=5;
-    playerY-=4+(playerStats.friction*1);
-  }
-  if (keyDown("a") || keyDown("left")) {
-    //player.velocityX-=5;
-    playerX-=4+(playerStats.friction*1);
-  }
-  if (keyDown("s") || keyDown("down")) {
-    //player.velocityY+=5;
-    playerY+=4+(playerStats.friction*1);
-  }
-  if (keyDown("d") || keyDown("right")) {
-    //player.velocityX+=5;
-    playerX+=4+(playerStats.friction*1);
-  }
-  //if (player.velocityX !== 0 && player.velocityY !== 0) {
-    /*
-    
-    var angle = enemySprite.rotation * Math.PI / 180;
-    //var deltaX = Math.cos(angle) * 3;
-    //var deltaY = Math.sin(angle) * 3;
-    //enemySprite.x+=deltaX;
-    //enemySprite.y+=deltaY;
-    enemySprite.velocityX = Math.cos(angle);
-    enemySprite.velocityY = Math.sin(angle);
-    
-    */
-    //
-    //var cS = Math.sqrt()
-    //player.velocityX=player.velocityY
-    //player.velocityY=player.velocityY
-  //}
-
-  //camera.x=player.x;
-  //camera.y=player.y;
-
-  //player.x+=Math.round((playerX-player.x)/8);
-  //player.y+=Math.round((playerY-player.y)/8);
-  
-  player.velocityX = Math.round((playerX-player.x)/2);
-  player.velocityY = Math.round((playerY-player.y)/2);
-  camera.x=player.x;
-  camera.y=player.y;
-  
-  //camera.x+=Math.round((playerX-camera.x)/8);
-  //camera.y+=Math.round((playerY-camera.y)/8);
-}
 
 function cursorMain() {
   //cursor.x+=Math.round((camera.mouseX-cursor.x)/8);
@@ -832,19 +672,6 @@ function cursorMain() {
 
 textFont("monospace")
 //textAlign(CENTER);
-var playerStats = {
-  maxHP: 100,
-  HP: 100,
-  invincible: false,
-  iframes: 0,
-  //upgrades should be at base level 1
-  cells: 1,
-  immune: 1,
-  size: 1,
-  cooler: 1,
-  friction:1,
-  regen:1,
-};
 
 function mainHud() {
   textAlign(CENTER);
@@ -859,9 +686,9 @@ function mainHud() {
   //waves
   textFont("monospace");
   textSize(24);
-  text("Waves: "+wave+"/"+maxWaves,camera.x,camera.y-175);
+  text("Waves: "+gameStats.wave+"/"+gameStats.maxWaves,camera.x,camera.y-175);
   textSize(18);
-  text("Enemies remaining: "+(currentWave.enemiesLeft), camera.x, camera.y-150);
+  text("Enemies remaining: "+(gameStats.currentWave.enemiesLeft), camera.x, camera.y-150);
   
   //fps counter
   //textSize(18);
@@ -897,7 +724,7 @@ function thingMain() {
   //thing.y = player.y-65;
 }
 
-var projectiles = createGroup();
+//var projectiles = createGroup();
 
 function projectile() {
   var c = {
@@ -961,114 +788,8 @@ function projectileMain() {
     setTimeout(function () {mLock = false}, 1000/(3+(playerStats.cooler*2)));
   }
 }
-
-var enemies = createGroup();
 var insideViewingRange = createGroup();// performance master2000
 var outsideViewingRange = createGroup();
-
-function enemy() {
-  //find random 
-  var rd1 = Math.round(Math.random()*1);
-  var rd2 = Math.round(Math.random()*1);
-  var rd3 = Math.floor(Math.random()*200);
-  var rd4 = Math.floor(Math.random()*200);
-  var enemyX = camera.x+(rd1?200:-200)+(rd3*(rd1?1:-1));
-  var enemyY = camera.y+(rd2?200:-200)+(rd4*(rd2?1:-1));
-  var enemySprite = createSprite(enemyX,enemyY);
-  enemySprite.HP = 100+((wave-1)*50);
-  enemySprite.maxHP = 100+((wave-1)*50);
-  enemySprite.canBeHit = true;
-  var tempEnemyConfig = {
-    hasHit: false,
-  };
-  //enemySprite.pause();
-  enemies.add(enemySprite);
-  enemySprite.addAnimation("enemy"+wave, assets["enemy"+wave])
-  enemySprite.setAnimation("enemy"+wave);
-  //enemySprite.bounceOff(enemies);
-  var enemyInterval = setInterval(function () {
-    if (pause) {
-      enemySprite.velocityX=0;
-      enemySprite.velocityY=0;
-      return;
-    }
-    if (enemySprite.outofbounds) {
-      //if (((World.frameCount%2)==0)) { // every other frame is skipped
-        //console.log("SKIP")
-      //  return;
-      //} else {
-        enemySprite.pointTo(player.x,player.y);
-        var angle = enemySprite.rotation * Math.PI / 180;
-        enemySprite.velocityX = Math.cos(angle) * ((wave)*1.005);
-        enemySprite.velocityY = Math.sin(angle) * ((wave)*1.005);
-        return;
-      //}
-      //return;
-    }
-    enemySprite.pointTo(player.x,player.y);
-    var angle = enemySprite.rotation * Math.PI / 180;
-    //var deltaX = Math.cos(angle) * 3;
-    //var deltaY = Math.sin(angle) * 3;
-    //enemySprite.x+=deltaX;
-    //enemySprite.y+=deltaY;
-    enemySprite.velocityX = Math.cos(angle) * ((wave)*1.005);
-    enemySprite.velocityY = Math.sin(angle) * ((wave)*1.005);
-    if (enemySprite.collide(player)) {
-      //enemySprite.velocityX = -Math.cos(angle);
-      //enemySprite.velocityY = -Math.sin(angle);
-      if (playerStats.invincible || tempEnemyConfig.hasHit) {
-        return;
-      }
-      playerStats.HP-=7.5;
-      tempEnemyConfig.hasHit = true;
-      setTimeout(function () {
-        tempEnemyConfig.hasHit = false;
-      }, 1000/5);
-    }
-    enemySprite.displace(enemies);// this feels the most normal-like, better than -angle;
-    /*
-    if (enemySprite.collide(enemies)) {
-      enemySprite.velocityX = -Math.cos(angle);
-      enemySprite.velocityY = -Math.sin(angle);
-    };*/
-    if (enemySprite.collide(projectiles)) {
-      if (enemySprite.canBeHit) {
-        enemySprite.HP-=50*playerStats.cells;
-        enemySprite.canBeHit = false;
-        setTimeout(function () {
-          enemySprite.canBeHit = true;
-        }, 1000/5);
-      }
-      if (enemySprite.HP<=0) {
-        clearInterval(enemyInterval);
-        enemies.remove(enemySprite); // DO NOT recreate the incident.
-        enemySprite.tint = "red";
-        enemySprite.alpha = 0.5;
-        enemySprite.rotationSpeed=15;
-        enemyDeathCallback();
-        //enemySprite.play();ss
-        setTimeout(function () {
-          enemySprite.destroy();
-        }, 100);
-      }
-    }
-  }, 1000/60);
-  enemySprite.cleanUp = function () {
-    clearInterval(enemyInterval);
-    enemySprite.destroy();
-  };
-}
-
-function enemySpawning() {
-  if (inUpgradeScreen || pause || mainMenu) return;
-  waveHandler();/*todo: use wavehandler and remove enemyspawning  */
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemies.bounceOff(enemies);
-}
 
 cursor.depth=100;
 //thing.depth = 99;
@@ -1147,15 +868,17 @@ deadBackground.visible = false;
 deadBackground.addAnimation("background_fill", assets.backgroundFillImage);
 deadBackground.setAnimation("background_fill");
 
-
-var enemySpawningInterval;
+//var enemySpawningInterval;
 
 function statsMain() {
   if (playerStats.iframes > 0) {
-    playerStats.invincible = true;
-    playerStats.iframes-=1;
+    setPlayerStat("invincible", true)
+    //playerStats.invincible = true;
+    subPlayerStat("iframes", 1);
+    //playerStats.iframes-=1;
   } else {
-    playerStats.invincible = false;
+    setPlayerStat("invincible", false)
+    //playerStats.invincible = false;
   }
   if (playerStats.HP<=0){
     clearInterval(enemySpawningInterval);
@@ -1165,7 +888,9 @@ function statsMain() {
     deadBackground.x=camera.x;
     deadBackground.y=camera.y;
     deadBackground.alpha=0.5;
-    pause=true;
+    setGameStat("pause", true);
+    //togglePause(true);
+    //pause=true;
     dead=true;
     player.tint = "red";
     player.rotationSpeed=5;
@@ -1183,10 +908,12 @@ function statsMain() {
         //giveQuestion(function () {
           // revive the player.
           //prompt();
-          enemySpawningInterval = setInterval(enemySpawning, 5000);
+          //enemySpawningInterval = setInterval(enemySpawning, 5000);
+          setEnemySpawningInterval(setInterval(enemySpawning, 5000));
           deadBackground.visible = false;
           player.visible = true;
-          pause=false;
+          //pause=false;
+          setGameStat("pause",false)// = false;
           player.tint = "white";
           player.rotation=0;
           player.velocityX=0;//5;
@@ -1194,8 +921,10 @@ function statsMain() {
           player.scale=1;
           player.alpha=1;
           dead=false;
-          playerStats.HP=playerStats.maxHP;
-          playerStats.iframes=300;
+          //playerStats.HP=playerStats.maxHP;
+          setPlayerStat("HP",playerStats.maxHP/2);
+          setPlayerStat("iframes",300);
+          //playerStats.iframes=300;
         //});
       }
     },1000/60);
@@ -1272,132 +1001,10 @@ setInterval(function () {
 
 //playSound("https://analytics.example.com/v1/audio.mp3?r=1",0)
 
-var waves = [
-  //enemy scaling done automatically
-  { //wave 1
-    enemyTarget: 15,
-  },
-  { //wave 2
-    enemyTarget: 18,
-  },
-  { //wave 3
-    enemyTarget: 21,
-  },
-  { //wave 4
-    enemyTarget: 24,
-  },
-  { //wave 5
-    enemyTarget: 27,
-  },
-  { //wave 6
-    enemyTarget: 30,
-  },
-  { //wave 7
-    enemyTarget: 33,
-  },
-  { //wave 8
-    enemyTarget: 36,
-  },
-  { //wave 9
-    enemyTarget: 39,
-  },
-  { //wave 10
-    enemyTarget: 42,
-  },
-  
-];
-var currentWave = {
-  enemyTarget: 0,
-  enemiesKilled: 0,
-  enemiesLeft: 0,
-};
 
-var wave = 0;
-var maxWaves = waves.length;
-var pause = 0;
-function enemyDeathCallback() {
-  if (currentWave.enemiesLeft-1<0) {
-    enemySpawning();
-    return;
-  }
-  currentWave.enemiesKilled++;
-  currentWave.enemiesLeft--;
-}
+//pause
 
 var won = false;
-
-function waveHandler() {
-  if (wave==0 || currentWave.enemiesLeft==0){
-    if (waves[wave] == undefined) {
-      //win condition
-      //console.log("win!");
-      won = true;
-      return;}
-    if (!wave==0) {
-      pause=true;
-      
-        enemies.forEach(function (_enemy) {
-          _enemy.HP=0;
-        });
-        wave++;
-        // top tier naming system
-        var keys = Object.keys(upgrades)
-        var ___temp=[];
-        keys.forEach(function (__key, _indx) {
-          //var //___temp = [];
-          ___temp.push(_indx);
-        });
-        keys = ___temp;
-        var __temp = [0,0,0];
-        var ___temp= [];
-        __temp.forEach(function (_, _indx) {
-          var rnd = Math.floor(Math.random()*keys.length);
-          __temp[_indx] = keys[rnd];
-          keys.splice(rnd,1);
-          //console.log(keys);
-          console.log(rnd);
-        });
-        console.log(__temp);
-        displayUpgrade(__temp[0], __temp[1], __temp[2] ,function () {
-          console.log("cb");
-          pause=false;
-        
-        var waveConfig = waves[wave-1];
-        currentWave = {
-          enemyTarget: waveConfig.enemyTarget,
-          enemiesKilled: 0,
-          enemiesLeft: waveConfig.enemyTarget,
-        };
-        //pause=false;
-      });
-      return;
-    }
-    //init
-    enemies.forEach(function (_enemy) {
-      _enemy.HP=0;
-    });
-    wave++;
-    var waveConfig = waves[wave-1];
-    currentWave = {
-      enemyTarget: waveConfig.enemyTarget,
-      enemiesKilled: 0,
-      enemiesLeft: waveConfig.enemyTarget,
-    };
-  }
-  enemy();
-  enemy();
-  enemy();
-  enemy();
-  enemy();
-}
-
-function playerHealing() {
-  if (playerStats.HP+playerStats.regen>=playerStats.maxHP) {
-    playerStats.HP=playerStats.maxHP;
-    return;
-  }
-  playerStats.HP+=playerStats.regen;
-};
 
 
 function draw() {
@@ -1416,6 +1023,7 @@ function draw() {
     return;
   }
   if (mainMenu) {
+    //console.log(mainMenu)
     //playerStats.iframes=60;
     //playerStats.invincible=true;
     player.x=camera.x;
@@ -1462,9 +1070,11 @@ function draw() {
       displayUpgrade(0, 1, 2); // those who know arrays
     }*/
   if(keyWentDown("p") && (!dead)){
-    pause=!pause;
+    setGameStat("pause",!gameStats.pause);
+    //pause=!pause;
+    //pause=!pause;
   }
-  if (!pause) {
+  if (!gameStats.pause) {
     background("white");
     backgroundMain();
     movementMain();
