@@ -1,0 +1,30 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "ie": "1"
+      },
+      "exclude": ["transform-typeof-symbol","transform-for-of"]
+    }]
+  ],
+  "assumptions": {
+    "iterableIsArray": true,
+    "arrayLikeIsIterable": true,
+    "constantReexports": true,
+    "ignoreFunctionLength": true,
+    "ignoreToPrimitiveHint": true,
+    "mutableTemplateObject": true,
+    "noClassCalls": true,
+    "noDocumentAll": true,
+    "objectRestNoSymbols": true,
+    "privateFieldsAsProperties": true,
+    "pureGetters": true,
+    "setClassMethods": true,
+    "setComputedProperties": true,
+    "setPublicClassFields": true,
+    "setSpreadProperties": true,
+    "skipForOfIteratorClosing": true,
+    "superIsCallableConstructor": true
+  },
+  "compact": false
+}
