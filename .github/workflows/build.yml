@@ -1,0 +1,52 @@
+name: Build single-file binary for studio.code.org gamelab.
+
+permissions:
+    contents: write
+
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                type: string
+                required: true
+                description: "Version of release"
+
+jobs:
+    create-release:
+        name: Create Release
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Create tag
+              run: |
+                  git tag ${{ github.event.inputs.version }}
+                  git push origin ${{ github.event.inputs.version }}
+    
+            - name: Create release
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: 
+                gh release create ${{ github.event.inputs.version }} --draft --title v${{ github.event.inputs.version }}
+
+    build-singlefile:
+        needs: ["create-release"]
+        name: Build singlefile
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+    
+          - name: Setup node
+            uses: actions/setup-node@v4
+    
+          - name: Install dependencies
+            run: npm i -d
+    
+          - name: Build singlefile
+            run: npm run build
+    
+          - name: Upload to release
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            run: gh release upload ${{ github.event.inputs.version }} ./dist/prod.js && gh release upload ${{ github.event.inputs.version }} ./dist/dev.js
