@@ -268,7 +268,7 @@ cells: 1,
         },*/
         {
             name: "Cells+",
-            icon: "upgrade_cells",
+            icon: assets.upgradeCells,
             description: "More white blood\ncells combine and\nyou get more\ndamage.",
             onUpgrade: function() {
                 playerStats.cells++;
@@ -276,7 +276,7 @@ cells: 1,
         },
         {
             name: "Immune+",
-            icon: "upgrade_immune",
+            icon: assets.upgradeImmune,
             description: "Better immune\nsystem which\nresults in more\nprojectiles.",
             onUpgrade: function() {
                 playerStats.immune++;
@@ -284,7 +284,7 @@ cells: 1,
         },
         {
             name: "Size+",
-            icon: "upgrade_size",
+            icon: assets.upgradeSize,
             description: "Bigger cell\ngiving more\nmore health.",
             onUpgrade: function() {
                 playerStats.size++;
@@ -293,7 +293,7 @@ cells: 1,
         },
         {
             name: "Cooler+",
-            icon: "upgrade_cooler",
+            icon: assets.upgradeCooler,
             description: "Cooling the\ncell allowing\nfor faster\ncooldown.",
             onUpgrade: function() {
                 playerStats.cooler++;
@@ -301,7 +301,7 @@ cells: 1,
         },
         {
             name: "Friction-",
-            icon: "upgrade_friction",
+            icon: assets.upgradeFriction,
             description: "Less friction\nallowing for\nmore speed.",
             onUpgrade: function() {
                 playerStats.friction++;//?????????????
@@ -309,7 +309,7 @@ cells: 1,
         },
         {
             name: "Stability+",
-            icon: "upgrade_medkit",
+            icon: assets.upgradeMedkit,
             description: "More stable\ngiving more\nregeneration.",
             onUpgrade: function() {
                 playerStats.regen++;//?????????????
@@ -673,10 +673,9 @@ cells: 1,
             currInternals.description = currUpgrade.name;
             currInternals.onUpgrade = currUpgrade.onUpgrade;
             */ // do image rn
+            currImage.addAnimation("icon", currUpgrade.icon)
             currImage
-                .setAnimation(
-                    currUpgrade
-                    .icon);
+                .setAnimation("icon");
         });
         var upgChecker =
             setInterval(function() {
