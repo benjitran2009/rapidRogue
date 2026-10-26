@@ -1,5 +1,6 @@
 /*!
  * rapidRogue Next v0.0.6d
+ * https://github.com/benjitran2009/rapidRogue/blob/main/src/index.js
  * 
  * This game is the next version of rapidRogue, now compiled using
  * a new toolchain for better modularily and a cleaner codebase.
@@ -15,6 +16,8 @@
  * 
  * 
  **/
+import moddingSdkInitialize from "./modules/modding.js";
+moddingSdkInitialize();
 import "es6-promise/auto.js"
 //import { Promise } from "es6-promise";
 //window.Promise = Promise;
@@ -41,67 +44,10 @@ import beta from "./modules/beta.js";
 console.log(`
 =================================================
 rapidRogue Next v0.0.6d
-"A suprising game made in a suprising environment." - Not Ben3Coder
-
-${getURL().match(/^https:\/\/studio\.code\.org\/projects\/gamelab\/647349ff-9222-4852-85b3-5f1c3d521fa8\/edit.*/gm) ? "You are on the original game!" : "You are on a modified/remixed game!"}
-Made with <3 by Ben3Coder
+"A suprising game made in a suprising environment."
+https://github.com/benjitran2009/rapidRogue/
 =================================================
 `)
-
-/*!
- * rapidRogue Next v0.0.6d
- * "the nEXT generation"
- * - it has been ported to more professional tooling to help speed up development
- * - assets are now bundled within the code
- * - potential performance mode?
- * - science questions are removed, school project is done
- * - TODO: asset changes
- * - TODO: new things
- * 
- * A collection of all the rapidScience-era (school project) updates below:
- * rapidRogue v0.0.5
- * "the actual mvp update" (mininum viable product)
- * target:
- * - playable waves
- * - in-between shop or upgrade paths\
- * features:
- * - modified offloading to be more efficient
- * - ui rework preparation of waves system
- * - upgrade paths
- * - playable waves
- * - enemy scaling? done
- * - refresh upgrade? unlimited timeszz
- * 
- * rapidRogue v0.0.3-0.0.4 (mix)
- * "the question update & the bigger update"
- * "the 3 hours of debugging was NOT worth it" - ben
- * - added questions api (for preparation of the rapidScience project)
- * - added enemy health
- * - added player death
- * - added enemy offloading & despawning (higher performance)
- * - added working questions (if u die, revive attempt (once))
- * 
- * rapidRogue v0.0.2
- * "the mvp update"
- * - made working health & performance improvements (pretty massive improvements)
- * 
- * rapidRogue v0.0.1
- * "the proof of concept update"
- **/
-
-// If rules were to change at a moments notice, these feature flags should disable/enable theme
-/*NOT-IMPLEMENTED
-var fflag = {
-  fflagEnabled: false,
-  fflagDisableDeath: false,//losing condition
-  fflagDisableRevive: false,
-  fflagDisableEnemyOffloading: false, // disables offloading
-  fflagDisableEasterEggs: false,
-  fflagExtremePerformanceMode: false, // this is required for terrible computer
-  fflagEnableDeveloperConsoleDoNotAbuseOrYouWillbeFired: false,
-};
-*/
-//background("black");
 
 const camera=window.camera;
 
