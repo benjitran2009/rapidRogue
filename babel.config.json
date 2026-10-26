@@ -2,15 +2,16 @@
   "presets": [
     ["@babel/preset-env", {
       "targets": {
-        "ie": "1"
+        "esmodules": false,
       },
       "exclude": ["transform-typeof-symbol","transform-for-of"]
     }]
   ],
+  "plugins":  ["@babel/plugin-transform-arrow-functions"],
   "assumptions": {
     "iterableIsArray": true,
-    "arrayLikeIsIterable": true,
-    "constantReexports": true,
+    "arrayLikeIsIterable": false,
+    "constantReexports": false,
     "ignoreFunctionLength": true,
     "ignoreToPrimitiveHint": true,
     "mutableTemplateObject": true,
@@ -19,12 +20,13 @@
     "objectRestNoSymbols": true,
     "privateFieldsAsProperties": true,
     "pureGetters": true,
-    "setClassMethods": true,
+    "setClassMethods": false,
     "setComputedProperties": true,
     "setPublicClassFields": true,
     "setSpreadProperties": true,
     "skipForOfIteratorClosing": true,
-    "superIsCallableConstructor": true
+    "superIsCallableConstructor": true,
+    "constantSuper": false
   },
   "compact": false
 }
