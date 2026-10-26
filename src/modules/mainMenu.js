@@ -67,9 +67,12 @@ export function mainMenuMain() {
                         break;
                     case 1:
                         prompt(`rapidRogue Next v0.0.6d
-Created by Ben3Coder
+https://github.com/benjitran2009/rapidRogue/
 
 Some ideas inspired by Vampire Survivors, and other roguelites.
+
+Contributor(s):
+Ben3Coder
 
 Game Testers:
 <nobody>

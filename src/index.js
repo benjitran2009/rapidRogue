@@ -10,8 +10,9 @@
  * - Have fun :)
  * 
  * For developers:
- * - A source code release is planned soon™.
+ * - Source code: https://github.com/benjitran2009/rapidRogue/ :)
  * - A modding sdk is also planned soon™.
+ * 
  * 
  **/
 import "es6-promise/auto.js"
@@ -25,6 +26,7 @@ import "es6-promise/auto.js"
 import assets from "./util/assets";
 import {enemySpawningInterval, mainMenu, mainMenuMain, setEnemySpawningInterval} from "./modules/mainMenu.js";
 import {addPlayerStat, playerStats, setPlayerStat, subPlayerStat} from "./modules/playerStats.js";
+//playSound(assets.findTheBalance, true);
 //enemySpawningInterval
 //import {pause, togglePause} from "./modules/pause.js";
 //let pause;
@@ -33,6 +35,7 @@ import { enemies } from "./modules/enemies.js";
 import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
+import beta from "./modules/beta.js";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
@@ -690,6 +693,8 @@ function mainHud() {
   textSize(18);
   text("Enemies remaining: "+(gameStats.currentWave.enemiesLeft), camera.x, camera.y-150);
   
+  
+
   //fps counter
   //textSize(18);
   //text("FPS: "+Math.floor(World.frameRate),camera.x-155,camera.y-175);
@@ -714,6 +719,10 @@ function mainHud() {
     fill("cyan");
   }
   rect(camera.x-185,camera.y+175,150*(playerStats.HP/playerStats.maxHP),15);
+
+  fill(rgb(0,0,0,0.5))
+  
+  //rotation(radians(0));
 
 }
 
@@ -1019,6 +1028,7 @@ function draw() {
     fill("white");
     textSize(58);
     text("You won!!!",camera.x,camera.y+30);
+    beta();
     throw new Error("This is intentional.");
     return;
   }
@@ -1032,6 +1042,7 @@ function draw() {
     background("white");
     drawSprites();
     mainMenuMain();// unintellisense
+    beta();
     return;
   }
   //if (inQuestion) {
@@ -1048,13 +1059,14 @@ function draw() {
       fill("white")
       if (secondChance) {
         textSize(16)
-        text("Answer a question for a second chance!",camera.x,camera.y);
+        text("[to_be_implemented]",camera.x,camera.y);
         textSize(14)
-        text("This will only happen once.",camera.x,camera.y+25);
+        text("[todo]",camera.x,camera.y+25);
       } else {
         textSize(58);
         text("You died!",camera.x,camera.y+30);
       }
+      beta();
       return;
     }
     //drawSprites();
@@ -1062,6 +1074,7 @@ function draw() {
       //background("white");
       drawSprites();
       upgradeScreenMain();
+      beta();
       return;
     }
     /*} else {
@@ -1085,6 +1098,7 @@ function draw() {
     mainHud();
     enemyHud();
     statsMain();
+    beta();
     //playerStats.HP=Math.abs(Math.sin(World.frameCount/60)*100);
     //proHackerMode();
   } else {
@@ -1098,6 +1112,7 @@ function draw() {
     noStroke();
     //rect(camera.x-200,camera.y-50,400,100);
     text("Game Paused",camera.x,camera.y);
+    beta();
     //textSize(18);
     //text("*-This doesn't do anything btw.", camera.x,camera.y+25);
     //textSize(14);
