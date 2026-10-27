@@ -27,7 +27,8 @@
     "esbuild": "^0.28.2",
     "google-closure-compiler": "^20260809.0.0",
     "nodemon": "^3.1.14",
-    "rollup": "^4.62.4"
+    "rollup": "^4.62.4",
+    "typescript": "^7.0.2"
   },
   "imports": {
     "#assets/*": "./assets/*"
