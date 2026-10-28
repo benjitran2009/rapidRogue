@@ -26,7 +26,7 @@ import "es6-promise/auto.js"
 //import backgroundFillImage from "#assets/background_fill.png";
 //import cursorImage from "#assets/cursor.png";
 //import playerImage from "#assets/player.png";
-import assets from "./util/assets";
+import assets from "./util/assets.js";
 import {enemySpawningInterval, mainMenu, mainMenuMain, setEnemySpawningInterval} from "./modules/mainMenu.js";
 import {addPlayerStat, playerStats, setPlayerStat, subPlayerStat} from "./modules/playerStats.js";
 //playSound(assets.findTheBalance, true);
