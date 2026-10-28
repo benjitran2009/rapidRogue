@@ -20,6 +20,11 @@ type Sprite = {
     alpha: number,
 }
 
+type World = {
+    mouseX: number,
+    mouseY: number,
+}
+
 declare global {
     interface Window {
         camera: {
@@ -31,13 +36,23 @@ declare global {
         createSprite: (x?: number, y?: number, width?: number, height?: number) => Sprite, 
         textAlign: (str: string) => void,
         textSize: (size:number) => void,
-        fill: (color: string|number) => void,
+        fill: (color: string|object) => void,
         text: (text:string, x:number, y:number) => void,
         textFont: (font: string) => void,
         CENTER: "CENTER",
+        strokeWeight: (weight: number) => void,
+        stroke: (color: string|object) => void,
+        World: World,
+        rgb: (r: number, g: number, b: number, a?: number) => {}, // TODO: implement rgb type
+        rect: (x: number, y: number, width: number, height: number) => void,
+        mouseWentDown: (button: string) => boolean,
+        LEFT: "LEFT",
+        RIGHT: "RIGHT",
+        noStroke: () => void,
     }
 }
 
+export type { Sprite };
 export const camera = window.camera;
 export const createSprite = window.createSprite;
 export const textAlign = window.textAlign;
@@ -45,5 +60,15 @@ export const CENTER = window.CENTER;
 export const textFont = window.textFont;
 export const text = window.text;
 export const fill = window.fill;
+export const textSize = window.textSize;
+export const strokeWeight = window.strokeWeight;
+export const stroke = window.stroke;
+export const World = window.World;
+export const rgb = window.rgb;
+export const rect = window.rect;
+export const mouseWentDown = window.mouseWentDown;
+export const noStroke = window.noStroke;
+export const LEFT = window.LEFT;
+export const RIGHT = window.RIGHT;
 
 export {}

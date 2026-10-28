@@ -39,7 +39,7 @@ import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
 import beta from "./modules/beta.js";
-import { camera, CENTER, createSprite, fill, text, textAlign, textFont } from "./env";
+import { camera, CENTER, createSprite, fill, mouseWentDown, noStroke, rect, rgb, Sprite, stroke, strokeWeight, text, textAlign, textFont, textSize, World } from "./env";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
@@ -163,14 +163,26 @@ cells: 1,
     ];
 
 
-    var upgradeInternals = {
+    type upgradeBase = {
+        name: string,
+        description: string,
+    };
+    var upgradeInternals: {
+        image1: Sprite,
+        image2: Sprite,
+        image3: Sprite,
+        upgrade1: upgradeBase,
+        upgrade2: upgradeBase,
+        upgrade3: upgradeBase,
+        callback?: () => void,
+    } = {
         image1: createSprite(0,
             0),
         image2: createSprite(0,
             0),
         image3: createSprite(0,
             0),
-        upgade1: {},
+        upgrade1: {}, // !!! TYPO upgade1 --> upgrade1
         upgrade2: {},
         upgrade3: {},
     };
@@ -254,23 +266,23 @@ cells: 1,
           //console.log("refresh!");
           //giveQuestion(function () {
             // top tier naming system
-            var keys = Object.keys(upgrades)
-            var ___temp=[];
+            var keys: string[]|number[] = Object.keys(upgrades)
+            var ___temp: number[] =[];
             keys.forEach(function (__key, _indx) {
               //var //___temp = [];
               ___temp.push(_indx);
             });
             keys = ___temp;
             var __temp = [0,0,0];
-            var ___temp= [];
+            ___temp = []; // TODO: modified this because yea why did i redefine ___temp?
             __temp.forEach(function (_, _indx) {
               var rnd = Math.floor(Math.random()*keys.length);
-              __temp[_indx] = keys[rnd];
+              __temp[_indx] = keys[rnd] as number; // it will always be a number
               keys.splice(rnd,1);
               //console.log(keys);
-              console.log(rnd);
+              //console.log(rnd); !!! useless log
             });
-            console.log(__temp);
+            //console.log(__temp); !!! same here
             displayUpgrade(__temp[0], __temp[1], __temp[2] ,upgradeInternals.callback);
         //});
       }
