@@ -1,17 +1,6 @@
 
 
 export default () => {
-    class Mod {
-        constructor(config) {
-            
-        }
-        install() {}
-        start() {}
-        stop() {}
-    }
-    class ExampleMod extends Mod {
-        
-    }
     window.rrmod = {
         installMod: function (mod) {},
         mod: function (name) {}
