@@ -1,3 +1,5 @@
+// @ts-nocheck
+// TypeScript does not properly do #alias/*.png correctly, so we gotta ignore this file.
 
 import enemy1 from "#assets/enemy1.png";
 import enemy2 from "#assets/enemy2.png";
@@ -42,4 +44,4 @@ export default {
     upgradeImmune: upgradeImmune,
     upgradeMedkit: upgradeMedkit,
     upgradeSize: upgradeSize
-}
+} as string[]

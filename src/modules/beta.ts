@@ -1,3 +1,5 @@
+import { camera, CENTER, fill, getUserId, rgb, text, textAlign, textSize, World } from "../env";
+
 export default () => {
     fill(rgb(0,0,0,0.5))
     textAlign(CENTER);

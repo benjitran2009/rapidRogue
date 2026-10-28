@@ -1,3 +1,4 @@
+import { inUpgradeScreen } from './modules/upgrades';
 // Source - https://stackoverflow.com/a/71100012
 // Posted by mohammad mohammadi nodhe, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-10-27, License - CC BY-SA 4.0
@@ -18,12 +19,33 @@ type Sprite = {
     y: number,
     depth: number,
     alpha: number,
+    rotation: number,
+    velocityX: number,
+    velocityY: number,
+    HP: number,
+    maxHP: number,
+    canBeHit: boolean,
+    outofbounds: boolean,
+    pointTo: (x: number, y: number) => void,
+    collide: (spr: Sprite|Group) => boolean,
+    displace: (spr: Sprite|Group) => boolean,
+    tint: string,
+    rotationSpeed: number,
+    destroy: () => void,
+    cleanUp: () => void,
+
 }
 
 type World = {
     mouseX: number,
     mouseY: number,
+    frameRate: number,
 }
+
+type Group = Sprite[] & {
+    add: (spr: Sprite) => Group,
+    remove: (spr: Sprite) => {},
+};
 
 declare global {
     interface Window {
@@ -49,6 +71,9 @@ declare global {
         LEFT: "LEFT",
         RIGHT: "RIGHT",
         noStroke: () => void,
+        inUpgradeScreen : boolean,
+        getUserId: () => string,
+        createGroup: () => Group,
     }
 }
 
@@ -70,5 +95,8 @@ export const mouseWentDown = window.mouseWentDown;
 export const noStroke = window.noStroke;
 export const LEFT = window.LEFT;
 export const RIGHT = window.RIGHT;
+export const inUpgradeScreen = inUpgradeScreen;
+export const getUserId = window.getUserId;
+export const createGroup = window.createGroup;
 
 export {}

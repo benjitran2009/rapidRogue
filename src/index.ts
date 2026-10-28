@@ -39,7 +39,7 @@ import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
 import beta from "./modules/beta.js";
-import { camera, CENTER, createSprite, fill, mouseWentDown, noStroke, rect, rgb, Sprite, stroke, strokeWeight, text, textAlign, textFont, textSize, World } from "./env";
+import { camera, CENTER, createSprite, fill, LEFT, mouseWentDown, noStroke, rect, rgb, Sprite, stroke, strokeWeight, text, textAlign, textFont, textSize, World } from "./env";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
@@ -217,7 +217,12 @@ cells: 1,
         strokeWeight(2);
         stroke("black");
         // the 133.33... incident
-        var inBounds = {
+        var inBounds: {
+            upgrade1: boolean,
+            upgrade2: boolean,
+            upgrade3: boolean,
+            refresh:boolean,
+        } = {
             upgrade1: (0 <=
                     World
                     .mouseX &&
@@ -452,7 +457,7 @@ cells: 1,
         ].forEach(function(
         _upgrade) {
             if (inBounds[
-                    _upgrade
+                    _upgrade as "upgrade1"|"upgrade2"|"upgrade3"
                     ] &&
                 mouseWentDown(
                     "leftButton"
@@ -466,7 +471,7 @@ cells: 1,
                         _upgrade]
                     .onUpgrade();
                 //console.log("yo g");
-                window.inUpgradeScreen
+                inUpgradeScreen
                     = false;
                 [1, 2, 3]
                 .forEach(
