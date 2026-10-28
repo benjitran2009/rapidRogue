@@ -48,16 +48,16 @@ export let gameStats = {
         enemiesKilled: 0,
         enemiesLeft: 0,
     },
-
+    [abc: string]: string,
 };
-export function setGameStat(stat, value) {
+export function setGameStat(stat: any, value: any) {
     console.log(stat)
     console.log(value);
     return new Promise((resolve, reject) => {
         try {
             gameStats[stat] = value;
             resolve(true);
-        } catch (e) {
+        } catch (e: Error) {
             reject(new Error(e));
         }
     })

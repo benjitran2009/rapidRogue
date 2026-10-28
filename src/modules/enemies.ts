@@ -40,7 +40,7 @@ export function enemy() {
   };
   //enemySprite.pause();
   enemies.add(enemySprite);
-  enemySprite.addAnimation("enemy"+gameStats.wave, assets["enemy"+gameStats.wave])
+  enemySprite.addAnimation("enemy"+gameStats.wave, assets[`enemy${gameStats.wave}`] as string)
   enemySprite.setAnimation("enemy"+gameStats.wave);
   //enemySprite.bounceOff(enemies);
   var enemyInterval = setInterval(function () {

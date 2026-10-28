@@ -44,4 +44,6 @@ export default {
     upgradeImmune: upgradeImmune,
     upgradeMedkit: upgradeMedkit,
     upgradeSize: upgradeSize
-} as string[]
+} as {
+    [fileName: string]: string,
+}
