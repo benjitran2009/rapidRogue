@@ -39,6 +39,7 @@ import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
 import beta from "./modules/beta.js";
+import { camera, CENTER, createSprite, fill, text, textAlign, textFont } from "./env";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
@@ -47,9 +48,7 @@ rapidRogue Next v0.0.6d
 "A suprising game made in a suprising environment."
 https://github.com/benjitran2009/rapidRogue/
 =================================================
-`)
-
-const camera=window.camera;
+`);
 
 //array polyfill?
 
