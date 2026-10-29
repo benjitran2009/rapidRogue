@@ -1,6 +1,10 @@
 //import { inUpgradeScreen } from "./modules/upgrades";
 
+import { rrMod } from "./modules/modding";
+
 // we become one with the typing scripting
+
+
 
 type Sprite = {
     addAnimation: (name: string, animation: string) => void;
@@ -43,13 +47,6 @@ type Group = Sprite[] & {
     remove: (spr: Sprite) => {};
 };
 
-type RRBaseMod = {};
-
-type RRMod = {
-    installMod: (modName: string) => RRBaseMod;
-    mod: RRBaseMod;
-};
-
 type Camera = {
     on: () => void;
     off: () => void;
@@ -86,7 +83,7 @@ declare global {
         inUpgradeScreen: boolean;
         getUserId: () => string;
         createGroup: () => Group;
-        RRMod: RRMod;
+        rrMod: rrMod;
         rapidRogueDraw: any,
         keyCode: number,
         won: boolean,
@@ -144,5 +141,9 @@ export const setPause: (value: boolean) => void = (value:boolean) => {
     window.pause = value
 };
 //export const 
+
+// polyfill stuff
+export const confirm: (message: string) => boolean = (message: string) => prompt(message, "Press OK for yes, or CANCEL fo no.") !== null ? true : false;
+export const alert: (message: string) => void = (message: string) => prompt(message, "<your input will not be recorded>");
 
 export {};
