@@ -16,8 +16,8 @@
  *
  *
  **/
-import moddingSdkInitialize from "./modules/modding.js";
-moddingSdkInitialize();
+import * as Modding from "./modules/modding.js";
+Modding.initialize();
 import "es6-promise/auto.js";
 //import { Promise } from "es6-promise";
 //window.Promise = Promise;

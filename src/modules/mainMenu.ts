@@ -56,11 +56,11 @@ export function mainMenuMain() {
 
             if (keyWentDown("up")) {
                 //console.log(mmInternals.p0SelectedOption)
-                mmInternals.p0SelectedOption++;
+                mmInternals.p0SelectedOption--;
             }
             if (keyWentDown("down")) {
                 //console.log(mmInternals.p0SelectedOption);
-                mmInternals.p0SelectedOption--;
+                mmInternals.p0SelectedOption++;
             }
             if (keyWentDown("enter") || keyWentDown("space")) {
                 switch (mmInternals.p0SelectedOption) {
@@ -84,12 +84,21 @@ Game Testers:
 Assets:
 studio.code.org`,getUserId());
                         break;
+                    case 2:
+                        prompt(`Game Version: <none>
+Builtin Mod SDK Version: <unknown>
+
+Detected Mods:`); // TODO: mod list page
+                        break;
                     default: break;
                 }
                 //console.log("startgame");
             }
-
-            mmInternals.p0SelectedOption = Math.abs(mmInternals.p0SelectedOption % 2);
+            if (mmInternals.p0SelectedOption == -1) { 
+                mmInternals.p0SelectedOption = 3; // rollback down
+                // TODO: find more efficenty super binary bithacking technique to make this better
+            }
+            mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 3;
 
             textAlign(CENTER);
             textSize(48);
@@ -103,8 +112,9 @@ studio.code.org`,getUserId());
             text(selectedSplash as string, camera.x, camera.y - 120);
             fill("white");
             textSize(36);
-            text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play", camera.x, camera.y - 25);
-            text(mmInternals.p0SelectedOption == 1 ? "> Credits <" : "Credits", camera.x, camera.y + 25);
+            text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play", camera.x, camera.y - 50);
+            text(mmInternals.p0SelectedOption == 1 ? "> Credits <" : "Credits", camera.x, camera.y);
+            text(mmInternals.p0SelectedOption == 2 ? "> Mods <" : "Mods", camera.x, camera.y + 50);
             textSize(24);
             fill("black");
             textAlign(LEFT);
