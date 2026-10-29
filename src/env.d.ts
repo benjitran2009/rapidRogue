@@ -1,4 +1,4 @@
-import { inUpgradeScreen } from './modules/upgrades';
+import { inUpgradeScreen } from "./modules/upgrades";
 // Source - https://stackoverflow.com/a/71100012
 // Posted by mohammad mohammadi nodhe, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-10-27, License - CC BY-SA 4.0
@@ -11,81 +11,92 @@ declare module "*.jpg";
 // we become one with the typing scripting
 
 type Sprite = {
-    addAnimation: (name:string,animation:string) => void,
-    setAnimation: (name:string) => void,
-    scale: number,
-    visible: boolean,
-    x: number,
-    y: number,
-    depth: number,
-    alpha: number,
-    rotation: number,
-    velocityX: number,
-    velocityY: number,
-    HP: number,
-    maxHP: number,
-    canBeHit: boolean,
-    outofbounds: boolean,
-    pointTo: (x: number, y: number) => void,
-    collide: (spr: Sprite|Group) => boolean,
-    displace: (spr: Sprite|Group) => boolean,
-    tint: string,
-    rotationSpeed: number,
-    destroy: () => void,
-    cleanUp: () => void,
-    centered?: boolean,
-
-}
-
-type World = {
-    mouseX: number,
-    mouseY: number,
-    frameRate: number,
-    frameCount: number,
-}
-
-type Group = Sprite[] & {
-    add: (spr: Sprite) => Group,
-    remove: (spr: Sprite) => {},
+    addAnimation: (name: string, animation: string) => void;
+    setAnimation: (name: string) => void;
+    scale: number;
+    visible: boolean;
+    x: number;
+    y: number;
+    depth: number;
+    alpha: number;
+    rotation: number;
+    velocityX: number;
+    velocityY: number;
+    HP: number;
+    maxHP: number;
+    canBeHit: boolean;
+    outofbounds: boolean;
+    pointTo: (x: number, y: number) => void;
+    collide: (spr: Sprite | Group) => boolean;
+    displace: (spr: Sprite | Group) => boolean;
+    isTouching: (spr: Sprite | Group) => boolean;
+    tint: string;
+    rotationSpeed: number;
+    destroy: () => void;
+    cleanUp: () => void;
+    centered?: boolean;
+    destructionImminent?: boolean,
+    _checkTimeout?: any,
 };
 
-type RRBaseMod = {
+type World = {
+    mouseX: number;
+    mouseY: number;
+    frameRate: number;
+    frameCount: number;
+};
 
-}
+type Group = Sprite[] & {
+    add: (spr: Sprite) => Group;
+    remove: (spr: Sprite) => {};
+};
+
+type RRBaseMod = {};
 
 type RRMod = {
-    installMod: (modName: string) => RRBaseMod,
-    mod: RRBaseMod,
+    installMod: (modName: string) => RRBaseMod;
+    mod: RRBaseMod;
+};
+
+type Camera = {
+    on: () => void;
+    off: () => void;
+    x: number;
+    y: number;
+    mouseX: number,
+    mouseY: number,
 };
 
 declare global {
     interface Window {
-        camera: {
-            on: () => void,
-            off: () => void,
-            x: number,
-            y: number,
-        },
-        createSprite: (x?: number, y?: number, width?: number, height?: number) => Sprite, 
-        textAlign: (str: string) => void,
-        textSize: (size:number) => void,
-        fill: (color: string|object) => void,
-        text: (text:string, x:number, y:number) => void,
-        textFont: (font: string) => void,
-        CENTER: "CENTER",
-        strokeWeight: (weight: number) => void,
-        stroke: (color: string|object) => void,
-        World: World,
-        rgb: (r: number, g: number, b: number, a?: number) => {}, // TODO: implement rgb type
-        rect: (x: number, y: number, width: number, height: number) => void,
-        mouseWentDown: (button: string) => boolean,
-        LEFT: "LEFT",
-        RIGHT: "RIGHT",
-        noStroke: () => void,
-        inUpgradeScreen : boolean,
-        getUserId: () => string,
-        createGroup: () => Group,
-        RRMod: RRMod,
+        camera: Camera;
+        createSprite: (
+            x?: number,
+            y?: number,
+            width?: number,
+            height?: number,
+        ) => Sprite;
+        textAlign: (str: string) => void;
+        textSize: (size: number) => void;
+        fill: (color: string | object) => void;
+        text: (text: string, x: number, y: number) => void;
+        textFont: (font: string) => void;
+        CENTER: "CENTER";
+        strokeWeight: (weight: number) => void;
+        stroke: (color: string | object) => void;
+        World: World;
+        rgb: (r: number, g: number, b: number, a?: number) => {}; // TODO: implement rgb type
+        rect: (x: number, y: number, width: number, height: number) => void;
+        mouseWentDown: (button: string) => boolean;
+        LEFT: "LEFT";
+        RIGHT: "RIGHT";
+        noStroke: () => void;
+        inUpgradeScreen: boolean;
+        getUserId: () => string;
+        createGroup: () => Group;
+        RRMod: RRMod;
+        rapidRogueDraw: any,
+        keyCode: any,
     }
 }
 
@@ -93,7 +104,7 @@ export type { Sprite };
 export const camera = window.camera;
 export const createSprite = window.createSprite;
 export const textAlign = window.textAlign;
-export const CENTER = window.CENTER; 
+export const CENTER = window.CENTER;
 export const textFont = window.textFont;
 export const text = window.text;
 export const fill = window.fill;
@@ -115,5 +126,15 @@ export const createGroup = window.createGroup;
 // export const inUpgradeScreen: boolean = window.inUpgradeScreen;
 export const loadImage: (image: string) => string = window.loadImage;
 export const keyDown: (key: string) => boolean = window.keyDown;
+export const mouseDown: (btn: string) => boolean = window.mouseDown;
+export const line: (startX: number, startY: number, endX: number, endY: number) => void = window.line;
+export const background: (color: string) => void = window.background;
+export const drawSprites: () => void = window.drawSprites;
+export const keyCode: number = window.keyCode;
+export const keyWentDown: (key: string) => boolean = window.keyWentDown;
+export const won: boolean = window.won;
+export const setWon: (value: boolean) => window.won = value;
+export const pause: boolean = window.pause;
+export const setPause: (value: boolean) => window.pause = value;
 
-export {}
+export {};

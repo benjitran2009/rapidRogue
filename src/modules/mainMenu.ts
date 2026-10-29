@@ -1,6 +1,6 @@
-import { camera, CENTER, createSprite, fill, getUserId, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
+import { camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
 import assets from "../util/assets";
-import keyWentDown from "../util/keyWentDown";
+//import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
 import playerHealing from "./playerHealing";
 export let enemySpawningInterval: any; // Should be a interval

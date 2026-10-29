@@ -20,14 +20,17 @@ import {
 import assets from "../util/assets";
 import { playerStats } from "./playerStats";
 
-export let inUpgradeScreen = false;
-
 var backgroundFill = createSprite(0, 0);
 backgroundFill.addAnimation(
     "background_fill",
     assets.backgroundFillImage as string,
 );
-
+/*
+window.inUpgradeScreen = inUpgradeScreen;
+  window.upgradeScreenMain = upgradeScreenMain;
+  window.displayUpgrade = displayUpgrade;
+  window.upgrades = upgrades;
+   */
 backgroundFill.setAnimation("background_fill");
 backgroundFill.scale = 1;
 backgroundFill.visible = false;
@@ -394,3 +397,5 @@ export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3i
 }
 
 //export let inUpgradeScreen
+export let inUpgradeScreen = false;
+export default {upgradeScreenMain, displayUpgrade, upgrades};

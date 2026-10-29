@@ -1,32 +1,35 @@
+import { pause, setPause, setWon, won } from "../env";
 import { enemies, enemy } from "./enemies";
 import { gameStats, setGameStat } from "./gameStats";
+import upgrades, { displayUpgrade } from "./upgrades";
 //let gameStats.waves
 export default () => {
   if (gameStats.wave == 0 || gameStats.currentWave.enemiesLeft == 0) {
     if (gameStats.waves[gameStats.wave] == undefined) {
       //win condition
       //console.log("win!");
-      won = true;
+      setWon(true);
+      //won = true;
       return;
     }
-    if (!gameStats.wave == 0) {
-      pause = true;
-
+    if (!(gameStats.wave == 0)) {
+      //pause = true;
+      setPause(false);
       enemies.forEach(function (_enemy) {
         _enemy.HP = 0;
       });
       setGameStat("wave", gameStats.wave+1);
       //gameStats.wave++;
       // top tier naming system
-      var keys = Object.keys(upgrades)
-      var ___temp = [];
+      var keys: any[] = Object.keys(upgrades)
+      var ___temp: any[] = [];
       keys.forEach(function (__key, _indx) {
         //var //___temp = [];
         ___temp.push(_indx);
       });
       keys = ___temp;
       var __temp = [0, 0, 0];
-      var ___temp = [];
+      ___temp = []; // !!! REDEF
       __temp.forEach(function (_, _indx) {
         var rnd = Math.floor(Math.random() * keys.length);
         __temp[_indx] = keys[rnd];
@@ -35,10 +38,10 @@ export default () => {
         console.log(rnd);
       });
       console.log(__temp);
-      displayUpgrade(__temp[0], __temp[1], __temp[2], function () {
+      displayUpgrade(__temp[0] as number, __temp[1] as number, __temp[2] as number, function () {
         console.log("cb");
-        pause = false;
-
+        //pause = false;
+        setPause(false);
         var waveConfig = gameStats.waves[gameStats.wave - 1];
         setGameStat("currentWave", {
           enemyTarget: waveConfig.enemyTarget,

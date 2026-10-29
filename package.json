@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx tsc && npx esbuild dist/index.js --global-name=rapidRogue --bundle --outfile=dist/esbuild.js --supported:for-of=false --loader:.jpg=dataurl --loader:.png=dataurl --loader:.opus=dataurl --loader:.mp3=dataurl --banner:js=\"/*!InternalContentDoNotSharePls*/var rapidRogueSuperSecretDeveloperConfiguration = {pleaseSpoilTheFun: true}\" --footer:js=\"/*#__PURE__*/function draw () {window.rapidRogueDraw()};\" --legal-comments=eof && babel dist/esbuild.js --config-file ./babel.config.json -o dist/dev.js && google-closure-compiler --js=dist/dev.js --js_output_file=dist/prod.js && echo \"Built source @ dist\\dev.js | dist\\prod.js\"",
+    "build": "npx esbuild src/index.ts --global-name=rapidRogue --bundle --outfile=dist/esbuild.js --supported:for-of=false --loader:.jpg=dataurl --loader:.png=dataurl --loader:.opus=dataurl --loader:.mp3=dataurl --banner:js=\"/*!InternalContentDoNotSharePls*/var rapidRogueSuperSecretDeveloperConfiguration = {pleaseSpoilTheFun: true}\" --footer:js=\"/*#__PURE__*/function draw () {window.rapidRogueDraw()};\" --legal-comments=eof && babel dist/esbuild.js --config-file ./babel.config.json -o dist/dev.js && google-closure-compiler --js=dist/dev.js --js_output_file=dist/prod.js && echo \"Built source @ dist\\dev.js | dist\\prod.js\"",
     "watch": "nodemon --exec \"npm run build\" --ignore dist/"
   },
   "keywords": [],

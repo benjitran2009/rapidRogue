@@ -50,11 +50,18 @@ import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
 import beta from "./modules/beta.js";
 import {
+    background,
   camera,
   CENTER,
+  createGroup,
   createSprite,
+  drawSprites,
   fill,
+  keyWentDown,
   LEFT,
+  line,
+  loadImage,
+  mouseDown,
   mouseWentDown,
   noStroke,
   rect,
@@ -68,6 +75,8 @@ import {
   textSize,
   World,
 } from "./env";
+import { inUpgradeScreen, upgradeScreenMain } from "./modules/upgrades.js";
+//import keyWentDown from "./util/keyWentDown.js";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
@@ -83,392 +92,6 @@ https://github.com/benjitran2009/rapidRogue/
 // This is the main code for the upgrades
 // fully coded by me
 // code beautified for readability
-(function () {
-  var inUpgradeScreen = false;
-
-  var backgroundFill = createSprite(0, 0);
-  backgroundFill.addAnimation(
-    "background_fill",
-    assets.backgroundFillImage as string,
-  );
-
-  backgroundFill.setAnimation("background_fill");
-  backgroundFill.scale = 1;
-  backgroundFill.visible = false;
-  /*
-cells: 1,
-  immune: 1,
-  size: 1,
-  cooler: 1,
-};
-*/
-  var upgrades = [
-    /*{
-            name: "Upgrade1",
-            icon: "upgrade_example",
-            description: "Template 1 Upgrade",
-            onUpgrade: function() {
-                console.log(
-                    "upgrade1"
-                    );
-            },
-        },
-        {
-            name: "Upgrade2",
-            icon: "upgrade_example",
-            description: "Template 2 Upgrade",
-            onUpgrade: function() {
-                console.log(
-                    "upgrade2"
-                    );
-            },
-        },
-        {
-            name: "Upgrade3",
-            icon: "upgrade_example",
-            description: "Template 3 Upgrade",
-            onUpgrade: function() {
-                console.log(
-                    "upgrade3"
-                    );
-            },
-        },*/
-    {
-      name: "Cells+",
-      icon: assets.upgradeCells,
-      description: "More white blood\ncells combine and\nyou get more\ndamage.",
-      onUpgrade: function () {
-        addPlayerStat("cells", 1);
-        //playerStats.cells++;
-      },
-    },
-    {
-      name: "Immune+",
-      icon: assets.upgradeImmune,
-      description: "Better immune\nsystem which\nresults in more\nprojectiles.",
-      onUpgrade: function () {
-        addPlayerStat("immune", 1);
-        //playerStats.immune++;
-      },
-    },
-    {
-      name: "Size+",
-      icon: assets.upgradeSize,
-      description: "Bigger cell\ngiving more\nmore health.",
-      onUpgrade: function () {
-        addPlayerStat("size", 1);
-        addPlayerStat("maxHP", 50 + playerStats.size * 50);
-        //playerStats.size++;
-        //playerStats.maxHP=50+(playerStats.size*50);
-      },
-    },
-    {
-      name: "Cooler+",
-      icon: assets.upgradeCooler,
-      description: "Cooling the\ncell allowing\nfor faster\ncooldown.",
-      onUpgrade: function () {
-        addPlayerStat("cooler", 1);
-        //playerStats.cooler++;
-      },
-    },
-    {
-      name: "Friction-",
-      icon: assets.upgradeFriction,
-      description: "Less friction\nallowing for\nmore speed.",
-      onUpgrade: function () {
-        addPlayerStat("friction", 1);
-        //playerStats.friction++;//?????????????
-      },
-    },
-    {
-      name: "Stability+",
-      icon: assets.upgradeMedkit,
-      description: "More stable\ngiving more\nregeneration.",
-      onUpgrade: function () {
-        addPlayerStat("regen", 1);
-        //playerStats.regen++;//?????????????
-      },
-    },
-  ];
-
-  type upgradeBase = {
-    name: string;
-    description: string;
-    onUpgrade: () => any;
-  };
-  var upgradeInternals: {
-    image1: Sprite;
-    image2: Sprite;
-    image3: Sprite;
-    upgrade1: upgradeBase;
-    upgrade2: upgradeBase;
-    upgrade3: upgradeBase;
-    callback?: () => void;
-    selectedUpgrade: string;
-  } = {
-    image1: createSprite(0, 0),
-    image2: createSprite(0, 0),
-    image3: createSprite(0, 0),
-    upgrade1: {
-      name: "Placeholder",
-      description: "Placeholder",
-      onUpgrade: () => void 0,
-    }, // !!! TYPO upgade1 --> upgrade1
-    upgrade2: {
-      name: "Placeholder",
-      description: "Placeholder",
-      onUpgrade: () => void 0,
-    },
-    upgrade3: {
-      name: "Placeholder",
-      description: "Placeholder",
-      onUpgrade: () => void 0,
-    },
-    selectedUpgrade: "Placeholder",
-  };
-
-  upgradeInternals.image1.visible = false;
-  upgradeInternals.image2.visible = false;
-  upgradeInternals.image3.visible = false;
-
-  function upgradeScreenMain() {
-    backgroundFill.visible = true;
-    backgroundFill.x = camera.x;
-    backgroundFill.y = camera.y;
-    backgroundFill.depth = 1024;
-    backgroundFill.alpha = 0.25;
-    //this is my ui of the century -ben
-    textAlign(CENTER);
-    textFont("monospace"); // 99th time btw
-    //texttop
-    textSize(24);
-    fill("white");
-    text("Choose a upgrade:", camera.x, camera.y - 160);
-
-    //upgrades
-    //noStroke(); //incidnet // those who know the stroke none incident
-    strokeWeight(2);
-    stroke("black");
-    // the 133.33... incident
-    var inBounds: {
-      upgrade1: boolean;
-      upgrade2: boolean;
-      upgrade3: boolean;
-      refresh: boolean;
-    } = {
-      upgrade1:
-        0 <= World.mouseX &&
-        World.mouseX <= 133.33 &&
-        60 <= World.mouseY &&
-        World.mouseY <= 400,
-      upgrade2:
-        133.33 <= World.mouseX &&
-        World.mouseX <= 266.66 &&
-        60 <= World.mouseY &&
-        World.mouseY <= 400,
-      upgrade3:
-        266.66 <= World.mouseX &&
-        World.mouseX <= 399.99 &&
-        60 <= World.mouseY &&
-        World.mouseY <= 400,
-      refresh:
-        10 <= World.mouseX &&
-        World.mouseX <= 50 &&
-        10 <= World.mouseY &&
-        World.mouseY <= 50,
-    };
-
-    //refresh
-    fill(inBounds.refresh ? rgb(255, 255, 255, 0.9) : rgb(255, 255, 255, 0.5));
-    rect(camera.x - 190, camera.y - 190, 40, 40);
-    fill("white");
-    //textAlign();
-    text("🔄", camera.x - 170, camera.y - 162); // anything BUT microspritesaaaaaaaaaaaa
-
-    if (inBounds.refresh && mouseWentDown("leftButton")) {
-      //IMPLEMENT ON RR-PROD
-      //console.log("refresh!");
-      //giveQuestion(function () {
-      // top tier naming system
-      var keys: string[] | number[] = Object.keys(upgrades);
-      var ___temp: number[] = [];
-      keys.forEach(function (__key, _indx) {
-        //var //___temp = [];
-        ___temp.push(_indx);
-      });
-      keys = ___temp;
-      var __temp = [0, 0, 0];
-      ___temp = []; // TODO: modified this because yea why did i redefine ___temp?
-      __temp.forEach(function (_, _indx) {
-        var rnd = Math.floor(Math.random() * keys.length);
-        __temp[_indx] = keys[rnd] as number; // it will always be a number
-        keys.splice(rnd, 1);
-        //console.log(keys);
-        //console.log(rnd); !!! useless log
-      });
-      //console.log(__temp); !!! same here
-      displayUpgrade(
-        __temp[0],
-        __temp[1],
-        __temp[2],
-        upgradeInternals.callback,
-      );
-      //});
-    }
-
-    //upgrade1
-    //camera.zoom=0.5
-    fill(inBounds.upgrade1 ? rgb(255, 0, 0, 0.9) : rgb(255, 0, 0, 0.75)); //silver?
-    rect(camera.x - 200, camera.y - 140, 133.33, 340);
-    //upgradetitlespace
-    fill(rgb(0, 0, 0, 0.5));
-    rect(camera.x - 200, camera.y - 140, 133, 50);
-
-    //upgradeimagespace
-    fill(rgb(255, 255, 255, 0.5));
-    rect(camera.x - 200, camera.y - 90, 133, 133);
-
-    //upgradedescriptionspace
-    fill(rgb(255, 255, 255, 0.5));
-    rect(camera.x - 200, camera.y + 44, 133, 157);
-
-    //upgrade2
-    fill(inBounds.upgrade2 ? rgb(0, 255, 0, 0.9) : rgb(0, 255, 0, 0.75)); //gold?
-    rect(camera.x - 66.67, camera.y - 140, 133.33, 340);
-
-    //upgradetitlespace
-    fill(rgb(0, 0, 0, 0.5));
-    rect(camera.x - 66.67, camera.y - 140, 133, 50);
-
-    //upgradeimagespace
-    fill(rgb(255, 255, 255, 0.5));
-    rect(camera.x - 66.67, camera.y - 90, 133, 133);
-
-    //upgradedescriptionspace
-    fill(rgb(255, 255, 255, 0.5));
-    rect(camera.x - 66.67, camera.y + 44, 133, 157);
-
-    //upgrade3
-    fill(inBounds.upgrade3 ? rgb(0, 0, 255, 0.9) : rgb(0, 0, 255, 0.75)); //bronze
-    rect(camera.x + 66.66, camera.y - 140, 133.33, 340);
-
-    //upgradetitlespace
-    fill(rgb(0, 0, 0, 0.5));
-    rect(camera.x + 66.66, camera.y - 140, 133, 50);
-
-    //upgradedescriptionspace
-    fill(rgb(255, 255, 255, 0.5));
-    rect(camera.x + 66.66, camera.y + 44, 133, 157);
-
-    //upgrade1
-    textSize(14);
-    noStroke();
-    fill("white");
-    //console.log(upgradeInternals);
-    text(upgradeInternals.upgrade1.name, camera.x - 135, camera.y - 110);
-    //img
-    upgradeInternals.image1.x = camera.x - 133;
-    upgradeInternals.image1.y = camera.y - 23;
-    upgradeInternals.image1.visible = true;
-    //upgradeInternals.image1.setAnimation("upgrade_unknown");
-    upgradeInternals.image1.depth = 999;
-    //description
-    textAlign(LEFT);
-    textSize(12);
-    text(
-      upgradeInternals.upgrade1.description,
-      camera.x - 197.5,
-      camera.y + 60,
-    );
-    textAlign(CENTER);
-    //upgrade2
-    textSize(14);
-    //noStroke();
-    fill("white");
-    text(upgradeInternals.upgrade2.name, camera.x, camera.y - 110);
-    //img
-    upgradeInternals.image2.x = camera.x;
-    upgradeInternals.image2.y = camera.y - 23;
-    upgradeInternals.image2.visible = true;
-    //upgradeInternals.image2.setAnimation("upgrade_unknown");
-    upgradeInternals.image2.depth = 999;
-    //description
-    textAlign(LEFT);
-    textSize(12);
-    text(upgradeInternals.upgrade2.description, camera.x - 64.5, camera.y + 60);
-    textAlign(CENTER);
-    //upgrade3
-    textSize(14);
-    //noStroke();
-    fill("white");
-    text(upgradeInternals.upgrade3.name, camera.x + 135, camera.y - 110);
-    //img
-    upgradeInternals.image3.x = camera.x + 133;
-    upgradeInternals.image3.y = camera.y - 23;
-    upgradeInternals.image3.visible = true;
-    //upgradeInternals.image3.setAnimation("upgrade_unknown");
-    upgradeInternals.image3.depth = 999;
-    //description
-    textSize(12);
-    textAlign(LEFT);
-    text(upgradeInternals.upgrade3.description, camera.x + 68.5, camera.y + 60);
-
-    ["upgrade1", "upgrade2", "upgrade3"].forEach(function (_upgrade) {
-      if (
-        inBounds[_upgrade as "upgrade1" | "upgrade2" | "upgrade3"] &&
-        mouseWentDown("leftButton")
-      ) {
-        //top tier bugs digital deluxe
-        upgradeInternals.selectedUpgrade = _upgrade;
-        (upgradeInternals[_upgrade] as upgradeBase).onUpgrade();
-        //console.log("yo g");
-        inUpgradeScreen = false;
-        [1, 2, 3].forEach(function (imageId) {
-          upgradeInternals["image" + imageId].visible = false;
-          backgroundFill.visible = false;
-        });
-      }
-    });
-  }
-
-  function displayUpgrade(upgrade1id, upgrade2id, upgrade3id, callback) {
-    // id-based because its randomly picked at runtime.
-    upgradeInternals.callback = callback;
-    [upgrade1id, upgrade2id, upgrade3id].forEach(function (upgradeId, indx) {
-      //console.log(indx+1)
-      var currUpgrade = upgrades[upgradeId];
-      var currInternals = upgradeInternals["upgrade" + (indx + 1)];
-      var currImage = upgradeInternals["image" + (indx + 1)];
-      upgradeInternals["upgrade" + (indx + 1)] = {
-        name: currUpgrade.name,
-        description: currUpgrade.description,
-        onUpgrade: currUpgrade.onUpgrade,
-      };
-      /*currInternals.name = currUpgrade.name
-            currInternals.description = currUpgrade.name;
-            currInternals.onUpgrade = currUpgrade.onUpgrade;
-            */ // do image rn
-      currImage.addAnimation("icon", currUpgrade.icon);
-      currImage.setAnimation("icon");
-    });
-    var upgChecker = setInterval(function () {
-      if (!window.inUpgradeScreen) {
-        clearInterval(upgChecker);
-        //upgradeInternals[upgradeInternals.selectedUpgrade].onUpgrade();
-        if (!callback) return;
-        callback(upgradeInternals.selectedUpgrade);
-      }
-    }, 1000 / 60);
-    //console.log(upgradeInternals);
-    inUpgradeScreen = true;
-    window.inUpgradeScreen = true;
-  }
-
-  window.inUpgradeScreen = inUpgradeScreen;
-  window.upgradeScreenMain = upgradeScreenMain;
-  window.displayUpgrade = displayUpgrade;
-  window.upgrades = upgrades;
-})();
 //var inUpgradeScreen = false;
 /*
 function draw() {
@@ -499,9 +122,6 @@ Event.send("sixSeven", "sprite", "data", function () {
 var delta = 0;
 
 //(function(RapidAnalytics,By,Ben3Coder,Software){})("");
-if (!getUserId() == "CFtqozxh1aHQGiSjGRBBEgCGNa4") {
-  throw new Error("bye");
-}
 World.frameRate = 60; //target
 var mLock = false;
 
@@ -515,7 +135,7 @@ camera.on();
 //backgroundSprite.setAnimation("background");
 
 var cursor = createSprite(0, 0);
-cursor.addAnimation("cursor", assets.cursorImage);
+cursor.addAnimation("cursor", assets.cursorImage as string);
 cursor.setAnimation("cursor");
 
 //var thing = createSprite(0,0);
@@ -609,7 +229,7 @@ function projectile() {
   //c.x+=c.x>player.x?200:-200;
   //c.y+=c.y>player.y?200:-200;
   var p = createSprite(player.x, player.y);
-  p.addAnimation("cursor", assets.cursorImage);
+  p.addAnimation("cursor", assets.cursorImage as string);
   p.setAnimation("cursor");
   p.depth = 999;
   projectiles.add(p);
@@ -683,7 +303,7 @@ function proHackerMode() {
   //}
 }
 
-var backgrounds = [
+var backgrounds: [Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite] = [
   createSprite(0, 0),
   createSprite(0, 0),
   createSprite(0, 0),
@@ -696,7 +316,7 @@ var backgrounds = [
 ];
 
 backgrounds.forEach(function (_background) {
-  _background.addAnimation("background", loadImage(assets.backgroundImage));
+  _background.addAnimation("background", loadImage(assets.backgroundImage as string));
   _background.setAnimation("background");
   _background.depth = -1;
   _background.visible = true;
@@ -751,7 +371,7 @@ var dead = false;
 var secondChance = true;
 var deadBackground = createSprite(0, 0);
 deadBackground.visible = false;
-deadBackground.addAnimation("background_fill", assets.backgroundFillImage);
+deadBackground.addAnimation("background_fill", assets.backgroundFillImage as string);
 deadBackground.setAnimation("background_fill");
 
 //var enemySpawningInterval;
