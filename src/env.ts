@@ -143,4 +143,6 @@ export const pause: boolean = window.pause;
 export const setPause: (value: boolean) => void = (value:boolean) => {
     window.pause = value
 };
+//export const 
+
 export {};

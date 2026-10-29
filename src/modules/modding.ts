@@ -9,5 +9,12 @@ export default () => {
             
         }
     };
+    class Mod {
+        constructor() {
+        }
+        method1() { 
+            
+        }
+    }
     console.log("\nModding SDK is now available!\nAccess through window.RRMod");
 };
