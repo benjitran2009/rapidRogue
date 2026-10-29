@@ -354,7 +354,7 @@ export function upgradeScreenMain() {
             upgradeInternals.selectedUpgrade = _upgrade;
             (upgradeInternals[_upgrade] as upgradeBase).onUpgrade();
             //console.log("yo g");
-            window.inUpgradeScreen = false;
+            inUpgradeScreen = false;
             [1, 2, 3].forEach(function (imageId) {
                 upgradeInternals["image" + imageId].visible = false;
                 backgroundFill.visible = false;
@@ -384,7 +384,7 @@ export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3i
         currImage.setAnimation("icon");
     });
     var upgChecker = setInterval(function () {
-        if (!window.inUpgradeScreen) {
+        if (!inUpgradeScreen) {
             clearInterval(upgChecker);
             //upgradeInternals[upgradeInternals.selectedUpgrade].onUpgrade();
             if (!callback) return;
@@ -393,7 +393,7 @@ export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3i
     }, 1000 / 60);
     //console.log(upgradeInternals);
     inUpgradeScreen = true;
-    window.inUpgradeScreen = true;
+    inUpgradeScreen = true;
 }
 
 //export let inUpgradeScreen

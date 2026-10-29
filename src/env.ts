@@ -1,12 +1,4 @@
-import { inUpgradeScreen } from "./modules/upgrades";
-// Source - https://stackoverflow.com/a/71100012
-// Posted by mohammad mohammadi nodhe, modified by community. See post 'Timeline' for change history
-// Retrieved 2026-10-27, License - CC BY-SA 4.0
-
-declare module "*.png";
-declare module "*.svg";
-declare module "*.jpeg";
-declare module "*.jpg";
+//import { inUpgradeScreen } from "./modules/upgrades";
 
 // we become one with the typing scripting
 
@@ -129,7 +121,7 @@ export const mouseWentDown = window.mouseWentDown;
 export const noStroke = window.noStroke;
 export const LEFT = window.LEFT;
 export const RIGHT = window.RIGHT;
-export const inUpgradeScreen = window.inUpgradeScreen;
+//export const inUpgradeScreen = window.inUpgradeScreen;
 export const getUserId = window.getUserId;
 export const createGroup = window.createGroup;
 
