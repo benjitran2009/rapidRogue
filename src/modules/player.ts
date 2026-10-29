@@ -1,8 +1,9 @@
+import { camera, createSprite, keyDown, loadImage } from "../env";
 import assets from "../util/assets";
 import {playerStats} from "./playerStats";
 
 export let player = createSprite(0,0);
-player.addAnimation("player", loadImage(assets.playerImage));
+player.addAnimation("player", loadImage(assets.playerImage as string));
 player.setAnimation("player");
 player.depth = 9;
 player.scale=1;

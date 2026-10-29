@@ -1,4 +1,6 @@
-export let playerStats = {
+export let playerStats: {
+  [stat: string]: any,
+} = {
   maxHP: 100,
   HP: 100,
   invincible: false,
@@ -11,6 +13,6 @@ export let playerStats = {
   friction:1,
   regen:1,
 };
-export let setPlayerStat = (x, v) => playerStats[x] = v;
-export let addPlayerStat = (x, v) => playerStats[x]+=v;
-export let subPlayerStat = (x, v) => playerStats[x]-=v;
+export let setPlayerStat = (x: string, v: any) => playerStats[x] = v;
+export let addPlayerStat = (x: string, v: any) => playerStats[x]+=v;
+export let subPlayerStat = (x: string, v: any) => playerStats[x]-=v;

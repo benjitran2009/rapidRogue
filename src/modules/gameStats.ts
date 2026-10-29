@@ -1,7 +1,9 @@
 //let gameStats = {};
 //expo
 
-export let gameStats = {
+export let gameStats: {
+    [stat: string]: any,
+} = {
     won: false,
     pause: false,
     wave: 0,
@@ -48,7 +50,6 @@ export let gameStats = {
         enemiesKilled: 0,
         enemiesLeft: 0,
     },
-    [abc: string]: string,
 };
 export function setGameStat(stat: any, value: any) {
     console.log(stat)
@@ -57,7 +58,7 @@ export function setGameStat(stat: any, value: any) {
         try {
             gameStats[stat] = value;
             resolve(true);
-        } catch (e: Error) {
+        } catch (e: any) {
             reject(new Error(e));
         }
     })

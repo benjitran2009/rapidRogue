@@ -1,10 +1,11 @@
+import { createSprite } from "../env";
 import assets from "../util/assets";
 
 export let inUpgradeScreen = false;
 
 var backgroundFill =
     createSprite(0, 0);
-backgroundFill.addAnimation("background_fill", assets.backgroundFillImage);
+backgroundFill.addAnimation("background_fill", assets.backgroundFillImage as string);
 
 backgroundFill.setAnimation(
     "background_fill");

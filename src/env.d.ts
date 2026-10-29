@@ -33,6 +33,7 @@ type Sprite = {
     rotationSpeed: number,
     destroy: () => void,
     cleanUp: () => void,
+    centered?: boolean,
 
 }
 
@@ -40,11 +41,21 @@ type World = {
     mouseX: number,
     mouseY: number,
     frameRate: number,
+    frameCount: number,
 }
 
 type Group = Sprite[] & {
     add: (spr: Sprite) => Group,
     remove: (spr: Sprite) => {},
+};
+
+type RRBaseMod = {
+
+}
+
+type RRMod = {
+    installMod: (modName: string) => RRBaseMod,
+    mod: RRBaseMod,
 };
 
 declare global {
@@ -74,6 +85,7 @@ declare global {
         inUpgradeScreen : boolean,
         getUserId: () => string,
         createGroup: () => Group,
+        RRMod: RRMod,
     }
 }
 
@@ -98,5 +110,10 @@ export const RIGHT = window.RIGHT;
 export const inUpgradeScreen = inUpgradeScreen;
 export const getUserId = window.getUserId;
 export const createGroup = window.createGroup;
+
+// TODO: use this new system below
+// export const inUpgradeScreen: boolean = window.inUpgradeScreen;
+export const loadImage: (image: string) => string = window.loadImage;
+export const keyDown: (key: string) => boolean = window.keyDown;
 
 export {}

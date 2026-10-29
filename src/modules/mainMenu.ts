@@ -1,8 +1,12 @@
+import { camera, CENTER, createSprite, fill, getUserId, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
 import assets from "../util/assets";
+import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
 import playerHealing from "./playerHealing";
-export let enemySpawningInterval;
-export let setEnemySpawningInterval = (x) => enemySpawningInterval = x;
+export let enemySpawningInterval: any; // Should be a interval
+export let setEnemySpawningInterval = (x: any) => enemySpawningInterval = x;
+export let playerHealingInterval: any;
+export let setPlayerHealingInterval = (x: any) => playerHealingInterval = x;
 export let mainMenu = true;
 var page = 0;
 var mmInternals = {
@@ -11,7 +15,7 @@ var mmInternals = {
 
 var mmBackgrounds = [createSprite(0, 0), createSprite(0, 0), createSprite(0, 0)];
 mmBackgrounds.forEach(function (backgroundSprite, indx) {
-    backgroundSprite.addAnimation("background", loadImage(assets.backgroundImage));
+    backgroundSprite.addAnimation("background", loadImage(assets.backgroundImage as string));
     //console.log(indx);
     backgroundSprite.setAnimation("background");
     backgroundSprite.y = camera.y;
@@ -96,7 +100,7 @@ studio.code.org`,getUserId());
             textSize(18 + (Math.sin(World.frameCount / 4) * 0.5));
             //fill("gray");
             fill("gold");
-            text(selectedSplash, camera.x, camera.y - 120);
+            text(selectedSplash as string, camera.x, camera.y - 120);
             fill("white");
             textSize(36);
             text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play", camera.x, camera.y - 25);

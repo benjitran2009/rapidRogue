@@ -1,6 +1,7 @@
 import {mainMenu} from "./mainMenu";
 import {gameStats} from "./gameStats";
 import waveHandler from "./waveHandler";
+import { inUpgradeScreen } from "./upgrades";
 
 export default () => {
   if (inUpgradeScreen || gameStats.pause || mainMenu) return;
