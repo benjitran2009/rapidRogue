@@ -74,7 +74,7 @@ import {
   textFont,
   textSize,
   World,
-} from "./env";
+} from "./env.js";
 import { inUpgradeScreen, upgradeScreenMain } from "./modules/upgrades.js";
 //import keyWentDown from "./util/keyWentDown.js";
 //let {pause, togglePause} = _pause

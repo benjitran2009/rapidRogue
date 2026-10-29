@@ -96,7 +96,18 @@ declare global {
         createGroup: () => Group;
         RRMod: RRMod;
         rapidRogueDraw: any,
-        keyCode: any,
+        keyCode: number,
+        won: boolean,
+        pause: boolean,
+        loadImage: (image: string) => string,
+        keyDown: (key: string) => boolean,
+        mouseDown: (btn: string) => boolean,
+        line: (startX: number, startY: number, endX: number, endY: number) => void,
+        background: (color: string) => void,
+        drawSprites: () => void,
+        keyWentDown: (key: string) => boolean,
+        setWon: (value: boolean) => void
+        setPause: (value: boolean) => void,
     }
 }
 
@@ -118,7 +129,7 @@ export const mouseWentDown = window.mouseWentDown;
 export const noStroke = window.noStroke;
 export const LEFT = window.LEFT;
 export const RIGHT = window.RIGHT;
-export const inUpgradeScreen = inUpgradeScreen;
+export const inUpgradeScreen = window.inUpgradeScreen;
 export const getUserId = window.getUserId;
 export const createGroup = window.createGroup;
 
@@ -133,8 +144,11 @@ export const drawSprites: () => void = window.drawSprites;
 export const keyCode: number = window.keyCode;
 export const keyWentDown: (key: string) => boolean = window.keyWentDown;
 export const won: boolean = window.won;
-export const setWon: (value: boolean) => window.won = value;
+export const setWon: (value: boolean) => void = (value:boolean) => {
+    window.won = value
+};
 export const pause: boolean = window.pause;
-export const setPause: (value: boolean) => window.pause = value;
-
+export const setPause: (value: boolean) => void = (value:boolean) => {
+    window.pause = value
+};
 export {};
