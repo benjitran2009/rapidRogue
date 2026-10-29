@@ -9,5 +9,5 @@ export default () => {
             
         }
     };
-    console.log("Modding SDK is now available!\nAccess through window.rrmod");
+    console.log("\nModding SDK is now available!\nAccess through window.RRMod");
 };
