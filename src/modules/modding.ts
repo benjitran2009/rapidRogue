@@ -1,6 +1,9 @@
 import { confirm } from "../env";
+import { contextEval } from "./eval";
 //import "core-js/actual/array/";
 //import { Array } from "core-js/actual/array/virtual";
+export let modList: { [modName: string]: modContext } = {};
+// not letting modlist be changable except in this context
 export const scopes = {
     NONE: -1337,
     TEST_SCOPE_NO_SIDE_EFFECTS: -1,
@@ -38,7 +41,7 @@ type modOptions = {
 };
 
 type modContext = {
-    executeUntrustedContextCode?: (code: string | Function) => void;
+    executeUntrustedContextCode?: (code: string) => void;
     requestScope: (scope: number | number[]) => Promise<boolean>; // ! can use promise or hold thread?
 };
 
@@ -90,14 +93,11 @@ Requested Scopes: ${getScopes(requestedScope)}`)
     ) {
         console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
         builtContext.executeUntrustedContextCode = (
-            code: string | Function,
+            code: string,
         ) => {
             switch (typeof code) {
                 case "string":
-                    return eval(code);
-                //break;
-                case "function":
-                    return code();
+                    return contextEval(code);
                 //break;
                 default:
                     // throw new ModInitializationError()?
@@ -116,6 +116,7 @@ const getScopes: (scope: number[]) => string = (scopeArray: number[]) => {
     return "[" + mappedScopes.join(", ") + "]";
     //return "<not implemented>"
 };
+
 
 export type { rrMod };
 export let initialize = () => {
@@ -150,7 +151,9 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             // TODO: add scopes
             //return {};
         },
-        _installInternalMod: (mod: Mod) => { },
+        _installInternalMod: (mod: Mod) => {
+            console.log(`Installing internal mod "${mod.configuration.name}"...`);
+        },
     };
     window.rrMod = rrMod;
     const ExampleMod = rrMod.createMod({
