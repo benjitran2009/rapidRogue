@@ -198,6 +198,10 @@ function mainHud() {
   //hpbar
   //stroke(0);--no effect
 
+  fill(rgb(255, 255, 255, 0.5));
+  rect(camera.x-200, camera.y+200, 400, 20);
+
+
   fill("red");
   rect(camera.x - 185, camera.y + 175, 150, 15);
   fill("green");
