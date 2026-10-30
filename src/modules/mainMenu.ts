@@ -13,13 +13,13 @@ var mmInternals = {
     p0SelectedOption: 0,
 };
 
-var mmBackgrounds = [createSprite(0, 0), createSprite(0, 0), createSprite(0, 0)];
+var mmBackgrounds = [createSprite(0, 0), createSprite(0, 0)];
 mmBackgrounds.forEach(function (backgroundSprite, indx) {
     backgroundSprite.addAnimation("background", loadImage(assets.backgroundImage as string));
     //console.log(indx);
     backgroundSprite.setAnimation("background");
     backgroundSprite.y = camera.y;
-    backgroundSprite.x = (camera.x) + (indx * 400) + -400;
+    backgroundSprite.x = (camera.x) + ((indx+0.5) * 400) + -400;
 });
 
 //soun
@@ -50,7 +50,7 @@ export function mainMenuMain() {
             mmBackgrounds.forEach(function (backgroundSprite, indx) {
                 //backgroundSprite.setAnimation("santa_1");
                 backgroundSprite.y = camera.y;
-                backgroundSprite.x += backgroundSprite.x >= (camera.x + indx * 400 + -400) ? -400 : 1.25;
+                backgroundSprite.x += backgroundSprite.x >= (camera.x + (indx+1) * 400 + -400) ? -400 : 1.25;
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
             });
 
