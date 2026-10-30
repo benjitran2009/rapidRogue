@@ -16,8 +16,12 @@
  *
  *
  **/
+import * as lazyfill from "./util/lazyfill.js";
+lazyfill.initialize();
 import * as Modding from "./modules/modding.js";
 Modding.initialize();
+
+//export const unsafeEval = eval;
 import "es6-promise/auto.js";
 //import { Promise } from "es6-promise";
 //window.Promise = Promise;
