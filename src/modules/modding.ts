@@ -2,8 +2,19 @@ import { confirm } from "../env";
 //import "core-js/actual/array/";
 //import { Array } from "core-js/actual/array/virtual";
 export const scopes = {
+    NONE: -1337,
+    TEST_SCOPE_NO_SIDE_EFFECTS: -1,
     ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION: 0,
-    TEST_SCOPE_NO_SIDE_EFFECTS: 1,
+    ALLOW_RENDER_THREAD: 1,
+    ALLOW_PLAYER: 2,
+    ALLOW_ENEMY: 3,
+    ALLOW_UI_HOOK: 4,
+    READ_PLAYER_DATA: 5,
+    READ_CLOUD_DATA: 6,
+    WRITE_CLOUD_DATA: 7,
+    ALLOW_ENV_HOOK: 8,
+    ALLOW_ENV_READ: 9,
+    WRITE_PLAYER_DATA: 10,
 };
 
 type modOptions = {
@@ -71,6 +82,10 @@ const createModContext: (mod: Mod) => modContext = (mod: Mod) => {
     return builtContext;
 };
 
+const getScopes: (scopes: number[]) => string = () => {
+    return "<not implemented>"
+};
+
 export type { rrMod };
 export let initialize = () => {
     const rrMod = {
@@ -82,7 +97,9 @@ export let initialize = () => {
             if (
                 confirm(`[rrMod] Mod Installation Request
 "${mod.configuration.name}" is attempting to be installed in your session. Would you like to continue installation of this mod?
-Note: This mod may have full control of your game based on its permissions, only install it if you trust the author(s).`)
+Note: This mod may have full control of your game based on its permissions, only install it if you trust the author(s).
+
+Requested Scopes: ${getScopes(mod.configuration.scopes ? mod.configuration.scopes : [scopes.NONE])}`)
             ) {
                 console.log(
                     `Attempting to install mod ${mod.configuration.name}`,
