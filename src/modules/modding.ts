@@ -30,6 +30,7 @@ type modOptions = {
 
 type modContext = {
     executeUntrustedContextCode?: (code: string | Function) => void;
+    requestScope: (scope: number | number[]) => Promise<boolean>; // ! can use promise or hold thread?
 };
 
 type rrMod = {
@@ -56,7 +57,20 @@ class Mod {
 
 const createModContext: (mod: Mod) => modContext = (mod: Mod) => {
     let builtContext: modContext = {
-        
+        requestScope: (scope: number | number[]) => {
+            // * requestScope -> promise<bool> -> user prompt -> yes = regenerate context & return it in resolve | no = reject promise
+            var requestedScope: number[] = typeof scope === "number" ? [scope] : scope;
+            return new Promise((resolve, reject) => {
+                if (
+                    confirm(`[rrMod] Mod requesting extra scopes
+"${mod.configuration.name}" is attempting to request extra scopes in the environment. Would you like to approve this request?
+Note: This mod will get extra control of your game based on its permissions, only accept it if you trust the author(s).
+
+Requested Scopes: ${getScopes(requestedScope)}`)
+                ) {
+                }
+            });
+        }
     }
     
     if (

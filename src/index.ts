@@ -12,7 +12,7 @@
  *
  * For developers:
  * - Source code: https://github.com/benjitran2009/rapidRogue/ :)
- * - A modding sdk is also planned soon™.
+ * - Modding documentation available at the source code repository.
  *
  *
  **/
