@@ -12,14 +12,14 @@ type modOptions = {
     author: string;
     requires?: RegExp[];
     scopes?: number[];
-    start?: (ctx: modContext) => void,
-    stop?: (ctx: modContext) => void,
-    init?: (ctx: modContext) => void,
+    start?: (ctx: modContext) => void;
+    stop?: (ctx: modContext) => void;
+    init?: (ctx: modContext) => void;
 };
 
 type modContext = {
-    executeUntrustedContextCode?: (code: string | Function) => void,
-}
+    executeUntrustedContextCode?: (code: string | Function) => void;
+};
 
 type rrMod = {
     createMod: (modOptions: modOptions) => Mod;
@@ -30,9 +30,9 @@ type rrMod = {
 class Mod {
     constructor(modOptions: modOptions) {
         this.configuration = modOptions;
-        modOptions.init ? this.init = modOptions.init : void(0);
-        modOptions.start ? this.start = modOptions.start : void(0);
-        modOptions.stop ? this.stop = modOptions.stop : void(0);
+        modOptions.init ? (this.init = modOptions.init) : void 0;
+        modOptions.start ? (this.start = modOptions.start) : void 0;
+        modOptions.stop ? (this.stop = modOptions.stop) : void 0;
     }
     configuration: modOptions;
     // Init is ran during the gameInit phase
@@ -42,6 +42,34 @@ class Mod {
     // Stop is used incase of game crash and to restart all mods (as best as possible)
     stop: (ctx: modContext) => void = () => {};
 }
+
+const createModContext: (mod: Mod) => modContext = (mod: Mod) => {
+    let builtContext: modContext = {
+        
+    }
+    
+    if (
+        (mod.configuration.scopes as number[]).includes(
+            scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION,
+        )
+    ) {
+        console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
+        builtContext.executeUntrustedContextCode = (code: string | Function) => {
+            switch (typeof code) {
+                case "string":
+                    return eval(code);
+                    //break;
+                case "function":
+                    return code();
+                    //break;
+                default:
+                    // throw new ModInitializationError()?
+                    break;
+            }
+        }
+    }
+    return builtContext;
+};
 
 export type { rrMod };
 export let initialize = () => {
@@ -56,13 +84,15 @@ export let initialize = () => {
 "${mod.configuration.name}" is attempting to be installed in your session. Would you like to continue installation of this mod?
 Note: This mod may have full control of your game based on its permissions, only install it if you trust the author(s).`)
             ) {
-                console.log(`Attempting to install mod ${mod.configuration.name}`);
+                console.log(
+                    `Attempting to install mod ${mod.configuration.name}`,
+                );
                 // target: user accepts -> hook into game?
                 if (!mod.configuration.scopes) mod.configuration.scopes = [];
-                if (mod.configuration.scopes.includes(scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION)) {
-                    console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
+                let context: modContext = createModContext(mod);
 
-                }
+                mod.init(context);
+                mod.start(context);
             } else {
                 console.log(`Mod installation rejected by user.`);
             }
@@ -78,8 +108,13 @@ Note: This mod may have full control of your game based on its permissions, only
         author: "rapidRogue Contributors",
         requires: [/^@rapidRogue\/\d+\.\d+\.\d+(-\w+)?/gm, /^@sdk\/builtin?/gm], // supports any version of rapidRogue | @ is a reserved mod start for only rapidRogue cores @sdk / @rapidRogue
         scopes: [scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION],
+        init: (c) => {
+            // scope should let it be defined
+            (c.executeUntrustedContextCode as Function)("console.log('Hello, World!')");
+        }
     });
     rrMod.installMod(ExampleMod);
+
 
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };
