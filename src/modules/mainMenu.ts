@@ -95,7 +95,7 @@ Detected Mods:`); // TODO: mod list page
                 //console.log("startgame");
             }
             if (mmInternals.p0SelectedOption == -1) { 
-                mmInternals.p0SelectedOption = 3; // rollback down
+                mmInternals.p0SelectedOption = 2; // rollback down
                 // TODO: find more efficenty super binary bithacking technique to make this better
             }
             mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 3;
