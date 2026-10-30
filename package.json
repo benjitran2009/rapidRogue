@@ -24,7 +24,6 @@
     "@rollup/plugin-terser": "^1.0.0",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.47",
-    "core-js": "^3.51.0",
     "esbuild": "^0.28.2",
     "google-closure-compiler": "^20260809.0.0",
     "nodemon": "^3.1.14",
