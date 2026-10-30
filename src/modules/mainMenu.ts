@@ -139,7 +139,7 @@ Detected Mods:`); // TODO: mod list page
                   ct++;
                   backgroundSprite.centered=true;
                 }*/
-                if (ct == 3) {
+                if (ct == 2) {
                     mmBackgrounds.forEach(function (_backgroundSprite) {
                         _backgroundSprite.destroy();//=false;
                     });
