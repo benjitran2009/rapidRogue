@@ -150,7 +150,7 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             // TODO: add scopes
             //return {};
         },
-        _installInternalMod: (mod: Mod) => {},
+        _installInternalMod: (mod: Mod) => { },
     };
     window.rrMod = rrMod;
     const ExampleMod = rrMod.createMod({
@@ -166,7 +166,21 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             );
         },
     });
+    // the below mods are used only for mod requirements
+    const rapidRogueMod = rrMod.createMod({
+        name: "@rapidRogue",
+        version: "v0.0.0-devel",
+        author: "rapidRogue Contributors",
+    });
+    const rapidSdkMod = rrMod.createMod({
+        name: "@sdk",
+        version: "v0.0.0-devel",
+        author: "rapidRogue Contributors",
+    });
+
     rrMod.installMod(ExampleMod);
+    rrMod._installInternalMod(rapidRogueMod);
+    rrMod._installInternalMod(rapidSdkMod);
 
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };
