@@ -143,7 +143,7 @@ export const setPause: (value: boolean) => void = (value:boolean) => {
 //export const 
 
 // polyfill stuff
-export const confirm: (message: string) => boolean = (message: string) => prompt(message, "Press OK for yes, or CANCEL fo no.") !== null ? true : false;
+export const confirm: (message: string) => boolean = (message: string) => prompt(message, "Press OK for yes, or CANCEL for no.") !== null ? true : false;
 export const alert: (message: string) => void = (message: string) => prompt(message, "<your input will not be recorded>");
 
 export {};
