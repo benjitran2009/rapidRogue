@@ -17,6 +17,15 @@ export const scopes = {
     WRITE_PLAYER_DATA: 10,
 };
 
+let reversedScopes = (() => {
+    let obj = scopes as { [scope: string]: number };
+    let rev: { [scopeId: number]: string } = {};
+    Object.keys(obj).forEach((key: string) => {
+        rev[obj[key] as number] = key as string;
+    });
+    return rev;
+})(); // * scopes may become changable later?
+
 type modOptions = {
     name: string;
     version: string;
@@ -59,7 +68,8 @@ const createModContext: (mod: Mod) => modContext = (mod: Mod) => {
     let builtContext: modContext = {
         requestScope: (scope: number | number[]) => {
             // * requestScope -> promise<bool> -> user prompt -> yes = regenerate context & return it in resolve | no = reject promise
-            var requestedScope: number[] = typeof scope === "number" ? [scope] : scope;
+            var requestedScope: number[] =
+                typeof scope === "number" ? [scope] : scope;
             return new Promise((resolve, reject) => {
                 if (
                     confirm(`[rrMod] Mod requesting extra scopes
@@ -70,34 +80,41 @@ Requested Scopes: ${getScopes(requestedScope)}`)
                 ) {
                 }
             });
-        }
-    }
-    
+        },
+    };
+
     if (
         (mod.configuration.scopes as number[]).includes(
-            scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION,
+            scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION as number,
         )
     ) {
         console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
-        builtContext.executeUntrustedContextCode = (code: string | Function) => {
+        builtContext.executeUntrustedContextCode = (
+            code: string | Function,
+        ) => {
             switch (typeof code) {
                 case "string":
                     return eval(code);
-                    //break;
+                //break;
                 case "function":
                     return code();
-                    //break;
+                //break;
                 default:
                     // throw new ModInitializationError()?
                     break;
             }
-        }
+        };
     }
     return builtContext;
 };
 
-const getScopes: (scopes: number[]) => string = () => {
-    return "<not implemented>"
+const getScopes: (scope: number[]) => string = (scopeArray: number[]) => {
+    //const valuedScopes = Object.values(scopes);
+
+    const mappedScopes = scopeArray.map((x) => reversedScopes[x]) as string[];
+    console.log(mappedScopes);
+    return "[" + mappedScopes.join(", ") + "]";
+    //return "<not implemented>"
 };
 
 export type { rrMod };
@@ -107,19 +124,22 @@ export let initialize = () => {
             return new Mod(modOptions);
         },
         installMod: function (mod: Mod) {
+            mod.configuration.scopes = mod.configuration.scopes || [
+                scopes.NONE,
+            ];
             console.log(`[rrMod]: installMod triggered!`);
             if (
                 confirm(`[rrMod] Mod Installation Request
 "${mod.configuration.name}" is attempting to be installed in your session. Would you like to continue installation of this mod?
 Note: This mod may have full control of your game based on its permissions, only install it if you trust the author(s).
 
-Requested Scopes: ${getScopes(mod.configuration.scopes ? mod.configuration.scopes : [scopes.NONE])}`)
+Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             ) {
                 console.log(
                     `Attempting to install mod ${mod.configuration.name}`,
                 );
                 // target: user accepts -> hook into game?
-                if (!mod.configuration.scopes) mod.configuration.scopes = [];
+                //if (!mod.configuration.scopes) mod.configuration.scopes = [];
                 let context: modContext = createModContext(mod);
 
                 mod.init(context);
@@ -141,11 +161,12 @@ Requested Scopes: ${getScopes(mod.configuration.scopes ? mod.configuration.scope
         scopes: [scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION],
         init: (c) => {
             // scope should let it be defined
-            (c.executeUntrustedContextCode as Function)("console.log('Hello, World!')");
-        }
+            (c.executeUntrustedContextCode as Function)(
+                "console.log('Hello, World!')",
+            );
+        },
     });
     rrMod.installMod(ExampleMod);
-
 
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };
