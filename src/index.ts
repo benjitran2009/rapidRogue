@@ -52,7 +52,7 @@ import { enemies } from "./modules/enemies.js";
 import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
 import enemySpawning from "./modules/enemySpawning.js";
-import beta from "./modules/beta.js";
+import performance from "./modules/performance.js";
 import {
     background,
   camera,
@@ -544,7 +544,7 @@ function draw() {
     fill("white");
     textSize(58);
     text("You won!!!", camera.x, camera.y + 30);
-    beta();
+    performance();
     throw new Error("This is intentional.");
     return;
   }
@@ -558,7 +558,7 @@ function draw() {
     background("white");
     drawSprites();
     mainMenuMain(); // unintellisense
-    beta();
+    performance();
     return;
   }
   //if (inQuestion) {
@@ -582,7 +582,7 @@ function draw() {
       textSize(58);
       text("You died!", camera.x, camera.y + 30);
     }
-    beta();
+    performance();
     return;
   }
   //drawSprites();
@@ -590,7 +590,7 @@ function draw() {
     //background("white");
     drawSprites();
     upgradeScreenMain();
-    beta();
+    performance();
     return;
   }
   /*} else {
@@ -614,7 +614,7 @@ function draw() {
     mainHud();
     enemyHud();
     statsMain();
-    beta();
+    performance();
     //playerStats.HP=Math.abs(Math.sin(World.frameCount/60)*100);
     //proHackerMode();
   } else {
@@ -628,7 +628,7 @@ function draw() {
     noStroke();
     //rect(camera.x-200,camera.y-50,400,100);
     text("Game Paused", camera.x, camera.y);
-    beta();
+    performance();
     //textSize(18);
     //text("*-This doesn't do anything btw.", camera.x,camera.y+25);
     //textSize(14);
