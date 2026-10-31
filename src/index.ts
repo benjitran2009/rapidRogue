@@ -585,6 +585,8 @@ function draw() {
   //  return;
   //};
   if (dead) {
+    player.velocityX=0;
+    player.velocityY=0;
     background("white");
     drawSprites();
     textAlign(CENTER);
@@ -607,6 +609,8 @@ function draw() {
   //drawSprites();
   if (inUpgradeScreen) {
     //background("white");
+    player.velocityX=0;
+    player.velocityY=0;
     drawSprites();
     upgradeScreenMain();
     performance();

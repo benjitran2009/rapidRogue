@@ -1,4 +1,4 @@
-import { pause, setPause, setWon, won } from "../env";
+import { setPause, setWon } from "../env";
 import { enemies, enemy } from "./enemies";
 import { gameStats, setGameStat } from "./gameStats";
 import upgrades, { displayUpgrade } from "./upgrades";

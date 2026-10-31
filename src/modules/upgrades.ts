@@ -393,7 +393,7 @@ export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3i
     }, 1000 / 60);
     //console.log(upgradeInternals);
     inUpgradeScreen = true;
-    inUpgradeScreen = true;
+    //inUpgradeScreen = true;
 }
 
 //export let inUpgradeScreen

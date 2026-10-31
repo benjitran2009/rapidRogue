@@ -5,6 +5,7 @@ import { gameStats, setGameStat } from "./gameStats";
 import { player } from "./player";
 import { playerStats, subPlayerStat } from "./playerStats";
 import { projectiles } from "./projectiles";
+import { inUpgradeScreen } from "./upgrades";
 //let gameStats.wave;
 export let enemies = createGroup();
 
@@ -44,7 +45,7 @@ export function enemy() {
   enemySprite.setAnimation("enemy"+gameStats.wave);
   //enemySprite.bounceOff(enemies);
   var enemyInterval = setInterval(function () {
-    if (gameStats.pause) {
+    if (gameStats.pause || inUpgradeScreen) {
       enemySprite.velocityX=0;
       enemySprite.velocityY=0;
       return;

@@ -1,5 +1,6 @@
 //import { inUpgradeScreen } from "./modules/upgrades";
 
+import { gameStats } from "./modules/gameStats";
 import { rrMod } from "./modules/modding";
 
 // we become one with the typing scripting
@@ -136,9 +137,10 @@ export const won: boolean = window.won;
 export const setWon: (value: boolean) => void = (value:boolean) => {
     window.won = value
 };
-export const pause: boolean = window.pause;
+//export const pause: boolean = window.pause;
 export const setPause: (value: boolean) => void = (value:boolean) => {
-    window.pause = value
+    gameStats.pause = value;
+    //window.pause = value
 };
 //export const 
 
