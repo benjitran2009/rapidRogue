@@ -2,7 +2,7 @@ import { confirm } from "../env";
 import { contextEval } from "./eval";
 //import "core-js/actual/array/";
 //import { Array } from "core-js/actual/array/virtual";
-export let modList: { [modName: string]: modContext } = {};
+export let modList: { [modName: string]: Mod } = {};
 // not letting modlist be changable except in this context
 export const scopes = {
     NONE: -1337,
@@ -40,16 +40,66 @@ type modOptions = {
     init?: (ctx: modContext) => void;
 };
 
-type modContext = {
+/*type modContext = {
     executeUntrustedContextCode?: (code: string) => void;
     requestScope: (scope: number | number[]) => Promise<boolean>; // ! can use promise or hold thread?
-};
+};*/
 
 type rrMod = {
     createMod: (modOptions: modOptions) => Mod;
     installMod: (mod: Mod) => void;
     _installInternalMod: (mod: Mod) => void;
 };
+
+class modContext {
+    constructor(mod: Mod) {
+        // ! this is probably insecure rigth now
+        // TODO: make it more secure
+        modList[mod.configuration.name] = mod;
+        Object.defineProperty(this, "name", {
+            value: mod.configuration.name,
+            configurable: false,
+            enumerable: false,
+            writable: false,
+        })
+        if (
+            (mod.configuration.scopes as number[]).includes(
+                scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION as number,
+            )
+        ) {
+            console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
+            this.executeUntrustedContextCode = (code: string) => {
+                switch (typeof code) {
+                    case "string":
+                        return contextEval(code);
+                    //break;
+                    default:
+                        // throw new ModInitializationError()?
+                        break;
+                }
+            };
+        }
+    }
+    //@ts-ignore
+    name: string; // This is actually defined, but typescript refusees to believe me
+    executeUntrustedContextCode?: (code: string) => void;
+    requestScope = (scope: number | number[]) => {
+        // * requestScope -> promise<bool> -> user prompt -> yes = regenerate context & return it in resolve | no = reject promise
+        var requestedScope: number[] =
+            typeof scope === "number" ? [scope] : scope;
+        return new Promise((resolve, reject) => {
+            if (
+                confirm(`[rrMod] Mod requesting extra scopes
+"${this.name}" is attempting to request extra scopes in the environment. Would you like to approve this request?
+Note: This mod will get extra control of your game based on its permissions, only accept it if you trust the author(s).
+
+Requested Scopes: ${getScopes(requestedScope)}`)
+            ) {
+            }
+        });
+    };
+    //requestScope: (scope: number | number[]) => Promise<boolean>; // ! can use promise or hold thread?
+}
 
 class Mod {
     constructor(modOptions: modOptions) {
@@ -67,47 +117,6 @@ class Mod {
     stop: (ctx: modContext) => void = () => {};
 }
 
-const createModContext: (mod: Mod) => modContext = (mod: Mod) => {
-    let builtContext: modContext = {
-        requestScope: (scope: number | number[]) => {
-            // * requestScope -> promise<bool> -> user prompt -> yes = regenerate context & return it in resolve | no = reject promise
-            var requestedScope: number[] =
-                typeof scope === "number" ? [scope] : scope;
-            return new Promise((resolve, reject) => {
-                if (
-                    confirm(`[rrMod] Mod requesting extra scopes
-"${mod.configuration.name}" is attempting to request extra scopes in the environment. Would you like to approve this request?
-Note: This mod will get extra control of your game based on its permissions, only accept it if you trust the author(s).
-
-Requested Scopes: ${getScopes(requestedScope)}`)
-                ) {
-                }
-            });
-        },
-    };
-
-    if (
-        (mod.configuration.scopes as number[]).includes(
-            scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION as number,
-        )
-    ) {
-        console.log("ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION");
-        builtContext.executeUntrustedContextCode = (
-            code: string,
-        ) => {
-            switch (typeof code) {
-                case "string":
-                    return contextEval(code);
-                //break;
-                default:
-                    // throw new ModInitializationError()?
-                    break;
-            }
-        };
-    }
-    return builtContext;
-};
-
 const getScopes: (scope: number[]) => string = (scopeArray: number[]) => {
     //const valuedScopes = Object.values(scopes);
 
@@ -116,7 +125,6 @@ const getScopes: (scope: number[]) => string = (scopeArray: number[]) => {
     return "[" + mappedScopes.join(", ") + "]";
     //return "<not implemented>"
 };
-
 
 export type { rrMod };
 export let initialize = () => {
@@ -141,7 +149,7 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
                 );
                 // target: user accepts -> hook into game?
                 //if (!mod.configuration.scopes) mod.configuration.scopes = [];
-                let context: modContext = createModContext(mod);
+                let context: modContext = new modContext(mod);
 
                 mod.init(context);
                 mod.start(context);
@@ -152,7 +160,9 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             //return {};
         },
         _installInternalMod: (mod: Mod) => {
-            console.log(`Installing internal mod "${mod.configuration.name}"...`);
+            console.log(
+                `Installing internal mod "${mod.configuration.name}"...`,
+            );
         },
     };
     window.rrMod = rrMod;

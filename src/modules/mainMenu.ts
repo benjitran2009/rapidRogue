@@ -1,7 +1,9 @@
+import config from "../config";
 import { camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
 import assets from "../util/assets";
 //import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
+import { modList } from "./modding";
 import playerHealing from "./playerHealing";
 export let enemySpawningInterval: any; // Should be a interval
 export let setEnemySpawningInterval = (x: any) => enemySpawningInterval = x;
@@ -70,7 +72,7 @@ export function mainMenuMain() {
                         page++;
                         break;
                     case 1:
-                        prompt(`rapidRogue Next v0.0.6d
+                        prompt(`${config.name} ${config.version}
 https://github.com/benjitran2009/rapidRogue/
 
 Some ideas inspired by Vampire Survivors, and other roguelites.
@@ -85,10 +87,11 @@ Assets:
 studio.code.org`,getUserId());
                         break;
                     case 2:
-                        prompt(`Game Version: <none>
-Builtin Mod SDK Version: <unknown>
+                        prompt(`Game Version: ${config.version}
+Mod SDK Version: ${config.sdk}
 
-Detected Mods:`); // TODO: mod list page
+Detected Mods:
+${Object.keys(modList).join("\n")}`); // TODO: mod list page
                         break;
                     default: break;
                 }
