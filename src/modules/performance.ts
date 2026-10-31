@@ -13,7 +13,7 @@ import {
 } from "../env";
 
 export default () => {
-    fill(rgb(0, 0, 0, 0.5));
+    fill(rgb(255, 255, 255));
     textAlign(LEFT);
     textSize(18);
     text("FPS: " + Math.floor(World.frameRate), camera.x - 200, camera.y - 185);
