@@ -1,4 +1,5 @@
 /* some lazy polyfills to make the env work */
+// there is probably some ultra byte manipulation technique to make this 102389% more efficent in rust
 export const initialize = () => {
     Array.prototype.find = function (predicate: (value: any, index: number, obj: any[]) => any) {
         let out;

@@ -3,7 +3,7 @@ import { alert, camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT
 import assets from "../util/assets";
 //import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
-import { modList } from "./modding";
+import { getPrettyModList, modList } from "./modding";
 import playerHealing from "./playerHealing";
 export let enemySpawningInterval: any; // Should be a interval
 export let setEnemySpawningInterval = (x: any) => enemySpawningInterval = x;
@@ -94,7 +94,7 @@ studio.code.org`,getUserId());
 Mod SDK Version: ${config.sdk}
 
 Detected Mods:
-${Object.keys(modList).join("\n")}`); // TODO: mod list page
+${getPrettyModList()}`); // TODO: mod list page
                         break;
                     default: break;
                 }

@@ -1,8 +1,16 @@
+import config from "../config";
 import { confirm } from "../env";
 import { contextEval } from "./eval";
 //import "core-js/actual/array/";
 //import { Array } from "core-js/actual/array/virtual";
 export let modList: { [modName: string]: Mod } = {};
+export const getPrettyModList: () => string = () => {
+    let list = "";
+    Object.keys(modList).forEach((key: string) => {
+        list+=`${key}/${modList[key]?.configuration.version}\n`
+    })
+    return list;
+}
 // not letting modlist be changable except in this context
 export const scopes = {
     NONE: -1337,
@@ -200,12 +208,12 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
     // the below mods are used only for mod requirements
     const rapidRogueMod = rrMod.createMod({
         name: "@rapidRogue",
-        version: "v0.0.0-devel",
+        version: config.version,
         author: "rapidRogue Contributors",
     });
     const rapidSdkMod = rrMod.createMod({
         name: "@sdk",
-        version: "v0.0.0-devel",
+        version: config.sdk,
         author: "rapidRogue Contributors",
     });
 
