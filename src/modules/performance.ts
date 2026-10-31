@@ -3,6 +3,7 @@ import {
     CENTER,
     fill,
     getUserId,
+    LEFT,
     rgb,
     text,
     textAlign,
@@ -12,7 +13,7 @@ import {
 
 export default () => {
     fill(rgb(0, 0, 0, 0.5));
-    textAlign(CENTER);
+    textAlign(LEFT);
     textSize(18);
-    text("FPS: " + Math.floor(World.frameRate), camera.x - 160, camera.y - 180);
+    text("FPS: " + Math.floor(World.frameRate), camera.x - 200, camera.y - 185);
 };

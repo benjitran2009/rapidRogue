@@ -610,7 +610,6 @@ function draw() {
   if (!gameStats.pause) {
     background("white");
     backgroundMain();
-    movementMain();
     thingMain();
     cursorMain();
     projectileMain();
@@ -619,6 +618,7 @@ function draw() {
     enemyHud();
     statsMain();
     performance();
+    movementMain();
     //playerStats.HP=Math.abs(Math.sin(World.frameCount/60)*100);
     //proHackerMode();
   } else {

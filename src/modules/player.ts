@@ -10,6 +10,9 @@ player.scale=1;
 export var playerX = 0;
 export var playerY = 0;
 export function movementMain() {
+  //camera.x=playerX;
+  //camera.y=playerY;
+  
   player.velocityX=0;
   player.velocityY=0;
   if (keyDown("w") || keyDown("up")) {
@@ -51,11 +54,12 @@ export function movementMain() {
 
   //player.x+=Math.round((playerX-player.x)/8);
   //player.y+=Math.round((playerY-player.y)/8);
-  
+  //camera.x=player.x;
+  //camera.y=player.y;
   player.velocityX = Math.round((playerX-player.x)/2);
   player.velocityY = Math.round((playerY-player.y)/2);
-  camera.x=player.x;
-  camera.y=player.y;
+  camera.x+=player.velocityX;
+  camera.y+=player.velocityY;
   
   //camera.x+=Math.round((playerX-camera.x)/8);
   //camera.y+=Math.round((playerY-camera.y)/8);
