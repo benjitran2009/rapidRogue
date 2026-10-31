@@ -32,6 +32,9 @@ export function movementMain() {
     playerX+=4+(playerStats.friction*1);
   }
   //if (player.velocityX !== 0 && player.velocityY !== 0) {
+    //const m = playerX*(Math.sqrt(2));
+    //playerX=m;
+    //playerY=m;
     /*
     
     var angle = enemySprite.rotation * Math.PI / 180;
@@ -58,8 +61,8 @@ export function movementMain() {
   //camera.y=player.y;
   player.velocityX = Math.round((playerX-player.x)/2);
   player.velocityY = Math.round((playerY-player.y)/2);
-  camera.x+=player.velocityX;
-  camera.y+=player.velocityY;
+  camera.x=player.x;
+  camera.y=player.y;
   
   //camera.x+=Math.round((playerX-camera.x)/8);
   //camera.y+=Math.round((playerY-camera.y)/8);

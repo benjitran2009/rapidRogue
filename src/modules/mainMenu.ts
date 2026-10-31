@@ -1,5 +1,5 @@
 import config from "../config";
-import { camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
+import { alert, camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
 import assets from "../util/assets";
 //import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
@@ -72,6 +72,9 @@ export function mainMenuMain() {
                         page++;
                         break;
                     case 1:
+                        alert("Not implemented!");
+                        break;
+                    case 3:
                         prompt(`${config.name} ${config.version}
 https://github.com/benjitran2009/rapidRogue/
 
@@ -98,10 +101,10 @@ ${Object.keys(modList).join("\n")}`); // TODO: mod list page
                 //console.log("startgame");
             }
             if (mmInternals.p0SelectedOption == -1) { 
-                mmInternals.p0SelectedOption = 2; // rollback down
+                mmInternals.p0SelectedOption = 3; // rollback down
                 // TODO: find more efficenty super binary bithacking technique to make this better
             }
-            mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 3;
+            mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 4;
 
             textAlign(CENTER);
             textSize(48);
@@ -116,8 +119,10 @@ ${Object.keys(modList).join("\n")}`); // TODO: mod list page
             fill("white");
             textSize(36);
             text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play", camera.x, camera.y - 50);
-            text(mmInternals.p0SelectedOption == 1 ? "> Credits <" : "Credits", camera.x, camera.y);
+            text(mmInternals.p0SelectedOption == 1 ? "> Settings <" : "Settings", camera.x, camera.y);
             text(mmInternals.p0SelectedOption == 2 ? "> Mods <" : "Mods", camera.x, camera.y + 50);
+            text(mmInternals.p0SelectedOption == 3 ? "> Credits <" : "Credits", camera.x, camera.y + 100);
+            
             textSize(24);
             fill("black");
             textAlign(LEFT);

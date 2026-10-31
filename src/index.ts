@@ -172,13 +172,13 @@ function mainHud() {
   text(
     "Waves: " + gameStats.wave + "/" + gameStats.maxWaves,
     camera.x,
-    camera.y - 175,
+    camera.y - 150,
   );
   textSize(18);
   text(
     "Enemies remaining: " + gameStats.currentWave.enemiesLeft,
     camera.x,
-    camera.y - 150,
+    camera.y - 125,
   );
 
   //fps counter
@@ -198,8 +198,19 @@ function mainHud() {
   //hpbar
   //stroke(0);--no effect
 
-  fill(rgb(255, 255, 255, 0.5));
-  rect(camera.x-200, camera.y+200, 400, 20);
+  fill(rgb(0, 0, 0));
+  rect(camera.x-200, camera.y - 200, 400, 20);
+  fill(rgb(66, 135, 245));
+  /**
+   *  currentWave: {
+        enemyTarget: 0,
+        enemiesKilled: 0,
+        enemiesLeft: 0,
+    },
+   */
+  rect(camera.x-200, camera.y - 200, (gameStats.currentWave.enemiesKilled / gameStats.currentWave.enemyTarget) * 400, 20);
+
+  
 
 
   fill("red");
@@ -214,6 +225,10 @@ function mainHud() {
     150 * (playerStats.HP / playerStats.maxHP),
     15,
   );
+  fill("white");
+  textAlign(LEFT);
+  textSize(12);
+  text(`${playerStats.HP} / ${playerStats.maxHP}`, camera.x - 175, camera.y + 187.5);
 
   fill(rgb(0, 0, 0, 0.5));
 
