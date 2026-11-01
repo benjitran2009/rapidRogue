@@ -617,6 +617,7 @@ function draw() {
     return;
   }
   /*} else {
+    
       textAlign(CENTER);
       text("no content?\nintentional?\ni think not.", camera.x, camera.y);
       displayUpgrade(0, 1, 2); // those who know arrays
