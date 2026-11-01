@@ -149,7 +149,7 @@ studio.code.org`,
 Mod SDK Version: ${config.sdk}
 
 Detected Mods:
-${getPrettyModList()}`); // TODO: mod list page
+${getPrettyModList()}`);
                         break;
                     default:
                         break;
@@ -158,7 +158,6 @@ ${getPrettyModList()}`); // TODO: mod list page
             }
             if (mmInternals.p0SelectedOption == -1) {
                 mmInternals.p0SelectedOption = 3; // rollback down
-                // TODO: find more efficenty super binary bithacking technique to make this better
             }
             mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 4;
 

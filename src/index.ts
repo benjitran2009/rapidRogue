@@ -456,7 +456,7 @@ function enemyHud() {
             //fill("red");
             //rect(_enemy.x-50,_enemy.y-75,100,10);
             //fill("green");
-            //rect(_enemy.x-50,_enemy.y-75,100*(_enemy.HP/_enemy.maxHP),10);//TODO
+            //rect(_enemy.x-50,_enemy.y-75,100*(_enemy.HP/_enemy.maxHP),10);
         } else {
             if (_enemy.destructionImminent) {
                 return;

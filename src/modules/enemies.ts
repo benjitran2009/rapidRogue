@@ -36,7 +36,7 @@ export function enemy() {
     enemies.add(enemySprite);
     enemySprite.addAnimation(
         "enemy",
-        assets[`enemy${1 /*gameStats.wave* TODO*/}`] as string,
+        assets[`enemy${1 /*gameStats.wave*/}`] as string, // TODO: add more enemy sprites
     );
     enemySprite.setAnimation("enemy");
     //enemySprite.bounceOff(enemies);
@@ -50,8 +50,8 @@ export function enemy() {
         let angle = (enemySprite.rotation * Math.PI) / 180;
         let cosAngle = Math.cos(angle);
         let sinAngle = Math.sin(angle);
-        enemySprite.velocityX = cosAngle * (enemySprite.speed as number); // TODO : BELWO
-        enemySprite.velocityY = sinAngle * (enemySprite.speed as number); //0.25+((gameStats.timer/120000)*1.005); // TODO: set to timer formula
+        enemySprite.velocityX = cosAngle * (enemySprite.speed as number);
+        enemySprite.velocityY = sinAngle * (enemySprite.speed as number);
 
         if (enemySprite.outofbounds) {
             //if (((World.frameCount%2)==0)) { // every other frame is skipped
@@ -60,8 +60,8 @@ export function enemy() {
             //} else {
             //enemySprite.pointTo(player.x,player.y);
             //var angle = enemySprite.rotation * Math.PI / 180;
-            //enemySprite.velocityX = cosAngle * (enemySprite.speed as number); // TODO : BELWO
-            //enemySprite.velocityY = sinAngle * (enemySprite.speed as number); //0.25+((gameStats.timer/120000)*1.005); // TODO: set to timer formula
+            //enemySprite.velocityX = cosAngle * (enemySprite.speed as number);
+            //enemySprite.velocityY = sinAngle * (enemySprite.speed as number); //0.25+((gameStats.timer/120000)*1.005);
             return;
             //}
             //return;
@@ -72,8 +72,8 @@ export function enemy() {
         //var deltaY = Math.sin(angle) * 3;
         //enemySprite.x+=deltaX;
         //enemySprite.y+=deltaY;
-        //enemySprite.velocityX = cosAngle * (enemySprite.speed as number); // TODO: set to timer formula
-        //enemySprite.velocityY = sinAngle * (enemySprite.speed as number); // TODO: set to timer formula
+        //enemySprite.velocityX = cosAngle * (enemySprite.speed as number);
+        //enemySprite.velocityY = sinAngle * (enemySprite.speed as number);
         if (enemySprite.collide(player)) {
             //enemySprite.velocityX = -Math.cos(angle);
             //enemySprite.velocityY = -Math.sin(angle);
