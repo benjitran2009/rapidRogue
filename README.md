@@ -1,6 +1,8 @@
 # rapidRogue Next
 
-## "A suprising game made in a suprising environment.""
+## "A suprising game made in a suprising environment."
+
+A fast-paced roguelite game like vampire survivors.
 
 ![Time spent on rapidRogue](https://hackatime.hackclub.com/api/v1/badge/U0C7U8DR6S2/benjitran2009/rapidRogue)
 
@@ -25,6 +27,8 @@ TODO:
 * ~~New drawings~~
 * ~~Timing-based instead of wave based for endless scaling~~
 * ~~Main menu logo pls~~
+* Applab cloud
+* Mobile controls
 
 What has been  improved since original version (v0.0.6-something):
 
@@ -39,6 +43,7 @@ What has been  improved since original version (v0.0.6-something):
 * Timing-based
 * ui-ish update
 * main menu logo
+* better main menu
 
 How to run if latest build isnt updated:
 
