@@ -2,6 +2,17 @@
 
 ## "A suprising game made in a suprising environment.""
 
+![Time spent on rapidRogue](https://hackatime.hackclub.com/api/v1/badge/U0C7U8DR6S2/benjitran2009/rapidRogue)
+
+
+<a href="https://www.star-history.com/?repos=benjitran2009%2Frapidrogue&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=benjitran2009/rapidrogue&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=benjitran2009/rapidrogue&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=benjitran2009/rapidrogue&type=date&legend=top-left" />
+ </picture>
+</a>
+
 [Latest Build (Game)](https://studio.code.org/projects/gamelab/647349ff-9222-4852-85b3-5f1c3d521fa8/embed)
 
 [Latest Release (Code)](https://github.com/benjitran2009/rapidRogue/releases/latest)
