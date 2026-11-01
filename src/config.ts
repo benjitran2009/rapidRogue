@@ -1,6 +1,6 @@
 export default {
-    name: "rapidRogue Next", // This has no effect yet
-    version: "v0.0.0-devel",
+    name: "rapidRogue",
+    version: "v0.1.0",
     sdk: "builtin",
     restrictions: [], // todo
 }

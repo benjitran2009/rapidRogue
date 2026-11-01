@@ -81,12 +81,13 @@ import {
 } from "./env.js";
 import { inUpgradeScreen, upgradeScreenMain } from "./modules/upgrades.js";
 import mainHud from "./modules/mainHud.js";
+import config from "./config.js";
 //import keyWentDown from "./util/keyWentDown.js";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
 console.log(`
 =================================================
-rapidRogue Next v0.0.6d
+${config.name} ${config.version}
 "A suprising game made in a suprising environment."
 https://github.com/benjitran2009/rapidRogue/
 =================================================
