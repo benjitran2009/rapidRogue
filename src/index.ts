@@ -313,7 +313,7 @@ function backgroundMain() {
 }
 
 var dead = false;
-var secondChance = true;
+var secondChance = false;//
 var deadBackground = createSprite(0, 0);
 deadBackground.visible = false;
 deadBackground.addAnimation("background_fill", assets.backgroundFillImage as string);
