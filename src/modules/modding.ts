@@ -7,10 +7,10 @@ export let modList: { [modName: string]: Mod } = {};
 export const getPrettyModList: () => string = () => {
     let list = "";
     Object.keys(modList).forEach((key: string) => {
-        list+=`${key}/${modList[key]?.configuration.version}\n`
-    })
+        list += `${key}/${modList[key]?.configuration.version}\n`;
+    });
     return list;
-}
+};
 // not letting modlist be changable except in this context
 export const scopes = {
     NONE: -1337,
@@ -28,8 +28,8 @@ export const scopes = {
     WRITE_PLAYER_DATA: 10,
 };
 const scopeHandlers = {
-    ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION: () => {}
-}
+    ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION: () => {},
+};
 
 let reversedScopes = (() => {
     let obj = scopes as { [scope: string]: number };
@@ -94,7 +94,9 @@ class modContext {
     //@ts-ignore
     name: string; // This is actually defined, but typescript refusees to believe me
     executeUntrustedContextCode?: (code: string) => void;
-    requestScope: (scope: number | number[]) => Promise<modContext|false> = (scope: number | number[]) => {
+    requestScope: (scope: number | number[]) => Promise<modContext | false> = (
+        scope: number | number[],
+    ) => {
         // * requestScope -> promise<bool> -> user prompt -> yes = regenerate context & return it in resolve | no = reject promise
         var requestedScope: number[] =
             typeof scope === "number" ? [scope] : scope;
@@ -106,7 +108,10 @@ Note: This mod will get extra control of your game based on its permissions, onl
 
 Requested Scopes: ${getScopes(requestedScope)}`)
             ) {
-                modList[this.name]!.configuration!.scopes = modList[this.name]!.configuration.scopes!.concat(requestedScope)//.push(requestedScope);
+                modList[this.name]!.configuration!.scopes =
+                    modList[this.name]!.configuration.scopes!.concat(
+                        requestedScope,
+                    ); //.push(requestedScope);
                 resolve(new modContext(modList[this.name] as Mod));
             } else {
                 reject(false);
@@ -192,7 +197,10 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
         version: "0.0.0",
         author: "rapidRogue Contributors",
         requires: [/^@rapidRogue\/\d+\.\d+\.\d+(-\w+)?/gm, /^@sdk\/builtin?/gm], // supports any version of rapidRogue | @ is a reserved mod start for only rapidRogue cores @sdk / @rapidRogue
-        scopes: [scopes.TEST_SCOPE_NO_SIDE_EFFECTS, scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION],
+        scopes: [
+            scopes.TEST_SCOPE_NO_SIDE_EFFECTS,
+            scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION,
+        ],
         init: (c) => {
             // scope should let it be defined
             //(c.executeUntrustedContextCode as Function)(
@@ -200,7 +208,9 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
             //);
             //c.requestScope(scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION).then((a) => {
             //    if (a) {
-                    (c.executeUntrustedContextCode as Function)("console.log('Hello, World!');");
+            (c.executeUntrustedContextCode as Function)(
+                "console.log('Hello, World!');",
+            );
             //    }
             //});
         },
@@ -220,6 +230,6 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
     rrMod._installInternalMod(rapidRogueMod);
     rrMod._installInternalMod(rapidSdkMod);
     rrMod._installInternalMod(ExampleMod);
-    
+
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };

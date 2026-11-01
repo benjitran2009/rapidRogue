@@ -75,8 +75,7 @@ export let upgrades = [
     {
         name: "Damage",
         icon: assets.upgradeDamage,
-        description:
-            "Damage go\nBrrrrr.",
+        description: "Damage go\nBrrrrr.",
         onUpgrade: function () {
             playerStats.cells++;
         },
@@ -84,8 +83,7 @@ export let upgrades = [
     {
         name: "Projectiles",
         icon: assets.upgradeProjectiles,
-        description:
-            "More bullet\nmore stonks.",
+        description: "More bullet\nmore stonks.",
         onUpgrade: function () {
             playerStats.immune++;
         },
@@ -129,7 +127,7 @@ type upgradeBase = {
     name: string;
     description: string;
     onUpgrade: (...args: any[]) => any;
-    icon: string,
+    icon: string;
 };
 
 var upgradeInternals: {
@@ -141,7 +139,7 @@ var upgradeInternals: {
     upgrade3: upgradeBase;
     callback?: (...args: any[]) => any;
     selectedUpgrade: string;
-    [name: string]: any,
+    [name: string]: any;
 } = {
     image1: createSprite(0, 0),
     image2: createSprite(0, 0),
@@ -190,7 +188,7 @@ export function upgradeScreenMain() {
     strokeWeight(2);
     stroke("black");
     // the 133.33... incident
-    var inBounds: {[name: string]: boolean} = {
+    var inBounds: { [name: string]: boolean } = {
         upgrade1:
             0 <= World.mouseX &&
             World.mouseX <= 133.33 &&
@@ -349,7 +347,7 @@ export function upgradeScreenMain() {
     text(upgradeInternals.upgrade3.description, camera.x + 68.5, camera.y + 60);
 
     ["upgrade1", "upgrade2", "upgrade3"].forEach(function (_upgrade: string) {
-        if (inBounds[_upgrade] as boolean && mouseWentDown("leftButton")) {
+        if ((inBounds[_upgrade] as boolean) && mouseWentDown("leftButton")) {
             //top tier bugs digital deluxe
             upgradeInternals.selectedUpgrade = _upgrade;
             (upgradeInternals[_upgrade] as upgradeBase).onUpgrade();
@@ -363,7 +361,12 @@ export function upgradeScreenMain() {
     });
 }
 
-export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3id: number, callback: upgradeBase["onUpgrade"]) {
+export function displayUpgrade(
+    upgrade1id: number,
+    upgrade2id: number,
+    upgrade3id: number,
+    callback: upgradeBase["onUpgrade"],
+) {
     // id-based because its randomly picked at runtime.
     upgradeInternals.callback = callback;
     [upgrade1id, upgrade2id, upgrade3id].forEach(function (upgradeId, indx) {
@@ -398,4 +401,4 @@ export function displayUpgrade(upgrade1id: number, upgrade2id: number, upgrade3i
 
 //export let inUpgradeScreen
 export let inUpgradeScreen = false;
-export default {upgradeScreenMain, displayUpgrade, upgrades};
+export default { upgradeScreenMain, displayUpgrade, upgrades };

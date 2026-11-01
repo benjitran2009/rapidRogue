@@ -1,7 +1,6 @@
 import { camera, createGroup, createSprite } from "../env";
 import assets from "../util/assets";
-import enemySpawning from "./enemySpawning";
-import { gameStats, gameTimer, setGameStat } from "./gameStats";
+import { gameStats } from "./gameStats";
 import { addXp } from "./levels";
 import { player } from "./player";
 import { playerStats, subPlayerStat } from "./playerStats";
@@ -27,7 +26,7 @@ export function enemy() {
     var enemyY = camera.y + (rd2 ? 200 : -200) + rd4 * (rd2 ? 1 : -1);
     var enemySprite = createSprite(enemyX, enemyY);
     enemySprite.maxHP = 100 + (gameStats.timer / 120000) * 1.005 * 50;
-    enemySprite.speed = 0.25 + (gameStats.timer / 120000) * 1.005;
+    enemySprite.speed = 0.33 + (gameStats.timer / 120000) * 1.005;
     enemySprite.HP = enemySprite.maxHP; //100+((gameStats.timer*1.005)*50);
     enemySprite.canBeHit = true;
     var tempEnemyConfig = {

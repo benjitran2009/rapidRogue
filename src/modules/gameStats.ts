@@ -62,16 +62,16 @@ export let gameStats: {
     },
     timer: 0,
 };
-let gameTimerStart: number = 0;
-let gameTimerInterval: number;
 
-export function gameTimer(delta: number) { // ! SHOULD NOT BE USED UNLESS RENDER THREAD
-    gameStats.timer+=delta;
+export function gameTimer(delta: number) {
+    // ! SHOULD NOT BE USED UNLESS RENDER THREAD
+    gameStats.timer += delta;
 }
 
-export function resetGameTimer() { // can also be used as reset
+export function resetGameTimer() {
+    // can also be used as reset
     //gameTimerStart = 0;
-    gameStats.timer=0
+    gameStats.timer = 0;
 }
 //export let resetGameTimer = initGameTimer;
 

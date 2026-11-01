@@ -1,13 +1,6 @@
-import { setPause, setWon } from "../env";
-import { enemies, enemy } from "./enemies";
-import { gameStats, setGameStat } from "./gameStats";
-import upgrades, { displayUpgrade } from "./upgrades";
+
+import { enemy } from "./enemies";
 //let gameStats.waves
 export default () => {
-
-  enemy();
-  enemy();
-  enemy();
-  enemy();
-  enemy();
-}
+    enemy();
+};

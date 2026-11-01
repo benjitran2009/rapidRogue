@@ -5,8 +5,6 @@ import { rrMod } from "./modules/modding";
 
 // we become one with the typing scripting
 
-
-
 type Sprite = {
     addAnimation: (name: string, animation: string) => void;
     setAnimation: (name: string) => void;
@@ -32,9 +30,9 @@ type Sprite = {
     destroy: () => void;
     cleanUp: () => void;
     centered?: boolean;
-    destructionImminent?: boolean,
-    _checkTimeout?: any,
-    speed?: number,
+    destructionImminent?: boolean;
+    _checkTimeout?: any;
+    speed?: number;
 };
 
 type World = {
@@ -54,8 +52,8 @@ type Camera = {
     off: () => void;
     x: number;
     y: number;
-    mouseX: number,
-    mouseY: number,
+    mouseX: number;
+    mouseY: number;
 };
 
 declare global {
@@ -86,23 +84,27 @@ declare global {
         getUserId: () => string;
         createGroup: () => Group;
         rrMod: rrMod;
-        rapidRogueDraw: any,
-        keyCode: number,
-        won: boolean,
-        pause: boolean,
-        loadImage: (image: string) => string,
-        keyDown: (key: string) => boolean,
-        mouseDown: (btn: string) => boolean,
-        line: (startX: number, startY: number, endX: number, endY: number) => void,
-        background: (color: string) => void,
-        drawSprites: () => void,
-        keyWentDown: (key: string) => boolean,
-        setWon: (value: boolean) => void
-        setPause: (value: boolean) => void,
-        
+        rapidRogueDraw: any;
+        keyCode: number;
+        won: boolean;
+        pause: boolean;
+        loadImage: (image: string) => string;
+        keyDown: (key: string) => boolean;
+        mouseDown: (btn: string) => boolean;
+        line: (
+            startX: number,
+            startY: number,
+            endX: number,
+            endY: number,
+        ) => void;
+        background: (color: string) => void;
+        drawSprites: () => void;
+        keyWentDown: (key: string) => boolean;
+        setWon: (value: boolean) => void;
+        setPause: (value: boolean) => void;
     }
     interface Number {
-        pad: (size: number) => string,
+        pad: (size: number) => string;
     }
 }
 
@@ -133,24 +135,33 @@ export const createGroup = window.createGroup;
 export const loadImage: (image: string) => string = window.loadImage;
 export const keyDown: (key: string) => boolean = window.keyDown;
 export const mouseDown: (btn: string) => boolean = window.mouseDown;
-export const line: (startX: number, startY: number, endX: number, endY: number) => void = window.line;
+export const line: (
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+) => void = window.line;
 export const background: (color: string) => void = window.background;
 export const drawSprites: () => void = window.drawSprites;
 export const keyCode: number = window.keyCode;
 export const keyWentDown: (key: string) => boolean = window.keyWentDown;
 export const won: boolean = window.won;
-export const setWon: (value: boolean) => void = (value:boolean) => {
-    window.won = value
+export const setWon: (value: boolean) => void = (value: boolean) => {
+    window.won = value;
 };
 //export const pause: boolean = window.pause;
-export const setPause: (value: boolean) => void = (value:boolean) => {
+export const setPause: (value: boolean) => void = (value: boolean) => {
     gameStats.pause = value;
     //window.pause = value
 };
-//export const 
+//export const
 
 // polyfill stuff
-export const confirm: (message: string) => boolean = (message: string) => prompt(message, "Press OK for yes, or CANCEL for no.") !== null ? true : false;
-export const alert: (message: string) => void = (message: string) => prompt(message, "<your input will not be recorded>");
+export const confirm: (message: string) => boolean = (message: string) =>
+    prompt(message, "Press OK for yes, or CANCEL for no.") !== null
+        ? true
+        : false;
+export const alert: (message: string) => void = (message: string) =>
+    prompt(message, "<your input will not be recorded>");
 
 export {};

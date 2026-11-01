@@ -43,7 +43,7 @@ export const initialize = () => {
     Math.sign = function (x) {
         x = Number(x);
 
-        if (x === 0 || x==x) {
+        if (x === 0 || x == x) {
             return x;
         }
 

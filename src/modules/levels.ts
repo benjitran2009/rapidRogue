@@ -1,17 +1,22 @@
 import { setPause } from "../env";
-import { enemies } from "./enemies";
 import upgrades, { displayUpgrade } from "./upgrades";
 
 export let level = 1; // level 0 = infinity bit hacking ultra manipulator math
 export let xp = 0;
 export let xpToNextLevel = 50;
 
+export const resetLevelsAndXp = () => {
+    level = 1;
+    xp = 0;
+    xpToNextLevel = 50;
+}
+
 function levelUp() {
     // ? this is to display upgrade
     var upgradesKey: any[] = Object.keys(upgrades);
     var upgradesIndex: any[] = [];
     upgradesKey.forEach(function (__key, _indx) {
-        //var //___temp = [];
+        //var //___temp = [];F
         upgradesIndex.push(_indx);
     });
     upgradesKey = upgradesIndex;

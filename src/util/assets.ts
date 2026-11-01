@@ -12,8 +12,8 @@ import upgradeSpeed from "#assets/upgradeSpeed.png";
 import upgradeStrength from "#assets/upgradeStrength.png";
 import upgradeRegen from "#assets/upgradeRegen.png";
 import upgradeHealth from "#assets/upgradeHealth.png";
-import upgradeProjectiles from "#assets/upgradeProjectiles.png"
-import logo from "#assets/logo.png"
+import upgradeProjectiles from "#assets/upgradeProjectiles.png";
+import logo from "#assets/logo.png";
 //import assets from "./util/assets";
 
 export default {
@@ -31,18 +31,18 @@ export default {
     upgradeProjectiles: upgradeProjectiles,
     logo: logo,
 } as {
-    enemy1: string,
-    backgroundImage: string,
-    backgroundFillImage: string,
-    cursorImage: string,
-    playerImage: string,
-    upgradeDamage: string,
-    upgradeCooldown: string,
-    upgradeSpeed: string,
-    upgradeStrength: string,
-    upgradeRegen: string,
-    upgradeHealth: string
-    upgradeProjectiles: string,
-    logo: string,
-    [fileName: string]: string,
-}
+    enemy1: string;
+    backgroundImage: string;
+    backgroundFillImage: string;
+    cursorImage: string;
+    playerImage: string;
+    upgradeDamage: string;
+    upgradeCooldown: string;
+    upgradeSpeed: string;
+    upgradeStrength: string;
+    upgradeRegen: string;
+    upgradeHealth: string;
+    upgradeProjectiles: string;
+    logo: string;
+    [fileName: string]: string;
+};

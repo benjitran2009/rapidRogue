@@ -19,7 +19,8 @@ import assets from "../util/assets";
 //import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
 import { resetGameTimer } from "./gameStats";
-import { getPrettyModList, modList } from "./modding";
+import { getPrettyModList } from "./modding";
+import { player } from "./player";
 import playerHealing from "./playerHealing";
 export let enemySpawningInterval: any; // Should be a interval
 export let setEnemySpawningInterval = (x: any) => (enemySpawningInterval = x);
@@ -43,7 +44,7 @@ mmBackgrounds.forEach(function (backgroundSprite, indx) {
     backgroundSprite.x = camera.x + (indx + 0.5) * 400 + -400;
 });
 
-const logo = createSprite(0,0);
+let logo = createSprite(0, 0);
 logo.addAnimation("logo", assets.logo as string);
 
 //soun
@@ -52,10 +53,10 @@ var ct = 0;
 const splashes = [
     "You should try doing your work!",
     "This game is never updating!",
-    "0.0.7d when?",
+    "v1.0.0 when?",
     "Vampire Survivors Ripoff",
-    "Don't lose at wave 2 again!",
-    "Wave 10 is impossible.",
+    "Don't lose at 00:30 again!",
+    "60:00 is impossible.",
     "You can quit the game now",
     "Now 90% slower!",
     Math.PI.toString(),
@@ -66,6 +67,29 @@ const splashes = [
     "rapid > rogue",
 ];
 let selectedSplash = splashes[Math.floor(Math.random() * splashes.length)];
+
+export const initMainMenu = () => {
+    mainMenu = true;
+    page = 0;
+    mmInternals = {
+        p0SelectedOption: 0,
+    };
+    mmBackgrounds = [createSprite(0, 0), createSprite(0, 0)];
+    mmBackgrounds.forEach(function (backgroundSprite, indx) {
+        backgroundSprite.addAnimation(
+            "background",
+            loadImage(assets.backgroundImage as string),
+        );
+        //console.log(indx);
+        backgroundSprite.setAnimation("background");
+        backgroundSprite.y = camera.y;
+        backgroundSprite.x = camera.x + (indx + 0.5) * 400 + -400;
+    });
+
+    logo = createSprite(0, 0);
+    logo.addAnimation("logo", assets.logo as string);
+    selectedSplash = splashes[Math.floor(Math.random() * splashes.length)];
+};
 
 export function mainMenuMain() {
     switch (page) {
@@ -80,9 +104,9 @@ export function mainMenuMain() {
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
             });
 
-        logo.x = camera.x;
-        logo.y = camera.y-165;
-        logo.scale=1.25;// TODO: rescale it to prevent pixel messups
+            logo.x = camera.x;
+            logo.y = camera.y - 165;
+            logo.scale = 1.25; // TODO: rescale it to prevent pixel messups
 
             if (keyWentDown("up")) {
                 //console.log(mmInternals.p0SelectedOption)
@@ -209,7 +233,8 @@ ${getPrettyModList()}`); // TODO: mod list page
                     });*/ // TODO: reimplement menu enemies, but useless for now.
                     mainMenu = false;
                     //console.log("bye bye bye")
-                    enemySpawningInterval = setInterval(enemySpawning, 5000);
+                    player.visible = true;
+                    enemySpawningInterval = setInterval(enemySpawning, 1000);
                     playerHealingInterval = setInterval(playerHealing, 1000);
                     resetGameTimer();
                     logo.destroy();

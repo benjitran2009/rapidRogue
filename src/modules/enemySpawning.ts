@@ -1,15 +1,15 @@
-import {mainMenu} from "./mainMenu";
-import {gameStats} from "./gameStats";
+import { mainMenu } from "./mainMenu";
+import { gameStats } from "./gameStats";
 import waveHandler from "./waveHandler";
 import { inUpgradeScreen } from "./upgrades";
 
 export default () => {
-  if (inUpgradeScreen || gameStats.pause || mainMenu) return;
-  waveHandler();/*todo: use wavehandler and remove enemyspawning  */
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemy();
-  //enemies.bounceOff(enemies);
-}
+    if (inUpgradeScreen || gameStats.pause || mainMenu) return;
+    waveHandler(); /*todo: use wavehandler and remove enemyspawning  */
+    //enemy();
+    //enemy();
+    //enemy();
+    //enemy();
+    //enemy();
+    //enemies.bounceOff(enemies);
+};

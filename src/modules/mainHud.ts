@@ -29,19 +29,12 @@ export default () => {
     fill(rgb(0, 0, 0));
     rect(camera.x - 200, camera.y - 200, 400, 20);
     fill(rgb(66, 135, 245));
-    rect(
-        camera.x - 200,
-        camera.y - 200,
-        (xp /
-            xpToNextLevel) *
-            400,
-        20,
-    );
-    
+    rect(camera.x - 200, camera.y - 200, (xp / xpToNextLevel) * 400, 20);
+
     fill("white");
     textFont("monospace");
     textSize(24);
-    const timerSeconds = Math.floor(gameStats.timer/1000);
+    const timerSeconds = Math.floor(gameStats.timer / 1000);
     text(
         secondsToPrettyString(timerSeconds),
         //"Waves: " + gameStats.wave + "/" + gameStats.maxWaves,

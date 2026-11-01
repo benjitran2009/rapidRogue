@@ -32,16 +32,19 @@ import "es6-promise/auto.js";
 //import playerImage from "#assets/player.png";
 import assets from "./util/assets.js";
 import {
-  enemySpawningInterval,
-  mainMenu,
-  mainMenuMain,
-  setEnemySpawningInterval,
+    enemySpawningInterval,
+    initMainMenu,
+    mainMenu,
+    mainMenuMain,
+    playerHealingInterval,
+    setEnemySpawningInterval,
 } from "./modules/mainMenu.js";
 import {
-  addPlayerStat,
-  playerStats,
-  setPlayerStat,
-  subPlayerStat,
+    addPlayerStat,
+    playerStats,
+    resetPlayerStats,
+    setPlayerStat,
+    subPlayerStat,
 } from "./modules/playerStats.js";
 //playSound(assets.findTheBalance, true);
 //enemySpawningInterval
@@ -55,33 +58,35 @@ import enemySpawning from "./modules/enemySpawning.js";
 import performance from "./modules/performance.js";
 import {
     background,
-  camera,
-  CENTER,
-  createGroup,
-  createSprite,
-  drawSprites,
-  fill,
-  keyWentDown,
-  LEFT,
-  line,
-  loadImage,
-  mouseDown,
-  mouseWentDown,
-  noStroke,
-  rect,
-  rgb,
-  Sprite,
-  stroke,
-  strokeWeight,
-  text,
-  textAlign,
-  textFont,
-  textSize,
-  World,
+    camera,
+    CENTER,
+    createGroup,
+    createSprite,
+    drawSprites,
+    fill,
+    keyWentDown,
+    LEFT,
+    line,
+    loadImage,
+    mouseDown,
+    mouseWentDown,
+    noStroke,
+    rect,
+    rgb,
+    setPause,
+    Sprite,
+    stroke,
+    strokeWeight,
+    text,
+    textAlign,
+    textFont,
+    textSize,
+    World,
 } from "./env.js";
 import { inUpgradeScreen, upgradeScreenMain } from "./modules/upgrades.js";
 import mainHud from "./modules/mainHud.js";
 import config from "./config.js";
+import { resetLevelsAndXp } from "./modules/levels.js";
 //import keyWentDown from "./util/keyWentDown.js";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
@@ -149,67 +154,67 @@ cursor.setAnimation("cursor");
 //thing.scale = 0.175;
 
 function cursorMain() {
-  //cursor.x+=Math.round((camera.mouseX-cursor.x)/8);
-  //cursor.y+=Math.round((camera.mouseY-cursor.y)/8);
-  cursor.x = camera.mouseX;
-  cursor.y = camera.mouseY;
+    //cursor.x+=Math.round((camera.mouseX-cursor.x)/8);
+    //cursor.y+=Math.round((camera.mouseY-cursor.y)/8);
+    cursor.x = camera.mouseX;
+    cursor.y = camera.mouseY;
 }
 
 textFont("monospace");
 //textAlign(CENTER);
 
 function thingMain() {
-  player.pointTo(cursor.x, cursor.y);
-  //thing.pointTo(cursor.x,cursor.y);
-  //thing.x = player.x;d
-  //thing.y = player.y-65;
+    player.pointTo(cursor.x, cursor.y);
+    //thing.pointTo(cursor.x,cursor.y);
+    //thing.x = player.x;d
+    //thing.y = player.y-65;
 }
 
 //var projectiles = createGroup();
 
 function projectile() {
-  var c = {
-    x: cursor.x,
-    y: cursor.y,
-  };
-  //c.x+=c.x>player.x?200:-200;
-  //c.y+=c.y>player.y?200:-200;
-  var p = createSprite(player.x, player.y);
-  p.addAnimation("cursor", assets.cursorImage as string);
-  p.setAnimation("cursor");
-  p.depth = 999;
-  projectiles.add(p);
-  p.depth = 1;
-  //target = (cursor.x, cursor.y);
-  //p (p.x, p.y);
-  //(cursor.y-p.y)/(cursor.x-p.x);
-  //var s=(cursor.y-p.y)/(cursor.x-p.x);
-  //var pn = cursor.x>player.x ? 1 : -1;
+    var c = {
+        x: cursor.x,
+        y: cursor.y,
+    };
+    //c.x+=c.x>player.x?200:-200;
+    //c.y+=c.y>player.y?200:-200;
+    var p = createSprite(player.x, player.y);
+    p.addAnimation("cursor", assets.cursorImage as string);
+    p.setAnimation("cursor");
+    p.depth = 999;
+    projectiles.add(p);
+    p.depth = 1;
+    //target = (cursor.x, cursor.y);
+    //p (p.x, p.y);
+    //(cursor.y-p.y)/(cursor.x-p.x);
+    //var s=(cursor.y-p.y)/(cursor.x-p.x);
+    //var pn = cursor.x>player.x ? 1 : -1;
 
-  p.pointTo(c.x, c.y);
-  /**/
-  var angle = (p.rotation * Math.PI) / 180;
-  //var deltaX = Math.cos(angle) * 10;
-  //var deltaY = Math.sin(angle) * 10;
-  //console.log(s);
-  p.velocityX = Math.cos(angle) * 10;
-  p.velocityY = Math.sin(angle) * 10;
-  var _c = setInterval(function () {
-    p.displace(projectiles);
-    //p.x+=deltaX;
-    //p.y+=deltaY;
-    if (p.isTouching(enemies)) {
-      clearInterval(_c);
-      clearTimeout(_a);
-      setTimeout(function () {
+    p.pointTo(c.x, c.y);
+    /**/
+    var angle = (p.rotation * Math.PI) / 180;
+    //var deltaX = Math.cos(angle) * 10;
+    //var deltaY = Math.sin(angle) * 10;
+    //console.log(s);
+    p.velocityX = Math.cos(angle) * 10;
+    p.velocityY = Math.sin(angle) * 10;
+    var _c = setInterval(function () {
+        p.displace(projectiles);
+        //p.x+=deltaX;
+        //p.y+=deltaY;
+        if (p.isTouching(enemies)) {
+            clearInterval(_c);
+            clearTimeout(_a);
+            setTimeout(function () {
+                p.destroy();
+            }, 25);
+        }
+    }, 1000 / 60);
+    var _a = setTimeout(function () {
         p.destroy();
-      }, 25);
-    }
-  }, 1000 / 60);
-  var _a = setTimeout(function () {
-    p.destroy();
-    clearInterval(_c);
-  }, 750);
+        clearInterval(_c);
+    }, 750);
 }
 
 /*
@@ -220,19 +225,19 @@ function projectile() {
       */
 
 function projectileMain() {
-  if (mouseDown("leftButton") && !mLock) {
-    mLock = true;
-    for (var i = 0; i < playerStats.immune; i++) {
-      //playSound("laserShoot(1).wav",false);
-      projectile();
+    if (mouseDown("leftButton") && !mLock) {
+        mLock = true;
+        for (var i = 0; i < playerStats.immune; i++) {
+            //playSound("laserShoot(1).wav",false);
+            projectile();
+        }
+        setTimeout(
+            function () {
+                mLock = false;
+            },
+            1000 / (3 + playerStats.cooler * 2),
+        );
     }
-    setTimeout(
-      function () {
-        mLock = false;
-      },
-      1000 / (3 + playerStats.cooler * 2),
-    );
-  }
 }
 var insideViewingRange = createGroup(); // performance master2000
 var outsideViewingRange = createGroup();
@@ -241,31 +246,44 @@ cursor.depth = 100;
 //thing.depth = 99;
 
 function proHackerMode() {
-  enemies.forEach(function (_enemy) {
-    line(player.x, player.y, _enemy.x, _enemy.y);
-  });
-  //for (var i = 0; i < enemies.length; i++) {
-  //  group
-  //}
+    enemies.forEach(function (_enemy) {
+        line(player.x, player.y, _enemy.x, _enemy.y);
+    });
+    //for (var i = 0; i < enemies.length; i++) {
+    //  group
+    //}
 }
 
-var backgrounds: [Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite, Sprite] = [
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
-  createSprite(0, 0),
+var backgrounds: [
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+    Sprite,
+] = [
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
+    createSprite(0, 0),
 ];
 
 backgrounds.forEach(function (_background) {
-  _background.addAnimation("background", loadImage(assets.backgroundImage as string));
-  _background.setAnimation("background");
-  _background.depth = -1;
-  _background.visible = true;
+    _background.addAnimation(
+        "background",
+        loadImage(assets.backgroundImage as string),
+    );
+    _background.setAnimation("background");
+    _background.depth = -1;
+    _background.visible = true;
 });
 
 /*
@@ -279,199 +297,226 @@ around player
 //camera.zoom=0.25;
 
 function backgroundMain() {
-  //precode seems easier & more performant
-  // "never code again" - ben
-  //0
-  backgrounds[0].x = Math.round((player.x - 400) / 400) * 400;
-  backgrounds[0].y = Math.round((player.y - 400) / 400) * 400;
-  //1
-  backgrounds[1].x = Math.round(player.x / 400) * 400;
-  backgrounds[1].y = Math.round((player.y - 400) / 400) * 400;
-  //2
-  backgrounds[2].x = Math.round((player.x + 400) / 400) * 400;
-  backgrounds[2].y = Math.round((player.y - 400) / 400) * 400;
-  //3
-  backgrounds[3].x = Math.round((player.x - 400) / 400) * 400;
-  backgrounds[3].y = Math.round(player.y / 400) * 400;
-  //4
-  backgrounds[4].x = Math.round(player.x / 400) * 400;
-  backgrounds[4].y = Math.round(player.y / 400) * 400;
-  //5
-  backgrounds[5].x = Math.round((player.x + 400) / 400) * 400;
-  backgrounds[5].y = Math.round(player.y / 400) * 400;
-  //6
-  backgrounds[6].x = Math.round((player.x - 400) / 400) * 400;
-  backgrounds[6].y = Math.round((player.y + 400) / 400) * 400;
-  //7
-  backgrounds[7].x = Math.round(player.x / 400) * 400;
-  backgrounds[7].y = Math.round((player.y + 400) / 400) * 400;
-  //8
-  backgrounds[8].x = Math.round((player.x + 400) / 400) * 400;
-  backgrounds[8].y = Math.round((player.y + 400) / 400) * 400;
-  //var backgrounds = [];
-  //var backgroundSprite = createSprite(0,0);
-  //backgroundSprite.setAnimation("background");
+    //precode seems easier & more performant
+    // "never code again" - ben
+    //0
+    backgrounds[0].x = Math.round((player.x - 400) / 400) * 400;
+    backgrounds[0].y = Math.round((player.y - 400) / 400) * 400;
+    //1
+    backgrounds[1].x = Math.round(player.x / 400) * 400;
+    backgrounds[1].y = Math.round((player.y - 400) / 400) * 400;
+    //2
+    backgrounds[2].x = Math.round((player.x + 400) / 400) * 400;
+    backgrounds[2].y = Math.round((player.y - 400) / 400) * 400;
+    //3
+    backgrounds[3].x = Math.round((player.x - 400) / 400) * 400;
+    backgrounds[3].y = Math.round(player.y / 400) * 400;
+    //4
+    backgrounds[4].x = Math.round(player.x / 400) * 400;
+    backgrounds[4].y = Math.round(player.y / 400) * 400;
+    //5
+    backgrounds[5].x = Math.round((player.x + 400) / 400) * 400;
+    backgrounds[5].y = Math.round(player.y / 400) * 400;
+    //6
+    backgrounds[6].x = Math.round((player.x - 400) / 400) * 400;
+    backgrounds[6].y = Math.round((player.y + 400) / 400) * 400;
+    //7
+    backgrounds[7].x = Math.round(player.x / 400) * 400;
+    backgrounds[7].y = Math.round((player.y + 400) / 400) * 400;
+    //8
+    backgrounds[8].x = Math.round((player.x + 400) / 400) * 400;
+    backgrounds[8].y = Math.round((player.y + 400) / 400) * 400;
+    //var backgrounds = [];
+    //var backgroundSprite = createSprite(0,0);
+    //backgroundSprite.setAnimation("background");
 }
 
 var dead = false;
-var secondChance = false;//
+var secondChance = false; //
 var deadBackground = createSprite(0, 0);
 deadBackground.visible = false;
-deadBackground.addAnimation("background_fill", assets.backgroundFillImage as string);
+deadBackground.addAnimation(
+    "background_fill",
+    assets.backgroundFillImage as string,
+);
 deadBackground.setAnimation("background_fill");
 
 //var enemySpawningInterval;
 
 function statsMain() {
-  if (playerStats.iframes > 0) {
-    setPlayerStat("invincible", true);
-    //playerStats.invincible = true;
-    subPlayerStat("iframes", 1);
-    //playerStats.iframes-=1;
-  } else {
-    setPlayerStat("invincible", false);
-    //playerStats.invincible = false;
-  }
-  if (playerStats.HP <= 0) {
-    clearInterval(enemySpawningInterval);
-    deadBackground.visible = true;
-    deadBackground.scale = 5;
-    deadBackground.depth = 999;
-    deadBackground.x = camera.x;
-    deadBackground.y = camera.y;
-    deadBackground.alpha = 0.5;
-    setGameStat("pause", true);
-    //togglePause(true);
-    //pause=true;
-    dead = true;
-    player.tint = "red";
-    player.rotationSpeed = 5;
-    player.velocityX = 0; //5;
-    player.velocityY = 0; //-5;
-    //enemySprite.play();ss
-    var _reduceSize = setInterval(function () {
-      player.scale += 0.1;
-      player.alpha -= 0.01;
-      if (player.alpha <= 0) {
-        clearInterval(_reduceSize);
-        player.visible = false;
-        if (!secondChance) {
-          return;
-        }
-        secondChance = false;
-        //giveQuestion(function () {
-        // revive the player.
-        //prompt();
-        //enemySpawningInterval = setInterval(enemySpawning, 5000);
-        setEnemySpawningInterval(setInterval(enemySpawning, 5000));
-        deadBackground.visible = false;
-        player.visible = true;
-        //pause=false;
-        setGameStat("pause", false); // = false;
-        player.tint = "white";
-        player.rotation = 0;
+    if (playerStats.iframes > 0) {
+        setPlayerStat("invincible", true);
+        //playerStats.invincible = true;
+        subPlayerStat("iframes", 1);
+        //playerStats.iframes-=1;
+    } else {
+        setPlayerStat("invincible", false);
+        //playerStats.invincible = false;
+    }
+    if (playerStats.HP <= 0) {
+        clearInterval(enemySpawningInterval);
+        deadBackground.visible = true;
+        deadBackground.scale = 5;
+        deadBackground.depth = 999;
+        deadBackground.x = camera.x;
+        deadBackground.y = camera.y;
+        deadBackground.alpha = 0.5;
+        setGameStat("pause", true);
+        //togglePause(true);
+        //pause=true;
+        dead = true;
+        player.tint = "red";
+        player.rotationSpeed = 5;
         player.velocityX = 0; //5;
-        player.velocityY = 0;
-        player.scale = 1;
-        player.alpha = 1;
-        dead = false;
-        //playerStats.HP=playerStats.maxHP;
-        setPlayerStat("HP", playerStats.maxHP / 2);
-        setPlayerStat("iframes", 300);
-        //playerStats.iframes=300;
-        //});
-      }
-    }, 1000 / 60);
-    //setTimeout(function () {
-    //  player.destroy();
-    //}, 1000);
+        player.velocityY = 0; //-5;
+        //enemySprite.play();ss
+        var _reduceSize = setInterval(function () {
+            player.scale += 0.1;
+            player.alpha -= 0.01;
+            if (player.alpha <= 0) {
+                clearInterval(_reduceSize);
+                player.visible = false;
+                if (!secondChance) {
+                    setTimeout(() => {
+                        clearInterval(enemySpawningInterval);
+                        clearInterval(playerHealingInterval);
+                        resetLevelsAndXp();
+                        player.tint = "white";
+                        player.rotationSpeed = 0;
+                        player.rotation = 0;
+                        player.velocityX = 0; //5;
+                        player.velocityY = 0; //-5;
+                        player.scale = 1;
+                        player.alpha = 1;
+                        resetPlayerStats();
+                        enemies.forEach((enemy) => {
+                            enemy.destroy();
+                        });
+                        outOfBounds.forEach((oob) => {
+                            oob.destroy();
+                        });
+                        dead = false;
+                        setGameStat("pause", false);
+                        deadBackground.visible = false;
 
-    //inQuestion=true;
-  }
+                        initMainMenu();
+                    }, 2500);
+                    return;
+                }
+                secondChance = false;
+                //giveQuestion(function () {
+                // revive the player.
+                //prompt();
+                //enemySpawningInterval = setInterval(enemySpawning, 5000);
+                setEnemySpawningInterval(setInterval(enemySpawning, 5000));
+                deadBackground.visible = false;
+                player.visible = true;
+                //pause=false;
+                setGameStat("pause", false); // = false;
+                player.tint = "white";
+                player.rotation = 0;
+                player.velocityX = 0; //5;
+                player.velocityY = 0;
+                player.scale = 1;
+                player.alpha = 1;
+                dead = false;
+                //playerStats.HP=playerStats.maxHP;
+                setPlayerStat("HP", playerStats.maxHP / 2);
+                setPlayerStat("iframes", 300);
+                //playerStats.iframes=300;
+                //});
+            }
+        }, 1000 / 60);
+        //setTimeout(function () {
+        //  player.destroy();
+        //}, 1000);
+
+        //inQuestion=true;
+    }
 }
 
 var outOfBounds = createGroup();
 //var inBounds = createGroup();
 function enemyHud() {
-  // run every 24th frame
-  if ((World.frameCount%24)!==0) {
-    return;
-  }
-  //s1: categorize
-  enemies.forEach(function (_enemy) {
-    //match
-    if (
-      player.x - 400 <= _enemy.x &&
-      _enemy.x <= player.x + 400 &&
-      player.y - 400 <= _enemy.y &&
-      _enemy.y <= player.y + 400
-    ) {
-      //render hud
-      //hpbar
-      //fill("red");
-      //rect(_enemy.x-50,_enemy.y-75,100,10);
-      //fill("green");
-      //rect(_enemy.x-50,_enemy.y-75,100*(_enemy.HP/_enemy.maxHP),10);//TODO
-    } else {
-      if (_enemy.destructionImminent) {
+    // run every 24th frame
+    if (World.frameCount % 24 !== 0) {
         return;
-      }
-      //console.log("enemy went out of bounds.");
-      _enemy.visible = false;
-      _enemy.destructionImminent = true;
-      _enemy.outofbounds = true;
-      outOfBounds.add(_enemy);
-      enemies.remove(_enemy);
-      //var _checkInterval = setInterval(function () {
-      //  if ((player.x-400 <= _enemy.x && _enemy.x <= player.x+400) &&
-      //  (player.y-400 <= _enemy.y && _enemy.y <= player.y+400)) {
-      //    //console.log("re-activated enemy!");
-      //    clearInterval(_checkInterval);
-      //    clearTimeout(_checkTimeout);
-      //    enemies.add(_enemy);
-      //    outOfBounds.remove(_enemy);
-      //    _enemy.outofbounds = false;
-      //    _enemy.destructionImminent = false;
-      //  }
-      //}, 1000/12);
-      _enemy._checkTimeout = setTimeout(function () {
+    }
+    //s1: categorize
+    enemies.forEach(function (_enemy) {
+        //match
         if (
-          !(
             player.x - 400 <= _enemy.x &&
             _enemy.x <= player.x + 400 &&
             player.y - 400 <= _enemy.y &&
             _enemy.y <= player.y + 400
-          )
         ) {
-          //console.log("destroyed inactive enemy!");
-          //clearInterval(_checkInterval);
-          clearTimeout(_enemy._checkTimeout);
-          _enemy.destroy();
+            //render hud
+            //hpbar
+            //fill("red");
+            //rect(_enemy.x-50,_enemy.y-75,100,10);
+            //fill("green");
+            //rect(_enemy.x-50,_enemy.y-75,100*(_enemy.HP/_enemy.maxHP),10);//TODO
+        } else {
+            if (_enemy.destructionImminent) {
+                return;
+            }
+            //console.log("enemy went out of bounds.");
+            _enemy.visible = false;
+            _enemy.destructionImminent = true;
+            _enemy.outofbounds = true;
+            outOfBounds.add(_enemy);
+            enemies.remove(_enemy);
+            //var _checkInterval = setInterval(function () {
+            //  if ((player.x-400 <= _enemy.x && _enemy.x <= player.x+400) &&
+            //  (player.y-400 <= _enemy.y && _enemy.y <= player.y+400)) {
+            //    //console.log("re-activated enemy!");
+            //    clearInterval(_checkInterval);
+            //    clearTimeout(_checkTimeout);
+            //    enemies.add(_enemy);
+            //    outOfBounds.remove(_enemy);
+            //    _enemy.outofbounds = false;
+            //    _enemy.destructionImminent = false;
+            //  }
+            //}, 1000/12);
+            _enemy._checkTimeout = setTimeout(function () {
+                if (
+                    !(
+                        player.x - 400 <= _enemy.x &&
+                        _enemy.x <= player.x + 400 &&
+                        player.y - 400 <= _enemy.y &&
+                        _enemy.y <= player.y + 400
+                    )
+                ) {
+                    //console.log("destroyed inactive enemy!");
+                    //clearInterval(_checkInterval);
+                    clearTimeout(_enemy._checkTimeout);
+                    _enemy.destroy();
+                }
+            }, 5000);
         }
-      }, 5000);
-    }
-  });
-  //s2: processor
+    });
+    //s2: processor
 }
 
 setInterval(function () {
-  outOfBounds.forEach(function (_enemy) {
-    if (
-      player.x - 400 <= _enemy.x &&
-      _enemy.x <= player.x + 400 &&
-      player.y - 400 <= _enemy.y &&
-      _enemy.y <= player.y + 400
-    ) {
-      //sconsole.log("re-activated enemy!");
-      //clearInterval(_checkInterval);
-      clearTimeout(_enemy._checkTimeout);
-      enemies.add(_enemy);
-      outOfBounds.remove(_enemy);
-      _enemy.visible = true;
-      _enemy.outofbounds = false;
-      _enemy.destructionImminent = false;
-    }
-  });
+    outOfBounds.forEach(function (_enemy) {
+        if (
+            player.x - 400 <= _enemy.x &&
+            _enemy.x <= player.x + 400 &&
+            player.y - 400 <= _enemy.y &&
+            _enemy.y <= player.y + 400
+        ) {
+            //sconsole.log("re-activated enemy!");
+            //clearInterval(_checkInterval);
+            clearTimeout(_enemy._checkTimeout);
+            enemies.add(_enemy);
+            outOfBounds.remove(_enemy);
+            _enemy.visible = true;
+            _enemy.outofbounds = false;
+            _enemy.destructionImminent = false;
+        }
+    });
 }, 1000 / 12);
 
 //playSound("https://analytics.example.com/v1/audio.mp3?r=1",0)
@@ -481,113 +526,113 @@ setInterval(function () {
 var won = false;
 
 function draw() {
-  delta = 1000 / World.frameRate;
-  if (won) {
-    background("white");
-    drawSprites();
-    textAlign(CENTER);
-    //textSize(32);
-    textFont("monospace");
-    rect(camera.x - 200, camera.y - 44, 400, 100);
-    fill("white");
-    textSize(58);
-    text("You won!!!", camera.x, camera.y + 30);
-    performance();
-    throw new Error("This is intentional.");
-    return;
-  }
-  if (mainMenu) {
-    //console.log(mainMenu)
-    //playerStats.iframes=60;
-    //playerStats.invincible=true;
-    player.x = camera.x;
-    player.y = camera.y;
-
-    background("white");
-    drawSprites();
-    mainMenuMain(); // unintellisense
-    performance();
-    return;
-  }
-  //if (inQuestion) {
-  //  displayQuestionMain();
-  //  return;
-  //};
-  if (dead) {
-    player.velocityX=0;
-    player.velocityY=0;
-    background("white");
-    drawSprites();
-    textAlign(CENTER);
-    //textSize(32);
-    textFont("monospace");
-    rect(camera.x - 200, camera.y - 44, 400, 100);
-    fill("white");
-    if (secondChance) {
-      textSize(16);
-      text("[to_be_implemented]", camera.x, camera.y);
-      textSize(14);
-      text("[todo]", camera.x, camera.y + 25);
-    } else {
-      textSize(58);
-      text("You died!", camera.x, camera.y + 30);
+    delta = 1000 / World.frameRate;
+    if (won) {
+        background("white");
+        drawSprites();
+        textAlign(CENTER);
+        //textSize(32);
+        textFont("monospace");
+        rect(camera.x - 200, camera.y - 44, 400, 100);
+        fill("white");
+        textSize(58);
+        text("You won!!!", camera.x, camera.y + 30);
+        performance();
+        throw new Error("This is intentional.");
+        return;
     }
-    performance();
-    return;
-  }
-  //drawSprites();
-  if (inUpgradeScreen) {
-    //background("white");
-    player.velocityX=0;
-    player.velocityY=0;
-    drawSprites();
-    upgradeScreenMain();
-    performance();
-    return;
-  }
-  /*} else {
+    if (mainMenu) {
+        //console.log(mainMenu)
+        //playerStats.iframes=60;
+        //playerStats.invincible=true;
+        player.x = camera.x;
+        player.y = camera.y;
+
+        background("white");
+        drawSprites();
+        mainMenuMain(); // unintellisense
+        performance();
+        return;
+    }
+    //if (inQuestion) {
+    //  displayQuestionMain();
+    //  return;
+    //};
+    if (dead) {
+        player.velocityX = 0;
+        player.velocityY = 0;
+        background("white");
+        drawSprites();
+        textAlign(CENTER);
+        //textSize(32);
+        textFont("monospace");
+        rect(camera.x - 200, camera.y - 44, 400, 100);
+        fill("white");
+        if (secondChance) {
+            textSize(16);
+            text("You got a revive!", camera.x, camera.y);
+            textSize(14);
+            text("Lucky you!", camera.x, camera.y + 25);
+        } else {
+            textSize(58);
+            text("You died!", camera.x, camera.y + 30);
+        }
+        performance();
+        return;
+    }
+    //drawSprites();
+    if (inUpgradeScreen) {
+        //background("white");
+        player.velocityX = 0;
+        player.velocityY = 0;
+        drawSprites();
+        upgradeScreenMain();
+        performance();
+        return;
+    }
+    /*} else {
 
       textAlign(CENTER);
       text("no content?\nintentional?\ni think not.", camera.x, camera.y);
       displayUpgrade(0, 1, 2); // those who know arrays
     }*/
-  if (keyWentDown("p") && !dead) {
-    setGameStat("pause", !gameStats.pause);
-    //pause=!pause;
-    //pause=!pause;
-  }
-  if (!gameStats.pause) {
-    gameTimer(delta);
-    background("white");
-    backgroundMain();
-    thingMain();
-    cursorMain();
-    projectileMain();
-    drawSprites();
-    mainHud();
-    enemyHud();
-    statsMain();
-    performance();
-    movementMain();
-    //playerStats.HP=Math.abs(Math.sin(World.frameCount/60)*100);
-    //proHackerMode();
-  } else {
-    //background(rgb(0,0,0,0.5));
-    //background("white");
-    player.velocityX = 0;
-    player.velocityY = 0;
-    textAlign(CENTER);
-    textSize(48);
-    //fill(rgb(0,0,0,0.5));
-    noStroke();
-    //rect(camera.x-200,camera.y-50,400,100);
-    text("Game Paused", camera.x, camera.y);
-    performance();
-    //textSize(18);
-    //text("*-This doesn't do anything btw.", camera.x,camera.y+25);
-    //textSize(14);
-    //text("*-You might be ded.", camera.x,camera.y+50);
-  }
+    if (keyWentDown("p") && !dead) {
+        setGameStat("pause", !gameStats.pause);
+        //pause=!pause;
+        //pause=!pause;
+    }
+    if (!gameStats.pause) {
+        gameTimer(delta);
+        background("white");
+        backgroundMain();
+        thingMain();
+        cursorMain();
+        projectileMain();
+        drawSprites();
+        mainHud();
+        enemyHud();
+        statsMain();
+        performance();
+        movementMain();
+        //playerStats.HP=Math.abs(Math.sin(World.frameCount/60)*100);
+        //proHackerMode();
+    } else {
+        //background(rgb(0,0,0,0.5));
+        //background("white");
+        player.velocityX = 0;
+        player.velocityY = 0;
+        textAlign(CENTER);
+        textSize(48);
+        //fill(rgb(0,0,0,0.5));
+        noStroke();
+        //rect(camera.x-200,camera.y-50,400,100);
+        text("Game Paused", camera.x, camera.y);
+        performance();
+        //textSize(18);
+        //text("*-This doesn't do anything btw.", camera.x,camera.y+25);
+        //textSize(14);
+        //text("*-You might be ded.", camera.x,camera.y+50);
+    }
 }
 
 //enemySpawning();
