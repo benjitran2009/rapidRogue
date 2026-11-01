@@ -18,42 +18,29 @@ export default () => {
       enemies.forEach(function (_enemy) {
         _enemy.HP = 0;
       });
-      setGameStat("wave", gameStats.wave+1);
       //gameStats.wave++;
       // top tier naming system
-      var keys: any[] = Object.keys(upgrades)
-      var ___temp: any[] = [];
-      keys.forEach(function (__key, _indx) {
+
+      // ? this is to display upgrade
+      var upgradesKey: any[] = Object.keys(upgrades)
+      var upgradesIndex: any[] = [];
+      upgradesKey.forEach(function (__key, _indx) {
         //var //___temp = [];
-        ___temp.push(_indx);
+        upgradesIndex.push(_indx);
       });
-      keys = ___temp;
-      var __temp = [0, 0, 0];
-      ___temp = []; // !!! REDEF
-      __temp.forEach(function (_, _indx) {
-        var rnd = Math.floor(Math.random() * keys.length);
-        __temp[_indx] = keys[rnd];
-        keys.splice(rnd, 1);
+      upgradesKey = upgradesIndex;
+      var upgradesToDisplay = [0, 0, 0];
+      upgradesIndex = []; // !!! REDEF
+      upgradesToDisplay.forEach(function (_, _indx) {
+        var rnd = Math.floor(Math.random() * upgradesKey.length);
+        upgradesToDisplay[_indx] = upgradesKey[rnd];
+        upgradesKey.splice(rnd, 1);
         //console.log(keys);
         console.log(rnd);
       });
-      console.log(__temp);
-      displayUpgrade(__temp[0] as number, __temp[1] as number, __temp[2] as number, function () {
-        console.log("cb");
-        //pause = false;
+      console.log(upgradesToDisplay);
+      displayUpgrade(upgradesToDisplay[0] as number, upgradesToDisplay[1] as number, upgradesToDisplay[2] as number, function () {
         setPause(false);
-        var waveConfig = gameStats.waves[gameStats.wave - 1];
-        setGameStat("currentWave", {
-          enemyTarget: waveConfig.enemyTarget,
-          enemiesKilled: 0,
-          enemiesLeft: waveConfig.enemyTarget,
-        });/*
-        gameStats.currentWave = {
-          enemyTarget: waveConfig.enemyTarget,
-          enemiesKilled: 0,
-          enemiesLeft: waveConfig.enemyTarget,
-        };*/
-        //pause=false;
       });
       return;
     }

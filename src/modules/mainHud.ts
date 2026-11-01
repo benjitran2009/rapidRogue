@@ -12,11 +12,12 @@ import {
 } from "../env";
 import { secondsToPrettyString } from "../util/timer";
 import { gameStats } from "./gameStats";
+import { level } from "./levels";
 import { playerStats } from "./playerStats";
 
 export default () => {
     textAlign(CENTER);
-    fill("black");
+    //fill("white");
     //textSize(18);
     //text("rapidRogue beta", camera.x,camera.y+150);
     //textSize(14);
@@ -25,6 +26,19 @@ export default () => {
     //text("This is a work in progress, things are subject to change.", camera.x,camera.y+185);
 
     //waves
+    fill(rgb(0, 0, 0));
+    rect(camera.x - 200, camera.y - 200, 400, 20);
+    fill(rgb(66, 135, 245));
+    rect(
+        camera.x - 200,
+        camera.y - 200,
+        (gameStats.currentWave.enemiesKilled /
+            gameStats.currentWave.enemyTarget) *
+            400,
+        20,
+    );
+    
+    fill("white");
     textFont("monospace");
     textSize(24);
     const timerSeconds = Math.floor(gameStats.timer/1000);
@@ -36,9 +50,9 @@ export default () => {
     );
     textSize(18);
     text(
-        "Enemies remaining: " + gameStats.currentWave.enemiesLeft,
+        `Level: ${level}`,
         camera.x,
-        camera.y - 125,
+        camera.y - 185,
     );
 
     //fps counter
@@ -57,10 +71,6 @@ export default () => {
     //rect(player.x-50,player.y-75,100*(playerStats.HP/playerStats.maxHP),10);
     //hpbar
     //stroke(0);--no effect
-
-    fill(rgb(0, 0, 0));
-    rect(camera.x - 200, camera.y - 200, 400, 20);
-    fill(rgb(66, 135, 245));
     /**
    *  currentWave: {
         enemyTarget: 0,
@@ -68,14 +78,6 @@ export default () => {
         enemiesLeft: 0,
     },
    */
-    rect(
-        camera.x - 200,
-        camera.y - 200,
-        (gameStats.currentWave.enemiesKilled /
-            gameStats.currentWave.enemyTarget) *
-            400,
-        20,
-    );
 
     fill("red");
     rect(camera.x - 185, camera.y + 175, 150, 15);

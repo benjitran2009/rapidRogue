@@ -1,5 +1,7 @@
 export let level = 1; // level 0 = infinity bit hacking ultra manipulator math
 export let xp = 0;
+export let xpToNextLevel = 0;
+//export let 
 const calcLevel = () => Math.floor(xp/(50+Math.pow(xp,0.5)))
 export let addXp = (amt: number) => {
     xp+=amt;
