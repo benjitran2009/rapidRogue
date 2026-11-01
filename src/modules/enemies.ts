@@ -1,7 +1,8 @@
 import { camera, createGroup, createSprite } from "../env";
 import assets from "../util/assets";
 import enemySpawning from "./enemySpawning";
-import { gameStats, setGameStat } from "./gameStats";
+import { gameStats, gameTimer, setGameStat } from "./gameStats";
+import { addXp } from "./levels";
 import { player } from "./player";
 import { playerStats, subPlayerStat } from "./playerStats";
 import { projectiles } from "./projectiles";
@@ -10,18 +11,10 @@ import { inUpgradeScreen } from "./upgrades";
 export let enemies = createGroup();
 
 function  enemyDeathCallback() {
-  if (gameStats.currentWave.enemiesLeft-1<0) {
-    enemySpawning();
-    return;
-  }
-  setGameStat("currentWave", {
-    enemiesKilled: gameStats.currentWave.enemiesKilled+1,
-    enemiesLeft: gameStats.currentWave.enemiesLeft-1,
-    enemyTarget: gameStats.currentWave.enemyTarget
-  });
-  console.log(gameStats.currentWave.enemiesLeft)/*
-  currentWave.enemiesKilled++;
-  currentWave.enemiesLeft--;*/
+  addXp(5);
+  //console.log(gameStats.currentWave.enemiesLeft)/*
+  //currentWave.enemiesKilled++;
+  //currentWave.enemiesLeft--;*/
 }
 
 export function enemy() {
@@ -33,16 +26,16 @@ export function enemy() {
   var enemyX = camera.x+(rd1?200:-200)+(rd3*(rd1?1:-1));
   var enemyY = camera.y+(rd2?200:-200)+(rd4*(rd2?1:-1));
   var enemySprite = createSprite(enemyX,enemyY);
-  enemySprite.HP = 100+((gameStats.wave-1)*50);
-  enemySprite.maxHP = 100+((gameStats.wave-1)*50);
+  enemySprite.HP = 100+((gameStats.timer*1.005)*50);
+  enemySprite.maxHP = 100+((gameStats.timer*1.005)*50);
   enemySprite.canBeHit = true;
   var tempEnemyConfig = {
     hasHit: false,
   };
   //enemySprite.pause();
   enemies.add(enemySprite);
-  enemySprite.addAnimation("enemy"+gameStats.wave, assets[`enemy${1/*gameStats.wave* TODO*/}`] as string)
-  enemySprite.setAnimation("enemy"+gameStats.wave);
+  enemySprite.addAnimation("enemy", assets[`enemy${1/*gameStats.wave* TODO*/}`] as string)
+  enemySprite.setAnimation("enemy");
   //enemySprite.bounceOff(enemies);
   var enemyInterval = setInterval(function () {
     if (gameStats.pause || inUpgradeScreen) {
@@ -57,8 +50,8 @@ export function enemy() {
       //} else {
         enemySprite.pointTo(player.x,player.y);
         var angle = enemySprite.rotation * Math.PI / 180;
-        enemySprite.velocityX = Math.cos(angle) * ((gameStats.wave)*1.005);
-        enemySprite.velocityY = Math.sin(angle) * ((gameStats.wave)*1.005);
+        enemySprite.velocityX = Math.cos(angle) * ((gameStats.timer/1000)*1.005); // TODO : BELWO
+        enemySprite.velocityY = Math.sin(angle) * ((gameStats.timer/1000)*1.005); // TODO: set to timer formula
         return;
       //}
       //return;
@@ -69,8 +62,8 @@ export function enemy() {
     //var deltaY = Math.sin(angle) * 3;
     //enemySprite.x+=deltaX;
     //enemySprite.y+=deltaY;
-    enemySprite.velocityX = Math.cos(angle) * ((gameStats.wave)*1.005);
-    enemySprite.velocityY = Math.sin(angle) * ((gameStats.wave)*1.005);
+    enemySprite.velocityX = Math.cos(angle) * ((gameStats.timer/1000)*1.005); // TODO: set to timer formula
+    enemySprite.velocityY = Math.sin(angle) * ((gameStats.timer/1000)*1.005); // TODO: set to timer formula
     if (enemySprite.collide(player)) {
       //enemySprite.velocityX = -Math.cos(angle);
       //enemySprite.velocityY = -Math.sin(angle);
@@ -111,7 +104,7 @@ export function enemy() {
         }, 100);
       }
     }
-  }, 1000/24); // cinematic test
+  }, 1000/60); //!! cinematic test [makes projectiles too inaccurate]
   enemySprite.cleanUp = function () {
     clearInterval(enemyInterval);
     enemySprite.destroy();

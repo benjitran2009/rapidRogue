@@ -12,7 +12,7 @@ import {
 } from "../env";
 import { secondsToPrettyString } from "../util/timer";
 import { gameStats } from "./gameStats";
-import { level } from "./levels";
+import { level, xp, xpToNextLevel } from "./levels";
 import { playerStats } from "./playerStats";
 
 export default () => {
@@ -32,8 +32,8 @@ export default () => {
     rect(
         camera.x - 200,
         camera.y - 200,
-        (gameStats.currentWave.enemiesKilled /
-            gameStats.currentWave.enemyTarget) *
+        (xp /
+            xpToNextLevel) *
             400,
         20,
     );
@@ -50,7 +50,7 @@ export default () => {
     );
     textSize(18);
     text(
-        `Level: ${level}`,
+        `Level: ${level} | ${xp} / ${xpToNextLevel} xp`,
         camera.x,
         camera.y - 185,
     );

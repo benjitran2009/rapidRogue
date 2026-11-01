@@ -6,12 +6,13 @@ import backgroundImage from "#assets/background.png";
 import backgroundFillImage from "#assets/background_fill.png";
 import cursorImage from "#assets/cursor.png";
 import playerImage from "#assets/player.png";
-import upgradeCells from "#assets/upgrade_cells.png";
-import upgradeCooler from "#assets/upgrade_cooler.png";
-import upgradeFriction from "#assets/upgrade_friction.png";
-import upgradeImmune from "#assets/upgrade_immune.png";
-import upgradeMedkit from "#assets/upgrade_medkit.png";
-import upgradeSize from "#assets/upgrade_size.png";
+import upgradeDamage from "#assets/upgradeDamage.png";
+import upgradeCooldown from "#assets/upgradeCooldown.png";
+import upgradeSpeed from "#assets/upgradeSpeed.png";
+import upgradeStrength from "#assets/upgradeStrength.png";
+import upgradeRegen from "#assets/upgradeRegen.png";
+import upgradeHealth from "#assets/upgradeHealth.png";
+import upgradeProjectiles from "#assets/upgradeProjectiles.png"
 //import assets from "./util/assets";
 
 export default {
@@ -20,12 +21,25 @@ export default {
     backgroundFillImage: backgroundFillImage,
     cursorImage: cursorImage,
     playerImage: playerImage,
-    upgradeCells: upgradeCells,
-    upgradeCooler: upgradeCooler,
-    upgradeFriction: upgradeFriction,
-    upgradeImmune: upgradeImmune,
-    upgradeMedkit: upgradeMedkit,
-    upgradeSize: upgradeSize
+    upgradeDamage: upgradeDamage,
+    upgradeCooldown: upgradeCooldown,
+    upgradeSpeed: upgradeSpeed,
+    upgradeStrength: upgradeStrength,
+    upgradeRegen: upgradeRegen,
+    upgradeHealth: upgradeHealth,
+    upgradeProjectiles: upgradeProjectiles,
 } as {
+    enemy1: string,
+    backgroundImage: string,
+    backgroundFillImage: string,
+    cursorImage: string,
+    playerImage: string,
+    upgradeDamage: string,
+    upgradeCooldown: string,
+    upgradeSpeed: string,
+    upgradeStrength: string,
+    upgradeRegen: string,
+    upgradeHealth: string
+    upgradeProjectiles: string,
     [fileName: string]: string,
 }

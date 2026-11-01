@@ -73,52 +73,52 @@ export let upgrades = [
             },
         },*/
     {
-        name: "Cells+",
-        icon: assets.upgradeCells,
+        name: "Damage",
+        icon: assets.upgradeDamage,
         description:
-            "More white blood\ncells combine and\nyou get more\ndamage.",
+            "Damage go\nBrrrrr.",
         onUpgrade: function () {
             playerStats.cells++;
         },
     },
     {
-        name: "Immune+",
-        icon: assets.upgradeImmune,
+        name: "Projectiles",
+        icon: assets.upgradeProjectiles,
         description:
-            "Better immune\nsystem which\nresults in more\nprojectiles.",
+            "More bullet\nmore stonks.",
         onUpgrade: function () {
             playerStats.immune++;
         },
     },
     {
-        name: "Size+",
-        icon: assets.upgradeSize,
-        description: "Bigger cell\ngiving more\nmore health.",
+        name: "Health",
+        icon: assets.upgradeHealth,
+        description: "Strong man.",
         onUpgrade: function () {
             playerStats.size++;
             playerStats.maxHP = 50 + playerStats.size * 50;
         },
     },
     {
-        name: "Cooler+",
-        icon: assets.upgradeCooler,
-        description: "Cooling the\ncell allowing\nfor faster\ncooldown.",
+        name: "Cooldown",
+        icon: assets.upgradeCooldown,
+        description: "Even faster!",
         onUpgrade: function () {
             playerStats.cooler++;
         },
     },
     {
-        name: "Friction-",
-        icon: assets.upgradeFriction,
-        description: "Less friction\nallowing for\nmore speed.",
+        name: "Speed",
+        icon: assets.upgradeSpeed,
+        description: "Speedy boi.",
         onUpgrade: function () {
             playerStats.friction++; //?????????????
         },
     },
     {
-        name: "Stability+",
-        icon: assets.upgradeMedkit,
-        description: "More stable\ngiving more\nregeneration.",
+        name: "Regen",
+        icon: assets.upgradeRegen,
+        description: "Heal up deluxe.",
         onUpgrade: function () {
             playerStats.regen++; //?????????????
         },
