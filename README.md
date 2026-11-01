@@ -7,6 +7,7 @@ TODO:
 * Full UI update
 * New drawings
 * Timing-based instead of wave based for endless scaling
+* Main menu logo pls
 
 What has been  improved since original version (v0.0.6-something):
 
@@ -17,4 +18,6 @@ What has been  improved since original version (v0.0.6-something):
 * Somewhat UI Update
 * Performance improvements
 * Leveling system & endless
-* Some drawings
+* Some drawings and now more drawings
+* Timing-based
+* ui-ish update

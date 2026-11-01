@@ -13,6 +13,7 @@ import upgradeStrength from "#assets/upgradeStrength.png";
 import upgradeRegen from "#assets/upgradeRegen.png";
 import upgradeHealth from "#assets/upgradeHealth.png";
 import upgradeProjectiles from "#assets/upgradeProjectiles.png"
+import logo from "#assets/logo.png"
 //import assets from "./util/assets";
 
 export default {
@@ -28,6 +29,7 @@ export default {
     upgradeRegen: upgradeRegen,
     upgradeHealth: upgradeHealth,
     upgradeProjectiles: upgradeProjectiles,
+    logo: logo,
 } as {
     enemy1: string,
     backgroundImage: string,
@@ -41,5 +43,6 @@ export default {
     upgradeRegen: string,
     upgradeHealth: string
     upgradeProjectiles: string,
+    logo: string,
     [fileName: string]: string,
 }

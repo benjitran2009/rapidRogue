@@ -34,6 +34,7 @@ type Sprite = {
     centered?: boolean;
     destructionImminent?: boolean,
     _checkTimeout?: any,
+    speed?: number,
 };
 
 type World = {

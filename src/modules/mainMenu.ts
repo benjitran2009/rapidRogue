@@ -43,6 +43,9 @@ mmBackgrounds.forEach(function (backgroundSprite, indx) {
     backgroundSprite.x = camera.x + (indx + 0.5) * 400 + -400;
 });
 
+const logo = createSprite(0,0);
+logo.addAnimation("logo", assets.logo as string);
+
 //soun
 var ct = 0;
 
@@ -76,6 +79,10 @@ export function mainMenuMain() {
                         : 1.25;
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
             });
+
+        logo.x = camera.x;
+        logo.y = camera.y-165;
+        logo.scale=1.25;// TODO: rescale it to prevent pixel messups
 
             if (keyWentDown("up")) {
                 //console.log(mmInternals.p0SelectedOption)
@@ -132,10 +139,10 @@ ${getPrettyModList()}`); // TODO: mod list page
             mmInternals.p0SelectedOption = mmInternals.p0SelectedOption % 4;
 
             textAlign(CENTER);
-            textSize(48);
-            textFont("monospace");
-            fill("purple");
-            text("rapidRogue", camera.x, camera.y - 150);
+            //textSize(48);
+            //textFont("monospace");
+            //fill("purple");
+            //text("rapidRogue", camera.x, camera.y - 150);
             //fill("yellow");
             textSize(18 + Math.sin(World.frameCount / 4) * 0.5);
             //fill("gray");
@@ -205,6 +212,7 @@ ${getPrettyModList()}`); // TODO: mod list page
                     enemySpawningInterval = setInterval(enemySpawning, 5000);
                     playerHealingInterval = setInterval(playerHealing, 1000);
                     resetGameTimer();
+                    logo.destroy();
                     //console.log("startgame");
                 }
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);

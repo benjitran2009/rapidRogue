@@ -192,17 +192,17 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
         version: "0.0.0",
         author: "rapidRogue Contributors",
         requires: [/^@rapidRogue\/\d+\.\d+\.\d+(-\w+)?/gm, /^@sdk\/builtin?/gm], // supports any version of rapidRogue | @ is a reserved mod start for only rapidRogue cores @sdk / @rapidRogue
-        scopes: [scopes.TEST_SCOPE_NO_SIDE_EFFECTS],
+        scopes: [scopes.TEST_SCOPE_NO_SIDE_EFFECTS, scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION],
         init: (c) => {
             // scope should let it be defined
             //(c.executeUntrustedContextCode as Function)(
             //    "console.log('Hello, World!')",
             //);
-            c.requestScope(scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION).then((a) => {
-                if (a) {
-                    (a.executeUntrustedContextCode as Function)("console.log('Hello, World!');");
-                }
-            });
+            //c.requestScope(scopes.ALLOW_UNTRUSTED_CONTEXT_CODE_EXECUTION).then((a) => {
+            //    if (a) {
+                    (c.executeUntrustedContextCode as Function)("console.log('Hello, World!');");
+            //    }
+            //});
         },
     });
     // the below mods are used only for mod requirements
@@ -219,7 +219,7 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
 
     rrMod._installInternalMod(rapidRogueMod);
     rrMod._installInternalMod(rapidSdkMod);
-    rrMod.installMod(ExampleMod);
+    rrMod._installInternalMod(ExampleMod);
     
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };
