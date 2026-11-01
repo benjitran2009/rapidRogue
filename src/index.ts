@@ -392,6 +392,10 @@ function statsMain() {
 var outOfBounds = createGroup();
 //var inBounds = createGroup();
 function enemyHud() {
+  // run every 24th frame
+  if ((World.frameCount%24)!==0) {
+    return;
+  }
   //s1: categorize
   enemies.forEach(function (_enemy) {
     //match
@@ -412,6 +416,7 @@ function enemyHud() {
         return;
       }
       //console.log("enemy went out of bounds.");
+      _enemy.visible = false;
       _enemy.destructionImminent = true;
       _enemy.outofbounds = true;
       outOfBounds.add(_enemy);
@@ -461,6 +466,7 @@ setInterval(function () {
       clearTimeout(_enemy._checkTimeout);
       enemies.add(_enemy);
       outOfBounds.remove(_enemy);
+      _enemy.visible = true;
       _enemy.outofbounds = false;
       _enemy.destructionImminent = false;
     }

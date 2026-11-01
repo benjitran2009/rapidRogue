@@ -9,7 +9,7 @@ import { inUpgradeScreen } from "./upgrades";
 //let gameStats.wave;
 export let enemies = createGroup();
 
-function enemyDeathCallback() {
+function  enemyDeathCallback() {
   if (gameStats.currentWave.enemiesLeft-1<0) {
     enemySpawning();
     return;
@@ -41,7 +41,7 @@ export function enemy() {
   };
   //enemySprite.pause();
   enemies.add(enemySprite);
-  enemySprite.addAnimation("enemy"+gameStats.wave, assets[`enemy${gameStats.wave}`] as string)
+  enemySprite.addAnimation("enemy"+gameStats.wave, assets[`enemy${1/*gameStats.wave* TODO*/}`] as string)
   enemySprite.setAnimation("enemy"+gameStats.wave);
   //enemySprite.bounceOff(enemies);
   var enemyInterval = setInterval(function () {
@@ -111,7 +111,7 @@ export function enemy() {
         }, 100);
       }
     }
-  }, 1000/60);
+  }, 1000/24); // cinematic test
   enemySprite.cleanUp = function () {
     clearInterval(enemyInterval);
     enemySprite.destroy();

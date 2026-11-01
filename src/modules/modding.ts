@@ -217,9 +217,9 @@ Requested Scopes: ${getScopes(mod.configuration.scopes)}`)
         author: "rapidRogue Contributors",
     });
 
-    rrMod.installMod(ExampleMod);
     rrMod._installInternalMod(rapidRogueMod);
     rrMod._installInternalMod(rapidSdkMod);
-
+    rrMod.installMod(ExampleMod);
+    
     console.log("\nModding SDK is now available!\nAccess through window.rrMod");
 };
