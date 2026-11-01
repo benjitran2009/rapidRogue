@@ -6,6 +6,7 @@ TODO:
 * Modding stable api
 * Full UI update
 * New drawings
+* Timing-based instead of wave based for endless scaling
 
 What has been improved since original version (v0.0.6-something):
 

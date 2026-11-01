@@ -1,45 +1,55 @@
+//import { pause } from './pause';
 //let gameStats = {};
 //expo
 
 export let gameStats: {
-    [stat: string]: any,
+    [stat: string]: any;
 } = {
     won: false,
     pause: false,
     wave: 0,
     waves: [
         //enemy scaling done automatically
-        { //wave 1
+        {
+            //wave 1
             enemyTarget: 15,
         },
-        { //wave 2
+        {
+            //wave 2
             enemyTarget: 18,
         },
-        { //wave 3
+        {
+            //wave 3
             enemyTarget: 21,
         },
-        { //wave 4
+        {
+            //wave 4
             enemyTarget: 24,
         },
-        { //wave 5
+        {
+            //wave 5
             enemyTarget: 27,
         },
-        { //wave 6
+        {
+            //wave 6
             enemyTarget: 30,
         },
-        { //wave 7
+        {
+            //wave 7
             enemyTarget: 33,
         },
-        { //wave 8
+        {
+            //wave 8
             enemyTarget: 36,
         },
-        { //wave 9
+        {
+            //wave 9
             enemyTarget: 39,
         },
-        { //wave 10
+        {
+            //wave 10
             enemyTarget: 42,
         },
-
     ],
     get maxWaves() {
         return this.waves.length;
@@ -50,9 +60,23 @@ export let gameStats: {
         enemiesKilled: 0,
         enemiesLeft: 0,
     },
+    timer: 0,
 };
+let gameTimerStart: number = 0;
+let gameTimerInterval: number;
+
+export function gameTimer(delta: number) { // ! SHOULD NOT BE USED UNLESS RENDER THREAD
+    gameStats.timer+=delta;
+}
+
+export function resetGameTimer() { // can also be used as reset
+    //gameTimerStart = 0;
+    gameStats.timer=0
+}
+//export let resetGameTimer = initGameTimer;
+
 export function setGameStat(stat: any, value: any) {
-    console.log(stat)
+    console.log(stat);
     console.log(value);
     return new Promise((resolve, reject) => {
         try {
@@ -61,6 +85,6 @@ export function setGameStat(stat: any, value: any) {
         } catch (e: any) {
             reject(new Error(e));
         }
-    })
+    });
     //gameStats[stat] = value;
 }

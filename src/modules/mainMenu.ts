@@ -1,14 +1,30 @@
 import config from "../config";
-import { alert, camera, CENTER, createSprite, fill, getUserId, keyWentDown, LEFT, loadImage, text, textAlign, textFont, textSize, World } from "../env";
+import {
+    alert,
+    camera,
+    CENTER,
+    createSprite,
+    fill,
+    getUserId,
+    keyWentDown,
+    LEFT,
+    loadImage,
+    text,
+    textAlign,
+    textFont,
+    textSize,
+    World,
+} from "../env";
 import assets from "../util/assets";
 //import keyWentDown from "../util/keyWentDown";
 import enemySpawning from "./enemySpawning";
+import { resetGameTimer } from "./gameStats";
 import { getPrettyModList, modList } from "./modding";
 import playerHealing from "./playerHealing";
 export let enemySpawningInterval: any; // Should be a interval
-export let setEnemySpawningInterval = (x: any) => enemySpawningInterval = x;
+export let setEnemySpawningInterval = (x: any) => (enemySpawningInterval = x);
 export let playerHealingInterval: any;
-export let setPlayerHealingInterval = (x: any) => playerHealingInterval = x;
+export let setPlayerHealingInterval = (x: any) => (playerHealingInterval = x);
 export let mainMenu = true;
 var page = 0;
 var mmInternals = {
@@ -17,11 +33,14 @@ var mmInternals = {
 
 var mmBackgrounds = [createSprite(0, 0), createSprite(0, 0)];
 mmBackgrounds.forEach(function (backgroundSprite, indx) {
-    backgroundSprite.addAnimation("background", loadImage(assets.backgroundImage as string));
+    backgroundSprite.addAnimation(
+        "background",
+        loadImage(assets.backgroundImage as string),
+    );
     //console.log(indx);
     backgroundSprite.setAnimation("background");
     backgroundSprite.y = camera.y;
-    backgroundSprite.x = (camera.x) + ((indx+0.5) * 400) + -400;
+    backgroundSprite.x = camera.x + (indx + 0.5) * 400 + -400;
 });
 
 //soun
@@ -43,16 +62,18 @@ const splashes = [
     "Now starting at 3499$",
     "rapid > rogue",
 ];
-let selectedSplash = splashes[Math.floor(Math.random()*splashes.length)];
+let selectedSplash = splashes[Math.floor(Math.random() * splashes.length)];
 
 export function mainMenuMain() {
     switch (page) {
         case 0:
-
             mmBackgrounds.forEach(function (backgroundSprite, indx) {
                 //backgroundSprite.setAnimation("santa_1");
                 backgroundSprite.y = camera.y;
-                backgroundSprite.x += backgroundSprite.x >= (camera.x + (indx+1) * 400 + -400) ? -400 : 1.25;
+                backgroundSprite.x +=
+                    backgroundSprite.x >= camera.x + (indx + 1) * 400 + -400
+                        ? -400
+                        : 1.25;
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);
             });
 
@@ -75,7 +96,8 @@ export function mainMenuMain() {
                         alert("Not implemented!");
                         break;
                     case 3:
-                        prompt(`${config.name} ${config.version}
+                        prompt(
+                            `${config.name} ${config.version}
 https://github.com/benjitran2009/rapidRogue/
 
 Some ideas inspired by Vampire Survivors, and other roguelites.
@@ -87,7 +109,9 @@ Game Testers:
 <nobody>
 
 Assets:
-studio.code.org`,getUserId());
+studio.code.org`,
+                            getUserId(),
+                        );
                         break;
                     case 2:
                         prompt(`Game Version: ${config.version}
@@ -96,11 +120,12 @@ Mod SDK Version: ${config.sdk}
 Detected Mods:
 ${getPrettyModList()}`); // TODO: mod list page
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
                 //console.log("startgame");
             }
-            if (mmInternals.p0SelectedOption == -1) { 
+            if (mmInternals.p0SelectedOption == -1) {
                 mmInternals.p0SelectedOption = 3; // rollback down
                 // TODO: find more efficenty super binary bithacking technique to make this better
             }
@@ -112,17 +137,33 @@ ${getPrettyModList()}`); // TODO: mod list page
             fill("purple");
             text("rapidRogue", camera.x, camera.y - 150);
             //fill("yellow");
-            textSize(18 + (Math.sin(World.frameCount / 4) * 0.5));
+            textSize(18 + Math.sin(World.frameCount / 4) * 0.5);
             //fill("gray");
             fill("gold");
             text(selectedSplash as string, camera.x, camera.y - 120);
             fill("white");
             textSize(36);
-            text(mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play", camera.x, camera.y - 50);
-            text(mmInternals.p0SelectedOption == 1 ? "> Settings <" : "Settings", camera.x, camera.y);
-            text(mmInternals.p0SelectedOption == 2 ? "> Mods <" : "Mods", camera.x, camera.y + 50);
-            text(mmInternals.p0SelectedOption == 3 ? "> Credits <" : "Credits", camera.x, camera.y + 100);
-            
+            text(
+                mmInternals.p0SelectedOption == 0 ? "> Play <" : "Play",
+                camera.x,
+                camera.y - 50,
+            );
+            text(
+                mmInternals.p0SelectedOption == 1 ? "> Settings <" : "Settings",
+                camera.x,
+                camera.y,
+            );
+            text(
+                mmInternals.p0SelectedOption == 2 ? "> Mods <" : "Mods",
+                camera.x,
+                camera.y + 50,
+            );
+            text(
+                mmInternals.p0SelectedOption == 3 ? "> Credits <" : "Credits",
+                camera.x,
+                camera.y + 100,
+            );
+
             textSize(24);
             fill("black");
             textAlign(LEFT);
@@ -133,9 +174,14 @@ ${getPrettyModList()}`); // TODO: mod list page
             //var ct=0;
             mmBackgrounds.forEach(function (backgroundSprite) {
                 //backgroundSprite.setAnimation("santa_1");
-                if (backgroundSprite.centered) { return; }
-                backgroundSprite.x += ((camera.x - backgroundSprite.x) / 2);//backgroundSprite.x>=(camera.x+indx*400+-400)?-400:1.25;
-                if (-1 <= (camera.x - backgroundSprite.x) && (camera.x - backgroundSprite.x) <= 1) {
+                if (backgroundSprite.centered) {
+                    return;
+                }
+                backgroundSprite.x += (camera.x - backgroundSprite.x) / 2; //backgroundSprite.x>=(camera.x+indx*400+-400)?-400:1.25;
+                if (
+                    -1 <= camera.x - backgroundSprite.x &&
+                    camera.x - backgroundSprite.x <= 1
+                ) {
                     backgroundSprite.x = camera.x;
                     //console.log("ct"+ct);
                     ct++;
@@ -149,7 +195,7 @@ ${getPrettyModList()}`); // TODO: mod list page
                 }*/
                 if (ct == 2) {
                     mmBackgrounds.forEach(function (_backgroundSprite) {
-                        _backgroundSprite.destroy();//=false;
+                        _backgroundSprite.destroy(); //=false;
                     });
                     /*enemies.forEach(function (__enemy) {
                         __enemy.cleanUp();
@@ -158,6 +204,7 @@ ${getPrettyModList()}`); // TODO: mod list page
                     //console.log("bye bye bye")
                     enemySpawningInterval = setInterval(enemySpawning, 5000);
                     playerHealingInterval = setInterval(playerHealing, 1000);
+                    resetGameTimer();
                     //console.log("startgame");
                 }
                 //console.log(backgroundSprite.x>(indx*200+-200)?5:-200);

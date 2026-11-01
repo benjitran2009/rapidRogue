@@ -98,6 +98,10 @@ declare global {
         keyWentDown: (key: string) => boolean,
         setWon: (value: boolean) => void
         setPause: (value: boolean) => void,
+        
+    }
+    interface Number {
+        pad: (size: number) => string,
     }
 }
 

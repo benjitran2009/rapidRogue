@@ -47,7 +47,7 @@ import {
 //enemySpawningInterval
 //import {pause, togglePause} from "./modules/pause.js";
 //let pause;
-import { gameStats, setGameStat } from "./modules/gameStats.js";
+import { gameStats, gameTimer, setGameStat } from "./modules/gameStats.js";
 import { enemies } from "./modules/enemies.js";
 import { movementMain, player } from "./modules/player.js";
 import { projectiles } from "./modules/projectiles.js";
@@ -80,6 +80,7 @@ import {
   World,
 } from "./env.js";
 import { inUpgradeScreen, upgradeScreenMain } from "./modules/upgrades.js";
+import mainHud from "./modules/mainHud.js";
 //import keyWentDown from "./util/keyWentDown.js";
 //let {pause, togglePause} = _pause
 //let {mainMenu, mainMenuMain} = _mainMenu;
@@ -155,85 +156,6 @@ function cursorMain() {
 
 textFont("monospace");
 //textAlign(CENTER);
-
-function mainHud() {
-  textAlign(CENTER);
-  fill("black");
-  //textSize(18);
-  //text("rapidRogue beta", camera.x,camera.y+150);
-  //textSize(14);
-  //text("v0.0.5 - the mvp++ update", camera.x,camera.y+170);
-  //textSize(10);
-  //text("This is a work in progress, things are subject to change.", camera.x,camera.y+185);
-
-  //waves
-  textFont("monospace");
-  textSize(24);
-  text(
-    "Waves: " + gameStats.wave + "/" + gameStats.maxWaves,
-    camera.x,
-    camera.y - 150,
-  );
-  textSize(18);
-  text(
-    "Enemies remaining: " + gameStats.currentWave.enemiesLeft,
-    camera.x,
-    camera.y - 125,
-  );
-
-  //fps counter
-  //textSize(18);
-  //text("FPS: "+Math.floor(World.frameRate),camera.x-155,camera.y-175);
-  //textSize(10);
-  //text(getUserId(),camera.x+100,camera.y-175);
-  //legacy hpbar
-  //stroke(NONE);
-  //fill("red");
-  //rect(player.x-50,player.y-75,100,10);
-  //fill("green");
-  //if (playerStats.invincible) {
-  //  fill("cyan");
-  //}
-  //rect(player.x-50,player.y-75,100*(playerStats.HP/playerStats.maxHP),10);
-  //hpbar
-  //stroke(0);--no effect
-
-  fill(rgb(0, 0, 0));
-  rect(camera.x-200, camera.y - 200, 400, 20);
-  fill(rgb(66, 135, 245));
-  /**
-   *  currentWave: {
-        enemyTarget: 0,
-        enemiesKilled: 0,
-        enemiesLeft: 0,
-    },
-   */
-  rect(camera.x-200, camera.y - 200, (gameStats.currentWave.enemiesKilled / gameStats.currentWave.enemyTarget) * 400, 20);
-
-  
-
-
-  fill("red");
-  rect(camera.x - 185, camera.y + 175, 150, 15);
-  fill("green");
-  if (playerStats.invincible) {
-    fill("cyan");
-  }
-  rect(
-    camera.x - 185,
-    camera.y + 175,
-    150 * (playerStats.HP / playerStats.maxHP),
-    15,
-  );
-  fill("white");
-  textAlign(LEFT);
-  textSize(12);
-  text(`${playerStats.HP} / ${playerStats.maxHP}`, camera.x - 175, camera.y + 187.5);
-
-  fill(rgb(0, 0, 0, 0.5));
-
-  //rotation(radians(0));
-}
 
 function thingMain() {
   player.pointTo(cursor.x, cursor.y);
@@ -617,7 +539,7 @@ function draw() {
     return;
   }
   /*} else {
-    
+
       textAlign(CENTER);
       text("no content?\nintentional?\ni think not.", camera.x, camera.y);
       displayUpgrade(0, 1, 2); // those who know arrays
@@ -628,6 +550,7 @@ function draw() {
     //pause=!pause;
   }
   if (!gameStats.pause) {
+    gameTimer(delta);
     background("white");
     backgroundMain();
     thingMain();
