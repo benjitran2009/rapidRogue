@@ -47,7 +47,7 @@ What has been  improved since original version (v0.0.6-something):
 
 How to run if latest build isnt updated:
 
-* Download a release from [Releases](https://github.com/benjitran2009/rapidRogue/releases/latest) or `git clone https://github.com/benjitran2009/rapidRogue/ && cd rapidRogue && npm run build` to make a development build.
+* Download a release from [Releases](https://github.com/benjitran2009/rapidRogue/releases/latest) or `git clone https://github.com/benjitran2009/rapidRogue/ && cd rapidRogue && npm i && npm run build` to make a development build.
 * Make a new [Gamelab project](https://studio.code.org/projects/gamelab/new)
 * Paste the code
 * Run
