@@ -34,14 +34,13 @@ What has been  improved since original version (v0.0.6-something):
 
 * TypeScript port (ish-some types were good and some were lazily) (~3hish speedrun)
 * Less window leakage (window.aaa -> internal aaa import/export)
-* (Hopefully*) more/new sprite/assets redrawn
+* More/new sprite/assets redrawn
 * Modding SDK (new mod & request scopes and limited sandbox probably horrible security)
-* Somewhat UI Update
+* UI Update
 * Performance improvements
 * Leveling system & endless
 * Some drawings and now more drawings
-* Timing-based
-* ui-ish update
+* Timing-based instead of wave based
 * main menu logo
 * better main menu
 * devmode and beta features (no beta features, dev mode has some useful tools just read the code)
