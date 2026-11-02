@@ -168,7 +168,7 @@ ${getPrettyModList()}`);
 
             textAlign(CENTER);
             //textSize(48);
-            //textFont("monospace");
+            textFont("monospace");
             //fill("purple");
             //text("rapidRogue", camera.x, camera.y - 150);
             //fill("yellow");
@@ -307,7 +307,7 @@ ${getPrettyModList()}`);
             text(
                 mmInternals.p2SelectedOption == 0 ? "> Back <" : "Back",
                 camera.x,
-                camera.y - 50,
+                camera.y - 33,
             );
             text(
                 mmInternals.p2SelectedOption == 1 ? `> Developer Mode: ${settings.developerMode} <` : `Developer Mode: ${settings.developerMode}`,
@@ -317,12 +317,12 @@ ${getPrettyModList()}`);
             text(
                 mmInternals.p2SelectedOption == 2 ? `> Beta Features: ${settings.betaFeatures} <` : `Beta Features: ${settings.betaFeatures}`,
                 camera.x,
-                camera.y + 50,
+                camera.y + 33,
             );
             text(
                 mmInternals.p2SelectedOption == 3 ? "> Crash <" : "Crash",
                 camera.x,
-                camera.y + 100,
+                camera.y + 66,
             );
 
             textSize(24);

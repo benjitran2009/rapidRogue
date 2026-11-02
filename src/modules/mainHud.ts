@@ -5,6 +5,7 @@ import {
     LEFT,
     rect,
     rgb,
+    rgba,
     text,
     textAlign,
     textFont,
@@ -26,9 +27,9 @@ export default () => {
     //text("This is a work in progress, things are subject to change.", camera.x,camera.y+185);
 
     //waves
-    fill(rgb(0, 0, 0));
+    fill(rgba(0, 0, 0, 0.5));
     rect(camera.x - 200, camera.y - 200, 400, 20);
-    fill(rgb(66, 135, 245));
+    fill(rgba(66, 135, 245,0.5));
     rect(camera.x - 200, camera.y - 200, (xp / xpToNextLevel) * 400, 20);
 
     fill("white");

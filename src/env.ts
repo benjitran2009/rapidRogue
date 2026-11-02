@@ -39,6 +39,7 @@ type World = {
     mouseX: number;
     mouseY: number;
     frameRate: number;
+    allSprites: Sprite[];
     frameCount: number;
 };
 
@@ -54,6 +55,7 @@ type Camera = {
     y: number;
     mouseX: number;
     mouseY: number;
+    zoom: number;
 };
 
 declare global {
@@ -121,6 +123,7 @@ export const strokeWeight = window.strokeWeight;
 export const stroke = window.stroke;
 export const World = window.World;
 export const rgb = window.rgb;
+export const rgba = window.rgb; // this is for rgba intellisense
 export const rect = window.rect;
 export const mouseWentDown = window.mouseWentDown;
 export const noStroke = window.noStroke;
