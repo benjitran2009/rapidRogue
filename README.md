@@ -44,6 +44,7 @@ What has been  improved since original version (v0.0.6-something):
 * ui-ish update
 * main menu logo
 * better main menu
+* devmode and beta features (no beta features, dev mode has some useful tools just read the code)
 
 How to run if latest build isnt updated:
 
